@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import API_URL from '../config';
 
 const SearchRoom = () => {
   const [capacity, setCapacity] = useState('');
@@ -9,7 +10,7 @@ const SearchRoom = () => {
 
   const searchRooms = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/searchRoomBasic', {
+      const response = await axios.post(API_URL + '/api/searchRoomBasic', {
         capacity: parseInt(capacity),
         resources: resources.split(',').map(resource => resource.trim()),
       });

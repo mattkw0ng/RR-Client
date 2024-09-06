@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import RoomButton from './RoomButton';
 import SearchRoom from './SearchRoom';
+import API_URL from '../config';
 
 // Room Reservation Page
 function RoomRes() {
@@ -19,7 +20,7 @@ function RoomRes() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/auth/user', {
+    fetch(API_URL + '/auth/user', {
       credentials: 'include',
     })
       .then((res) => res.json())
@@ -37,7 +38,7 @@ function RoomRes() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/upcomingEvents');
+        const response = await axios.get(API_URL + '/api/upcomingEvents');
         setEvents(response.data);
       } catch (error) {
         console.error('Error fetching events', error);
@@ -76,7 +77,7 @@ function RoomRes() {
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
 
-      await axios.post('http://localhost:5000/api/addEventWithRoom', {
+      await axios.post(API_URL + '/api/addEventWithRoom', {
         summary,
         location,
         description,

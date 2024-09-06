@@ -7,12 +7,13 @@ import {
   NavLink,
   NavbarText,
 } from 'reactstrap';
+import API_URL from '../config';
 
 const NavBar = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/auth/user', {
+    fetch(API_URL + '/auth/user', {
       credentials: 'include',
     })
       .then((res) => res.json())
@@ -49,7 +50,7 @@ const NavBar = () => {
               <span>Welcome, {user.displayName}!</span>
             ) : (
               <span>
-                <a href="http://localhost:5000/auth/google">Login</a>
+                <a href={API_URL+"/auth/google"}>Login</a>
               </span>
             )}
           </NavbarText>

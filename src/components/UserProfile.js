@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import API_URL from '../config';
 
 const UserProfile = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:5000/auth/user', {
+        fetch(API_URL + '/auth/user', {
             credentials: 'include',
         })
         .then((res) => res.json())
@@ -26,7 +27,7 @@ const UserProfile = () => {
         <div>
             <h1>Welcome, {user.displayName}</h1>
             <p>Email: {user.emails[0].value}</p>
-            <a href="http://localhost:5000/logout">Logout</a>
+            <a href={API_URL + "/logout"}>Logout</a>
         </div>
     );
 };

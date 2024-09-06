@@ -1,8 +1,9 @@
 import React from 'react';
+import API_URL from '../config';
 
 const Login = ({auth}) => {
     const handleLogin = () => {
-        window.location.href = 'http://localhost:5000/auth/google'; // Redirect to Google OAuth
+        window.location.href = API_URL+'/auth/google'; // Redirect to Google OAuth
     };
 
     return (
