@@ -17,14 +17,13 @@ const App = () => {
   useEffect(() => {
       // Optionally, add any logic to refresh token or keep user authenticated
       setAuth(isAuthenticated());
-      console.log(auth);
   }, []);
 
   return (
     <Router>
       <NavBar />
       <Routes>
-        <Route path="/login" element={<Login onLogin={() => setAuth(true)} />} />
+        <Route path="/login" element={<Login onLogin={() => setAuth(true)} auth={auth} />} />
         <Route
             path="/profile"
             element={<UserProfile />}
