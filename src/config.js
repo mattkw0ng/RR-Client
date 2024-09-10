@@ -1,3 +1,3 @@
-const API_URL = "www.api.sjcactest.com:5000";
+const API_URL = "http://18.191.2.93:5000";
 
 export default API_URL;
