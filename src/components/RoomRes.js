@@ -98,7 +98,7 @@ function RoomRes() {
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
 
-      const response = await axios.get(`http://localhost:5000/api/checkAvailability?startDateTime=${start}&endDateTime=${end}`);
+      const response = await axios.get(API_URL + `/api/checkAvailability?startDateTime=${start}&endDateTime=${end}`);
       alert(`Available rooms: ${response.data.join(', ')}`);
     } catch (error) {
       console.error('Error checking availability', error);
