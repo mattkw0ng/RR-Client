@@ -46,6 +46,11 @@ const NavBar = () => {
         <NavbarBrand href="/">RoomReservation</NavbarBrand>
         <Nav>
           <NavItem>
+            <NavLink onClick={testSession}>
+              Test
+            </NavLink>
+          </NavItem>
+          <NavItem>
             <NavLink href="/">
               Reserve Room
             </NavLink>
@@ -66,9 +71,6 @@ const NavBar = () => {
                 <a href={API_URL+"/auth/google"}>Login</a>
               </span>
             )}
-          </NavbarText>
-          <NavbarText onClick={ testSession() }>
-            Test
           </NavbarText>
         </Nav>
       </Navbar>
