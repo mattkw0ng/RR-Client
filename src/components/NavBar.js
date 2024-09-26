@@ -18,7 +18,7 @@ const NavBar = () => {
       const start = new Date().toISOString();
 
       await axios.post(API_URL + '/auth/login', {
-        startDateTime: start
+        start: start
       });
     } catch (error) {
       console.error('Error testing session', error);
