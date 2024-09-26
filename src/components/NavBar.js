@@ -8,13 +8,14 @@ import {
   NavbarText,
 } from 'reactstrap';
 import API_URL from '../config';
+import axios from 'axios';
 
 const NavBar = () => {
   const [user, setUser] = useState(null);
 
   const testSession = async () => {
     try {
-      const start = startDateTime.toISOString();
+      const start = new Date().toISOString();
 
       await axios.post(API_URL + '/auth/login', {
         startDateTime: start
