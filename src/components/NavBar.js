@@ -12,6 +12,18 @@ import API_URL from '../config';
 const NavBar = () => {
   const [user, setUser] = useState(null);
 
+  const testSession = async () => {
+    try {
+      const start = startDateTime.toISOString();
+
+      await axios.post(API_URL + '/auth/login', {
+        startDateTime: start
+      });
+    } catch (error) {
+      console.error('Error testing session', error);
+    }
+  };
+
   useEffect(() => {
     fetch(API_URL + '/auth/user', {
       credentials: 'include',
@@ -53,6 +65,9 @@ const NavBar = () => {
                 <a href={API_URL+"/auth/google"}>Login</a>
               </span>
             )}
+          </NavbarText>
+          <NavbarText onClick={ testSession() }>
+            Test
           </NavbarText>
         </Nav>
       </Navbar>
