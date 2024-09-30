@@ -5,7 +5,7 @@ import API_URL from '../config';
 const RoomButton = () => {
   const fetchRooms = async () => {
     try {
-      const response = await axios.get(API_URL + '/api/rooms');
+      const response = await axios.get(API_URL + '/api/rooms', { withCredentials: true});
       console.log(response.data);
     } catch (error) {
       console.error('Error fetching rooms:', error);

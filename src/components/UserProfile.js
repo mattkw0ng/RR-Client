@@ -5,18 +5,16 @@ const UserProfile = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch(API_URL + '/auth/user', {
-            credentials: 'include',
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            if (data.user) {
-                setUser(data.user);
-            } else {
-                console.error('Not authenticated');
-            }
-        })
-        .catch((err) => console.error(err));
+        axios
+            .get(API_URL + '/auth/user', { withCredentials: true })
+            .then((response) => {
+                if (response.data.user) {
+                    setUser(response.data.user);
+                } else {
+                    console.error('Not authenticated');
+                }
+            })
+            .catch((err) => console.error(err));
     }, []);
 
     if (!user) {

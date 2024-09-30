@@ -13,7 +13,7 @@ const SearchRoom = () => {
       const response = await axios.post(API_URL + '/api/searchRoomBasic', {
         capacity: parseInt(capacity),
         resources: resources.split(',').map(resource => resource.trim()),
-      });
+      }, { withCredentials: true});
       setRooms(response.data);
     } catch (error) {
       console.error('Error searching rooms:', error);

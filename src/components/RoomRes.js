@@ -20,13 +20,11 @@ function RoomRes() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch(API_URL + '/auth/user', {
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.user) {
-          setUser(data.user);
+    axios
+      .get(API_URL + '/auth/user', { withCredentials: true })
+      .then((response) => {
+        if (response.data.user) {
+          setUser(response.data.user);
         } else {
           console.error('Not authenticated');
         }
@@ -38,7 +36,7 @@ function RoomRes() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get(API_URL + '/api/upcomingEvents');
+        const response = await axios.get(API_URL + '/api/upcomingEvents', { withCredentials: true });
         setEvents(response.data);
       } catch (error) {
         console.error('Error fetching events', error);
@@ -98,7 +96,7 @@ function RoomRes() {
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
 
-      const response = await axios.get(API_URL + `/api/checkAvailability?startDateTime=${start}&endDateTime=${end}`);
+      const response = await axios.get(API_URL + `/api/checkAvailability?startDateTime=${start}&endDateTime=${end}`, { withCredentials: true });
       alert(`Available rooms: ${response.data.join(', ')}`);
     } catch (error) {
       console.error('Error checking availability', error);

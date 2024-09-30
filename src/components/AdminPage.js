@@ -9,7 +9,7 @@ const AdminPage = () => {
 
   const fetchApprovedEvents = async () => {
     try {
-      const response = await axios.get(API_URL + '/api/approvedEvents');
+      const response = await axios.get(API_URL + '/api/approvedEvents', { withCredentials: true});
       setApprovedEvents(response.data);
     } catch (error) {
       console.error('Error fetching approved events:', error);
@@ -18,7 +18,7 @@ const AdminPage = () => {
 
   const fetchPendingEvents = async () => {
     try {
-      const response = await axios.get(API_URL + '/api/pendingEvents');
+      const response = await axios.get(API_URL + '/api/pendingEvents', { withCredentials: true});
       setPendingEvents(response.data);
     } catch (error) {
       console.error('Error fetching pending events:', error);
@@ -32,7 +32,7 @@ const AdminPage = () => {
 
   const handleApproveEvent = async (eventId) => {
     console.log("Approving", eventId);
-    axios.post(API_URL + '/api/approveEvent', { eventId })
+    axios.post(API_URL + '/api/approveEvent', { eventId }, { withCredentials: true})
     .then(response => {
       alert('Event approved successfully:', response.data);
       fetchApprovedEvents();

@@ -19,20 +19,18 @@ const NavBar = () => {
 
       await axios.post(API_URL + '/auth/login', {
         start: start
-      });
+      }, { withCredentials: true });
     } catch (error) {
       console.error('Error testing session', error);
     }
   };
 
   useEffect(() => {
-    fetch(API_URL + '/auth/user', {
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.user) {
-          setUser(data.user);
+    axios
+      .get(API_URL + '/auth/user', { withCredentials: true })
+      .then((response) => {
+        if (response.data.user) {
+          setUser(response.data.user);
         } else {
           console.error('Not authenticated');
         }
@@ -68,7 +66,7 @@ const NavBar = () => {
               <span>Welcome, {user.displayName}!</span>
             ) : (
               <span>
-                <a href={API_URL+"/auth/google"}>Login</a>
+                <a href={API_URL + "/auth/google"}>Login</a>
               </span>
             )}
           </NavbarText>
