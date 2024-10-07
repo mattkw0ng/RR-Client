@@ -104,8 +104,29 @@ function RoomRes() {
     }
   };
 
+  const setCookie = async() => {
+    try {
+      const response = await axios.get(API_URL + '/set-cookie', {withCredentials: true});
+      console.log("SET COOKIE: " + response);
+    } catch (error) {
+      console.error('Error setting cookie', error);
+    }
+  }
+
+  const getCookie = async() => {
+    try {
+      const response = await axios.get(API_URL + '/get-cookie', {withCredentials: true});
+      console.log("GET COOKIE: " + response);
+    } catch (error) {
+      console.error('Error getting cookie', error);
+    }
+  }
+
   return (
     <div className="container">
+      <button onClick={setCookie} className="btn btn-success mt-3">Set Cookie</button>
+      <button onClick={getCookie} className="btn btn-success mt-3">Get Cookie</button>
+
       <h1 className="my-4">Room Reservation System</h1>
 
       <h2 className="my-4">Upcoming Events</h2>
