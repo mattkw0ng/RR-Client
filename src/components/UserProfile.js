@@ -32,7 +32,7 @@ const UserProfile = () => {
 
     useEffect(() => {
         getUser();
-        getUserEvents;
+        getUserEvents();
     }, []);
 
     if (!user) {
