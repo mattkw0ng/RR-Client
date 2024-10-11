@@ -46,7 +46,7 @@ const UserProfile = () => {
             <a href={API_URL + "/logout"}>Logout</a>
             <div>
                 <h2>Your Upcoming Events</h2>
-                {events.length ? (
+                {events ? (
                     <ul>
                         {events.map(event => (
                             <li key={event.id}>
