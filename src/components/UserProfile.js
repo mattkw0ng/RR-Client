@@ -20,7 +20,7 @@ const UserProfile = () => {
     }
 
     const getUserEvents = async () => {
-        axios.get(API_URL + '/user/events', { withCredentials: true })
+        axios.get(API_URL + '/userEvents', { withCredentials: true })
             .then((res) => {
                 console.log("Successfully loaded User's Events")
                 setEvents(res.data); // Assuming you have a state variable for events
