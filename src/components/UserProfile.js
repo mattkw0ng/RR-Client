@@ -50,8 +50,8 @@ const UserProfile = () => {
                     <ul>
                         {events.map(event => (
                             <li key={event.id}>
-                                <h3>{event.title}</h3>
-                                <p>Date: {new Date(event.date).toLocaleString()}</p>
+                                <h3>{event.summary}</h3>
+                                <p>Date: {new Date(event.start.dateTime).toLocaleString()}</p>
                                 <p>Status: {event.status === 'approved' ? 'Accepted' : 'Pending Approval'}</p>
                             </li>
                         ))}
