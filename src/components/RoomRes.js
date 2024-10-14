@@ -78,7 +78,7 @@ function RoomRes() {
 
       console.log(selectedRoom);
 
-      await axios.post(API_URL + '/api/addEventWithRoom', {
+      await axios.post(API_URL + '/api/addEventWithRooms', {
         summary,
         location,
         description,
