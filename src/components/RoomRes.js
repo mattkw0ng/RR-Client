@@ -16,7 +16,7 @@ function RoomRes() {
   const [endDateTime, setEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Initial end time 1 hour after start
   const [events, setEvents] = useState([]);
   const [minEndDateTime, setMinEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Minimum end time 1 hour after start
-  const [selectedRoom, setSelectedRoom] = useState('Chapel'); // Default room selection
+  const [selectedRoom, setSelectedRoom] = useState(['Chapel']); // Default room selection
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -66,7 +66,8 @@ function RoomRes() {
   };
 
   const handleRoomChange = (event) => {
-    setSelectedRoom(event.target.value);
+    const selectedOptions = Array.from(event.target.selectedOptions, (option) => option.value);
+    setSelectedRoom(selectedOptions);
   };
 
   const handleSubmit = async (event) => {
@@ -104,18 +105,18 @@ function RoomRes() {
     }
   };
 
-  const setCookie = async() => {
+  const setCookie = async () => {
     try {
-      const response = await axios.get(API_URL + '/set-cookie', {withCredentials: true});
+      const response = await axios.get(API_URL + '/set-cookie', { withCredentials: true });
       console.log("SET COOKIE: " + response);
     } catch (error) {
       console.error('Error setting cookie', error);
     }
   }
 
-  const getCookie = async() => {
+  const getCookie = async () => {
     try {
-      const response = await axios.get(API_URL + '/get-cookie', {withCredentials: true});
+      const response = await axios.get(API_URL + '/get-cookie', { withCredentials: true });
       console.log("GET COOKIE: " + response);
     } catch (error) {
       console.error('Error getting cookie', error);
@@ -128,7 +129,7 @@ function RoomRes() {
       <button onClick={getCookie} className="btn btn-success mt-3">Get Cookie</button>
 
       <h1 className="my-4">Room Reservation System</h1>
-      <iframe src="https://calendar.google.com/calendar/embed?src=c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com&ctz=America%2FLos_Angeles" title="ApprovedCalendar" style={{border: 0}} width="800" height="600" frameborder="0" ></iframe>
+      <iframe src="https://calendar.google.com/calendar/embed?src=c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com&ctz=America%2FLos_Angeles" title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
       <h2 className="my-4">Upcoming Events</h2>
       <ul className="list-group mb-4">
         {events.length === 0 ? (
@@ -180,11 +181,27 @@ function RoomRes() {
             className="form-control"
             value={selectedRoom}
             onChange={handleRoomChange}
+            multiple // Allow multiple selection
           >
-            <option value="Chapel">Chapel</option>
             <option value="Sanctuary">Sanctuary</option>
+            <option value="Chapel">Chapel</option>
+            <option value="A101">A101</option>
+            <option value="A102">A102</option>
+            <option value="A103/104">A103/104</option>
+            <option value="A105">A105</option>
+            <option value="A114/115">A114/115</option>
+            <option value="A201">A201</option>
+            <option value="B101/102">B101/102</option>
+            <option value="B103/104">B103/104</option>
+            <option value="B105">B105</option>
+            <option value="C101/102">C101/102</option>
+            <option value="C103/104">C103/104</option>
+            <option value="C201/202">C201/202</option>
+            <option value="C203/204">C203/204</option>
+            <option value="D103 Conf. Rm">D103 Conf. Rm</option>
           </select>
         </div>
+
         <div className="mb-3">
           <label className="form-label">Start DateTime</label>
           <DatePicker
