@@ -84,7 +84,7 @@ function RoomRes() {
         description,
         startDateTime: start,
         endDateTime: end,
-        room: selectedRoom, // Pass selected room to server
+        rooms: selectedRoom, // Pass selected room to server
         userEmail: user.emails[0].value,
       });
       alert('Event added successfully');
