@@ -76,6 +76,8 @@ function RoomRes() {
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
 
+      console.log(selectedRoom);
+
       await axios.post(API_URL + '/api/addEventWithRoom', {
         summary,
         location,
