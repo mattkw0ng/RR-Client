@@ -6,6 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import RoomButton from './RoomButton';
 import SearchRoom from './SearchRoom';
 import API_URL from '../config';
+import ROOMS from '../data/rooms';
 
 // Room Reservation Page
 function RoomRes() {
@@ -107,31 +108,14 @@ function RoomRes() {
     }
   };
 
-  const setCookie = async () => {
-    try {
-      const response = await axios.get(API_URL + '/set-cookie', { withCredentials: true });
-      console.log("SET COOKIE: " + response);
-    } catch (error) {
-      console.error('Error setting cookie', error);
-    }
-  }
 
-  const getCookie = async () => {
-    try {
-      const response = await axios.get(API_URL + '/get-cookie', { withCredentials: true });
-      console.log("GET COOKIE: " + response);
-    } catch (error) {
-      console.error('Error getting cookie', error);
-    }
-  }
+  const iframeSrc = `https://calendar.google.com/calendar/embed?src=${ROOMS.get}&ctz=America%2FLos_Angeles`;
 
   return (
     <div className="container">
-      <button onClick={setCookie} className="btn btn-success mt-3">Set Cookie</button>
-      <button onClick={getCookie} className="btn btn-success mt-3">Get Cookie</button>
 
       <h1 className="my-4">Room Reservation System</h1>
-      <iframe src="https://calendar.google.com/calendar/embed?src=c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com&ctz=America%2FLos_Angeles" title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
+      <iframe src="https://calendar.google.com/calendar/embed?src={c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com}&ctz=America%2FLos_Angeles" title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
       <h2 className="my-4">Upcoming Events</h2>
       <ul className="list-group mb-4">
         {events.length === 0 ? (

@@ -13,18 +13,6 @@ import axios from 'axios';
 const NavBar = () => {
   const [user, setUser] = useState(null);
 
-  const testSession = async () => {
-    try {
-      const start = new Date().toISOString();
-
-      await axios.post(API_URL + '/auth/login', {
-        start: start
-      }, { withCredentials: true });
-    } catch (error) {
-      console.error('Error testing session', error);
-    }
-  };
-
   useEffect(() => {
     axios
       .get(API_URL + '/auth/user', { withCredentials: true })
@@ -43,11 +31,7 @@ const NavBar = () => {
       <Navbar>
         <NavbarBrand href="/">RoomReservation</NavbarBrand>
         <Nav>
-          <NavItem>
-            <NavLink onClick={testSession}>
-              Test
-            </NavLink>
-          </NavItem>
+
           <NavItem>
             <NavLink href="/">
               Reserve Room
