@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import RoomButton from './RoomButton';
 import SearchRoom from './SearchRoom';
 import API_URL from '../config';
-import ROOMS from '../data/rooms';
+
 
 // Room Reservation Page
 function RoomRes() {
