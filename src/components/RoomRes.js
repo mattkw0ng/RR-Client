@@ -17,7 +17,7 @@ function RoomRes() {
   const [endDateTime, setEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Initial end time 1 hour after start
   const [events, setEvents] = useState([]);
   const [minEndDateTime, setMinEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Minimum end time 1 hour after start
-  const [selectedRoom, setSelectedRoom] = useState(['Chapel']); // Default room selection
+  const [selectedRooms, setSelectedRooms] = useState([]); // Default room selection
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -31,21 +31,6 @@ function RoomRes() {
         }
       })
       .catch((err) => console.error(err));
-  }, []);
-
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await axios.get(API_URL + '/api/upcomingEvents', { withCredentials: true });
-        setEvents(response.data);
-      } catch (error) {
-        console.error('Error fetching events', error);
-        alert('Error fetching events');
-      }
-    };
-
-    fetchEvents();
   }, []);
 
   const handleStartDateTimeChange = (date) => {
@@ -67,9 +52,17 @@ function RoomRes() {
   };
 
   const handleRoomChange = (event) => {
-    const selectedOptions = Array.from(event.target.selectedOptions, (option) => option.value);
-    setSelectedRoom(selectedOptions);
+    const { value, checked } = event.target;
+
+    if (checked) {
+      // Add room to the selectedRooms array
+      setSelectedRooms([...selectedRooms, value]);
+    } else {
+      // Remove room from the selectedRooms array
+      setSelectedRooms(selectedRooms.filter((room) => room !== value));
+    }
   };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -85,7 +78,7 @@ function RoomRes() {
         description,
         startDateTime: start,
         endDateTime: end,
-        rooms: selectedRoom, // Pass selected room to server
+        rooms: selectedRooms, // Pass selected room to server
         userEmail: user.emails[0].value,
       });
       alert('Event added successfully');
@@ -110,30 +103,37 @@ function RoomRes() {
 
   const approvedCalendarId = "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com"
   const iframeSrc = `https://calendar.google.com/calendar/embed?src=${approvedCalendarId}&ctz=America%2FLos_Angeles`;
+  const rooms = [
+    "Sanctuary",
+    "Chapel",
+    "A101",
+    "A102",
+    "A103/104",
+    "A105",
+    "A114/115",
+    "A201",
+    "B101/102",
+    "B103/104",
+    "B105",
+    "C101/102",
+    "C103/104",
+    "C201/202",
+    "C203/204",
+    "D103 Conf. Rm"
+  ];
+
 
   return (
     <div className="container">
 
       <h1 className="my-4">Room Reservation System</h1>
       <iframe src={iframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
-      <h2 className="my-4">Upcoming Events</h2>
-      <ul className="list-group mb-4">
-        {events.length === 0 ? (
-          <li className="list-group-item">No upcoming events found.</li>
-        ) : (
-          events.map((event) => (
-            <li className="list-group-item" key={event.id}>
-              <h5>{event.summary}</h5>
-              <p>Location: {event.location || 'N/A'}</p>
-              <p>Start: {new Date(event.start.dateTime || event.start.date).toLocaleString()}</p>
-              <p>End: {new Date(event.end.dateTime || event.end.date).toLocaleString()}</p>
-            </li>
-          ))
-        )}
-      </ul>
 
-      <h2 className="my-4">Add Event to Google Calendar</h2>
+      <h2 className="my-4">Room Request Form</h2>
+
+      {/* Room Request Form */}
       <form onSubmit={handleSubmit}>
+        {/* Summary */}
         <div className="mb-3">
           <label className="form-label">Summary</label>
           <input
@@ -144,6 +144,8 @@ function RoomRes() {
             required
           />
         </div>
+
+        {/* Location */}
         <div className="mb-3">
           <label className="form-label">Location</label>
           <input
@@ -153,6 +155,8 @@ function RoomRes() {
             onChange={(e) => setLocation(e.target.value)}
           />
         </div>
+
+        {/* Description */}
         <div className="mb-3">
           <label className="form-label">Description</label>
           <textarea
@@ -161,33 +165,28 @@ function RoomRes() {
             onChange={(e) => setDescription(e.target.value)}
           ></textarea>
         </div>
+
+        {/* Room Selection */}
         <div className="mb-3">
           <label className="form-label">Room</label>
-          <select
-            className="form-control"
-            value={selectedRoom}
-            onChange={handleRoomChange}
-            multiple // Allow multiple selection
-          >
-            <option value="Sanctuary">Sanctuary</option>
-            <option value="Chapel">Chapel</option>
-            <option value="A101">A101</option>
-            <option value="A102">A102</option>
-            <option value="A103/104">A103/104</option>
-            <option value="A105">A105</option>
-            <option value="A114/115">A114/115</option>
-            <option value="A201">A201</option>
-            <option value="B101/102">B101/102</option>
-            <option value="B103/104">B103/104</option>
-            <option value="B105">B105</option>
-            <option value="C101/102">C101/102</option>
-            <option value="C103/104">C103/104</option>
-            <option value="C201/202">C201/202</option>
-            <option value="C203/204">C203/204</option>
-            <option value="D103 Conf. Rm">D103 Conf. Rm</option>
-          </select>
+          {rooms.map((room) => (
+            <div key={room} className="form-check">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id={room}
+                value={room}
+                checked={selectedRooms.includes(room)} // To check if the room is selected
+                onChange={handleRoomChange}
+              />
+              <label className="form-check-label" htmlFor={room}>
+                {room}
+              </label>
+            </div>
+          ))}
         </div>
 
+        {/* Start Date/Time */}
         <div className="mb-3">
           <label className="form-label">Start DateTime</label>
           <DatePicker
@@ -200,6 +199,7 @@ function RoomRes() {
             className="form-control"
           />
         </div>
+        {/* End Date/Time */}
         <div className="mb-3">
           <label className="form-label">End DateTime</label>
           <DatePicker
@@ -215,6 +215,8 @@ function RoomRes() {
             maxTime={new Date(minEndDateTime).setHours(23, 59, 59, 999)}
           />
         </div>
+
+        {/* Submit */}
         <button type="submit" className="btn btn-primary">Add Event</button>
       </form>
 
