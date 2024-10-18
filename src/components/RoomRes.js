@@ -15,7 +15,6 @@ function RoomRes() {
   const [description, setDescription] = useState('');
   const [startDateTime, setStartDateTime] = useState(new Date());
   const [endDateTime, setEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Initial end time 1 hour after start
-  const [events, setEvents] = useState([]);
   const [minEndDateTime, setMinEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Minimum end time 1 hour after start
   const [selectedRooms, setSelectedRooms] = useState([]); // Default room selection
   const [user, setUser] = useState(null);
