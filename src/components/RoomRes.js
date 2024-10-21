@@ -36,7 +36,8 @@ function RoomRes() {
     "C203/204",
     "D103 Conf. Rm"
   ];
-  const [availableRooms, setAvailableRooms] = useState(rooms)
+  const [availableRooms, setAvailableRooms] = useState(rooms);
+  const [switchCalendar, setSwitchCalendar] = useState(true);
 
   useEffect(() => {
     axios
@@ -121,15 +122,17 @@ function RoomRes() {
   };
 
   const approvedCalendarId = "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com"
+  const separatedIframeSrc = "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FLos_Angeles&bgcolor=%23ffffff&src=Y18xODhkaWxtdmJvcGltZ2lyaGZqbWNwZG8xanNoaUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgzNWczMW8yOTV1aWg0aXY0MHFncGw5bXNrdUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhiNnViZG84c2VhaWxkazRmMmxlMjNvNDl1a0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg0OGlqMnNhYnBxaXMwbGwzc3FnM3M5NWl2c0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlNWV1aG1pNG5tamVuZzZua2wzNG8yMmZxOEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlYXF0ZWgzcmp1ZzlybWFxamZuMzJuY2VnNEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgyNjh2MXZpNDN1ZzBlaTJibGZuYzhnMXBzMEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlZjg1bWp1cDhpaDMwaXZvam05YjFxYnJsMkByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgwMHNnYWtsMW5xaG85aHZtamtiazc4OW43MEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhmbHRpbzMxMDZvZ3J0Z2x1ajV0ZThydmZtZ0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg3NTZrY2xjZDZhaHRoaTRzcWJwNjczc2g1b0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhmY2Y4aTNwNW5panU0azJhNmY2ZnZhZWhwMEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhiYzRoZTZjbHUwZ3BsamYxM2dnYWhkN3Y3aUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhhdWtsYjM4cHZjajR1aG42amVxazVmb3Bya0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg4Z2I4ZmdxdmRjaWo2ajloMnU5MGhhdGs5ZUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkODdjdmtqYjg2aGw3aGl0ZTQ1cnBwOWQ4dUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkNnBrdWNhMTJranI2bW11bDJibGlwYWM5c0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkMnNyY2lzY21tam43ajVlN2htMmxobzF2Z0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhhM29nb251cDNjaXQxa2ExNTJ0Y2F1bjBiY0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg3NjhmdHM0aG9taGtzaGx0NzlvcWVmNmkyZUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhjOWdrOGRlMzVxam9za2V1Z3RtYWhpZGZoa0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&color=%23E67C73&color=%23B39DDB&color=%23E4C441&color=%23D50000&color=%23795548&color=%23E4C441&color=%23009688&color=%23F09300&color=%23D81B60&color=%23F4511E&color=%23EF6C00&color=%23E67C73&color=%234285F4&color=%237CB342&color=%23C0CA33&color=%23EF6C00&color=%23D50000&color=%237CB342&color=%23E4C441&color=%23C0CA33&color=%23B39DDB"
   const iframeSrc = `https://calendar.google.com/calendar/embed?src=${approvedCalendarId}&ctz=America%2FLos_Angeles`;
-
+  
 
   return (
     <div className="container">
 
       <h1 className="my-4">Room Reservation System</h1>
-      <iframe src={iframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
-
+      <button onClick={() => setSwitchCalendar(!switchCalendar)} className='btn btn-secondary'>{switchCalendar ? 'View Individual Calendars' : 'View All'}</button>
+      <br />
+      <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
       <h2 className="my-4">Room Request Form</h2>
 
       {/* Room Request Form */}
@@ -194,7 +197,6 @@ function RoomRes() {
             selected={startDateTime}
             onChange={handleStartDateTimeChange}
             showTimeSelect
-            timeFormat="HH:mm"
             timeIntervals={30}
             dateFormat="MMMM d, yyyy h:mm aa"
             className="form-control"
