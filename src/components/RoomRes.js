@@ -173,7 +173,7 @@ function RoomRes() {
         {/* Room Selection */}
         <div className="mb-3">
           <label className="form-label">Room</label>
-          {availableRooms.map((room) => (
+          {rooms.map((room) => (
             <div key={room} className="form-check">
               <input
                 type="checkbox"
@@ -182,9 +182,10 @@ function RoomRes() {
                 value={room}
                 checked={selectedRooms.includes(room)} // To check if the room is selected
                 onChange={handleRoomChange}
+                disabled={!availableRooms.includes(room)}
               />
               <label className="form-check-label" htmlFor={room}>
-                {room}
+                {room} {availableRooms.includes(room) ? "" : <small>unavailable</small>}
               </label>
             </div>
           ))}
