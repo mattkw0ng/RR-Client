@@ -170,7 +170,7 @@ function RoomRes() {
         {/* Room Selection */}
         <div className="mb-3">
           <label className="form-label">Room</label>
-          {rooms.map((room) => (
+          {availableRooms.map((room) => (
             <div key={room} className="form-check">
               <input
                 type="checkbox"
