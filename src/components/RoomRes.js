@@ -18,6 +18,25 @@ function RoomRes() {
   const [minEndDateTime, setMinEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Minimum end time 1 hour after start
   const [selectedRooms, setSelectedRooms] = useState([]); // Default room selection
   const [user, setUser] = useState(null);
+  const rooms = [
+    "Sanctuary",
+    "Chapel",
+    "A101",
+    "A102",
+    "A103/104",
+    "A105",
+    "A114/115",
+    "A201",
+    "B101/102",
+    "B103/104",
+    "B105",
+    "C101/102",
+    "C103/104",
+    "C201/202",
+    "C203/204",
+    "D103 Conf. Rm"
+  ];
+  const [availableRooms, setAvailableRooms] = useState(rooms)
 
   useEffect(() => {
     axios
@@ -94,6 +113,7 @@ function RoomRes() {
 
       const response = await axios.get(API_URL + `/api/checkAvailability?startDateTime=${start}&endDateTime=${end}`, { withCredentials: true });
       alert(`Available rooms: ${response.data.join(', ')}`);
+      setAvailableRooms(response.data)
     } catch (error) {
       console.error('Error checking availability', error);
       alert('Error checking availability');
@@ -102,24 +122,6 @@ function RoomRes() {
 
   const approvedCalendarId = "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com"
   const iframeSrc = `https://calendar.google.com/calendar/embed?src=${approvedCalendarId}&ctz=America%2FLos_Angeles`;
-  const rooms = [
-    "Sanctuary",
-    "Chapel",
-    "A101",
-    "A102",
-    "A103/104",
-    "A105",
-    "A114/115",
-    "A201",
-    "B101/102",
-    "B103/104",
-    "B105",
-    "C101/102",
-    "C103/104",
-    "C201/202",
-    "C203/204",
-    "D103 Conf. Rm"
-  ];
 
 
   return (
