@@ -65,6 +65,7 @@ function RoomRes() {
   const handleEndDateTimeChange = (date) => {
     if (date >= minEndDateTime) {
       setEndDateTime(date);
+      checkAvailability();
     } else {
       setEndDateTime(minEndDateTime);
     }
