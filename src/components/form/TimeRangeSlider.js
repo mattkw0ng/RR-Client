@@ -8,7 +8,7 @@ function TimeRangeSlider({timeRange, handleSliderChange, formatTime}) {
     <div>
       <Slider
         min={10}
-        max={96}
+        max={48}
         range
         value={timeRange}
         onChange={handleSliderChange}
