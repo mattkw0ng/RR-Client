@@ -53,6 +53,7 @@ const RoomSearch = ({ handleSearch }) => {
     setEndTime(formatTime(timeRange[1]));
   };
 
+  // Handle submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Prepare search criteria
@@ -66,7 +67,7 @@ const RoomSearch = ({ handleSearch }) => {
         endTime
       };
       console.log(searchCriteria); // Pass the search criteria to the search handler
-      const res = await axios.post(API_URL + 'api/filterRooms', searchCriteria);
+      const res = await axios.post(API_URL + '/api/filterRooms', searchCriteria);
       alert('Available rooms', res);
     } catch (error) {
       console.error('Error adding event', error);
@@ -80,6 +81,7 @@ const RoomSearch = ({ handleSearch }) => {
       {/* Room Name Search */}
       <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName}/>
       <hr />
+      <br />
       {/* Date and Time Selection */}
       <div className="mb-3">
         <label className="form-label">Select Date</label>
