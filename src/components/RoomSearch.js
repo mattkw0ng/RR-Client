@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { roomListSimple } from "../data/rooms";
 import RoomSearchBar from "./RoomSearchBar";
 import TimeRangeSlider from "./form/TimeRangeSlider";
 import API_URL from "../config";
 import axios from 'axios';
+import RoomSelection from "./RoomSelection";
 
 
 const RoomSearch = ({ handleSearch }) => {
@@ -15,6 +16,7 @@ const RoomSearch = ({ handleSearch }) => {
   const [endTime, setEndTime] = useState("");
   // Slider value state [startTime, endTime]
   const [timeRange, setTimeRange] = useState([16, 32]); // Default time: 8:00 AM - 4:00 PM (slider values)
+  const [availableRooms, setAvailableRooms] = useState(roomListSimple);
 
   // Convert slider value (0–47) to time in "hh:mm AM/PM" format
   const formatTime = (value) => {
@@ -59,7 +61,7 @@ const RoomSearch = ({ handleSearch }) => {
 
   const convertToDateTimeUTC = (date, time) => {
     const dateTimeString = `${date} ${time}`;
-  
+
     // Parse the local date and time first
     const localDateTime = new Date(dateTimeString);
 
@@ -79,7 +81,7 @@ const RoomSearch = ({ handleSearch }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Prepare search criteria
-    
+
 
     try {
 
@@ -95,77 +97,83 @@ const RoomSearch = ({ handleSearch }) => {
       };
       console.log(searchCriteria); // Pass the search criteria to the search handler
       const res = await axios.post(API_URL + '/api/filterRooms', searchCriteria);
-      alert('Available rooms', res);
+
+      console.log('Available rooms', res);
+      setAvailableRooms(res);
     } catch (error) {
       console.error('Error adding event', error);
     }
-    
+
   };
 
   return (
-    <form onSubmit={handleSubmit} className="px-5 py-3">
+    <Fragment>
+      <form onSubmit={handleSubmit} className="px-5 py-3">
 
-      {/* Room Name Search */}
-      <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName}/>
-      <hr />
-      <br />
-      {/* Date and Time Selection */}
-      <div className="mb-3">
-        <label className="form-label">Select Date</label>
-        <input
-          type="date"
-          className="form-control"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-      </div>
-      {/* TimeRangeSlider */}
-      <label className="form-label">Select Time Range</label>
-      <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange} formatTime={formatTime} />
-      <hr />
+        {/* Room Name Search */}
+        <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName} />
+        <hr />
+        <br />
+        {/* Date and Time Selection */}
+        <div className="mb-3">
+          <label className="form-label">Select Date</label>
+          <input
+            type="date"
+            className="form-control"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
+        {/* TimeRangeSlider */}
+        <label className="form-label">Select Time Range</label>
+        <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange} formatTime={formatTime} />
+        <hr />
 
-      {/* Room Capacity Selection */}
-      <div className="mb-3">
-        <label className="form-label">Select Room Capacity</label>
-        <select
-          className="form-select"
-          value={capacity}
-          onChange={(e) => setCapacity(e.target.value)}
-        >
-          <option value="">Any Capacity</option>
-          {availableCapacities.map((cap) => (
-            <option key={cap} value={cap}>
-              {cap}
-            </option>
+        {/* Room Capacity Selection */}
+        <div className="mb-3">
+          <label className="form-label">Select Room Capacity</label>
+          <select
+            className="form-select"
+            value={capacity}
+            onChange={(e) => setCapacity(e.target.value)}
+          >
+            <option value="">Any Capacity</option>
+            {availableCapacities.map((cap) => (
+              <option key={cap} value={cap}>
+                {cap}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Room Resources Selection */}
+        <div className="mb-3">
+          <label className="form-label">Select Room Resources</label>
+          {availableResources.map((resource) => (
+            <div key={resource} className="form-check">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                value={resource}
+                id={resource}
+                onChange={handleResourceChange}
+                checked={resources.includes(resource)}
+              />
+              <label className="form-check-label" htmlFor={resource}>
+                {resource}
+              </label>
+            </div>
           ))}
-        </select>
-      </div>
+        </div>
 
-      {/* Room Resources Selection */}
-      <div className="mb-3">
-        <label className="form-label">Select Room Resources</label>
-        {availableResources.map((resource) => (
-          <div key={resource} className="form-check">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              value={resource}
-              id={resource}
-              onChange={handleResourceChange}
-              checked={resources.includes(resource)}
-            />
-            <label className="form-check-label" htmlFor={resource}>
-              {resource}
-            </label>
-          </div>
-        ))}
-      </div>
+        {/* Submit Button */}
+        <button type="submit" className="btn btn-primary">
+          Search
+        </button>
+      </form>
 
-      {/* Submit Button */}
-      <button type="submit" className="btn btn-primary">
-        Search
-      </button>
-    </form>
+      <RoomSelection availableRooms={availableRooms}/>
+    </Fragment>
   );
 };
 
