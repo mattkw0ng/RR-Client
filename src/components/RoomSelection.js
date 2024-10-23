@@ -30,7 +30,7 @@ function RoomSelection ({availableRooms}) {
                 <hr className='my-2'></hr>
                 <div className='d-flex justify-content-between'>
                   <p>{availableRooms.includes(room) ? "Available" : "Unavailable"}</p> {/* Replace with dynamic availability */}
-                  <button disabled={!availableRooms.includes(room)} className={selectedRooms.includes(room) ? 'btn btn-secondary' : 'btn btn-outline-primary'}>{selectedRooms.includes(room) ? "-" : "+"}</button>
+                  <button disabled={!availableRooms.includes(room)} className={selectedRooms.includes(room) ? 'btn btn-secondary' : (availableRooms.includes(room) ? 'btn btn-outline-primary' : 'btn btn-outline-danger')}>{selectedRooms.includes(room) ? "-" : "+"}</button>
                 </div>
               </div>
             ))}

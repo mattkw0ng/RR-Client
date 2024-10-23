@@ -80,10 +80,6 @@ code {
   padding: 0;
 }
 
-.room-unavailable button {
-  background-color: #fe6948;
-}
-
 .room-card.selected.room-available {
   box-shadow: 0 0 0 4px #48a0fe;
 }
