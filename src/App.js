@@ -5,6 +5,7 @@ import RoomRes from './components/RoomRes'; // Assuming you have a home page
 import Login from './components/Login';
 import UserProfile from './components/UserProfile';
 import NavBar from './components/NavBar';
+import RoomSearch from './components/RoomSearch';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('authToken');
@@ -28,6 +29,7 @@ const App = () => {
             path="/profile"
             element={<UserProfile />}
         />
+        <Route path="search" element={<RoomSearch />} />
         <Route path="/" element={<RoomRes />} />
         <Route path="/admin" element={<AdminPage />} />
       </Routes>

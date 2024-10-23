@@ -11,3 +11,38 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.room-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal-width columns */
+  gap: 10px; /* Space between the columns and rows */
+}
+
+/* Style the building headers on mobile */
+.building-header {
+  text-align: left;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0;
+  border: none;
+  background: none;
+  width: 100%;
+  color: inherit; /* Remove link color */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.building-header:hover {
+  color: inherit; /* Keep the color the same on hover */
+}
+
+.building-header:focus {
+  border: none;
+}
+
+/* Ensure the header text looks the same as a h5 */
+.building-header h5 {
+  margin: 0;
+  font-size: 1.25rem;
+}

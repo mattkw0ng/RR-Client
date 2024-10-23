@@ -97,4 +97,31 @@ const ROOMS = [
   }
 ];
 
+export const roomsGrouped = {
+  "Main Buildings": ["Sanctuary", "Chapel"],
+  'A-Building': ["A101", "A102", "A103/104", "A105", "A114/115", "A201"],
+  'B-Building': ["B101/102", "B103/104", "B105"],
+  'C-Building': ["C101/102", "C103/104", "C201/202", "C203/204"],
+  'D-Building': ["D103 Conf. Rm"]
+};
+
+export const roomListSimple = [
+  "Sanctuary",
+  "Chapel",
+  "A101",
+  "A102",
+  "A103/104",
+  "A105",
+  "A114/115",
+  "A201",
+  "B101/102",
+  "B103/104",
+  "B105",
+  "C101/102",
+  "C103/104",
+  "C201/202",
+  "C203/204",
+  "D103 Conf. Rm"
+];
+
 export default ROOMS;
