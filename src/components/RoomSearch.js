@@ -49,12 +49,10 @@ const RoomSearch = ({ handleSearch }) => {
 
   const handleSliderChange = (newTimeRange) => {
     setTimeRange(newTimeRange);
-    console.log("timerange changed")
   };
 
   // Update the state variables startTime and endTime when timeRange finished updating (see above)
   useEffect(() => {
-    console.log("updating state")
     setStartTime(formatTime(timeRange[0]));
     setEndTime(formatTime(timeRange[1]));
   }, [timeRange, setStartTime, setEndTime])
