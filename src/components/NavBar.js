@@ -38,6 +38,11 @@ const NavBar = () => {
             </NavLink>
           </NavItem>
           <NavItem>
+            <NavLink href="/search">
+              Search
+            </NavLink>
+          </NavItem>
+          <NavItem>
             <NavLink href="/admin">Admin</NavLink>
           </NavItem>
           <NavItem>
