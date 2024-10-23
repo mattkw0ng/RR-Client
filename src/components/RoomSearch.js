@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { roomListSimple } from "../data/rooms";
 import RoomSearchBar from "./RoomSearchBar";
 import TimeRangeSlider from "./form/TimeRangeSlider";
@@ -49,14 +49,21 @@ const RoomSearch = ({ handleSearch }) => {
 
   const handleSliderChange = (newTimeRange) => {
     setTimeRange(newTimeRange);
+    console.log("timerange changed")
+  };
+
+  // Update the state variables startTime and endTime when timeRange finished updating (see above)
+  useEffect(() => {
+    console.log("updating state")
     setStartTime(formatTime(timeRange[0]));
     setEndTime(formatTime(timeRange[1]));
-  };
+  }, [timeRange, setStartTime, setEndTime])
 
   // Handle submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Prepare search criteria
+    
     try {
       const searchCriteria = {
         roomName,
@@ -96,25 +103,6 @@ const RoomSearch = ({ handleSearch }) => {
       <label className="form-label">Select Time Range</label>
       <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange} formatTime={formatTime} />
       <hr />
-      {/* <div className="mb-3">
-        <label className="form-label">Start Time</label>
-        <input
-          type="time"
-          className="form-control"
-          value={startTime}
-          onChange={(e) => setStartTime(e.target.value)}
-        />
-      </div>
-
-      <div className="mb-3">
-        <label className="form-label">End Time</label>
-        <input
-          type="time"
-          className="form-control"
-          value={endTime}
-          onChange={(e) => setEndTime(e.target.value)}
-        />
-      </div> */}
 
       {/* Room Capacity Selection */}
       <div className="mb-3">
