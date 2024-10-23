@@ -57,19 +57,41 @@ const RoomSearch = ({ handleSearch }) => {
     setEndTime(formatTime(timeRange[1]));
   }, [timeRange, setStartTime, setEndTime])
 
+  const convertToDateTimeUTC = (date, time) => {
+    const dateTimeString = `${date} ${time}`;
+  
+    // Parse the local date and time first
+    const localDateTime = new Date(dateTimeString);
+
+    if (isNaN(localDateTime)) {
+      throw new Error('Invalid Date or Time format');
+    }
+
+    console.log("CombineDateTimeInUTC")
+    console.log(dateTimeString)
+    console.log(localDateTime)
+    console.log(localDateTime.toUTCString())
+
+    return localDateTime.toUTCString();
+  }
+
   // Handle submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Prepare search criteria
     
+
     try {
+
+      const startDateTime = convertToDateTimeUTC(date, startTime);
+      const endDateTime = convertToDateTimeUTC(date, endTime);
       const searchCriteria = {
         roomName,
         capacity,
         resources,
         date,
-        startTime,
-        endTime
+        startDateTime,
+        endDateTime
       };
       console.log(searchCriteria); // Pass the search criteria to the search handler
       const res = await axios.post(API_URL + '/api/filterRooms', searchCriteria);
