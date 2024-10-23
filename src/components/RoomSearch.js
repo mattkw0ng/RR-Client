@@ -98,8 +98,8 @@ const RoomSearch = ({ handleSearch }) => {
       console.log(searchCriteria); // Pass the search criteria to the search handler
       const res = await axios.post(API_URL + '/api/filterRooms', searchCriteria);
 
-      console.log('Available rooms', res);
-      setAvailableRooms(res);
+      console.log('Available rooms', res.data);
+      setAvailableRooms(res.data);
     } catch (error) {
       console.error('Error adding event', error);
     }
