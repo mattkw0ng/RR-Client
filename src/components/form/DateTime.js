@@ -24,7 +24,6 @@ function DateTime({ startDateTime, endDateTime, handleStartDateTimeChange, handl
           selected={endDateTime}
           onChange={handleEndDateTimeChange}
           showTimeSelect
-          timeFormat="HH:mm"
           timeIntervals={30}
           dateFormat="MMMM d, yyyy h:mm aa"
           className="form-control"
