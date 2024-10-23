@@ -23,13 +23,13 @@ function RoomSelection ({availableRooms}) {
             {roomsGrouped[building].map((room) => (
               <div
                 key={room}
-                className={`room-card ${selectedRooms.includes(room) ? 'selected' : ''}`}
+                className={`room-card ${selectedRooms.includes(room) ? 'selected' : ''} ${availableRooms.includes(room) ? 'room-available' : 'room-unavailable'}`}
                 onClick={() => handleRoomToggle(room)}
               >
                 <h5 className='mb-0'>{room}</h5>
                 <hr className='my-2'></hr>
                 <div className='d-flex justify-content-between'>
-                  <p className={availableRooms.includes(room) ? 'font-italic font-available' : 'font-italic font-unavailable'}>{availableRooms.includes(room) ? "Available" : "Unavailable"}</p> {/* Replace with dynamic availability */}
+                  <p>{availableRooms.includes(room) ? "Available" : "Unavailable"}</p> {/* Replace with dynamic availability */}
                   <button disabled={!availableRooms.includes(room)} className={selectedRooms.includes(room) ? 'btn btn-secondary' : 'btn btn-outline-primary'}>{selectedRooms.includes(room) ? "-" : "+"}</button>
                 </div>
               </div>

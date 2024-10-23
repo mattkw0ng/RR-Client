@@ -80,13 +80,30 @@ code {
   padding: 0;
 }
 
-.room-card.selected {
+.room-unavailable button {
+  background-color: #fe6948;
+}
+
+.room-card.selected.room-available {
   box-shadow: 0 0 0 4px #48a0fe;
+}
+
+.room-card.selected.room-unavailable {
+  box-shadow: 0 0 0 4px #fe6948;
 }
 
 .room-card p {
   margin-top: 8px;
   margin-bottom: 0px;
+  font-style: italic;
+}
+
+.room-available p {
+  color:#007bff;
+}
+
+.room-unavailable p {
+  color:rgb(234, 104, 104);
 }
 
 .selected-rooms ul {
@@ -98,14 +115,3 @@ code {
   margin-bottom: 8px;
 }
 
-.font-italic {
-  font-style: italic;
-}
-
-.font-available {
-  color:#007bff;
-}
-
-.font-unavailable {
-  color:rgb(234, 104, 104);
-}
