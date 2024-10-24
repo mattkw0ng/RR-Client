@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { roomsGrouped } from '../data/rooms';
 
-function RoomSelection ({availableRooms}) {
+function RoomSelection ({availableRooms, filteredRooms}) {
   const [selectedRooms, setSelectedRooms] = useState([]);
 
   // Toggle room selection
@@ -21,6 +21,7 @@ function RoomSelection ({availableRooms}) {
           <h4>{building}</h4>
           <div className="room-cards">
             {roomsGrouped[building].map((room) => (
+              filteredRooms.includes(room) ?
               <div
                 key={room}
                 className={`room-card ${selectedRooms.includes(room) ? 'selected' : ''} ${availableRooms.includes(room) ? 'room-available' : 'room-unavailable'}`}
@@ -33,6 +34,8 @@ function RoomSelection ({availableRooms}) {
                   <button disabled={!availableRooms.includes(room)} className={selectedRooms.includes(room) ? 'btn btn-secondary' : (availableRooms.includes(room) ? 'btn btn-outline-primary' : 'btn btn-outline-danger')}>{selectedRooms.includes(room) ? "-" : "+"}</button>
                 </div>
               </div>
+              :
+              null
             ))}
           </div>
           <hr />

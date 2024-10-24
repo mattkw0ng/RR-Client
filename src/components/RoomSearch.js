@@ -17,6 +17,7 @@ const RoomSearch = ({ handleSearch }) => {
   // Slider value state [startTime, endTime]
   const [timeRange, setTimeRange] = useState([16, 32]); // Default time: 8:00 AM - 4:00 PM (slider values)
   const [availableRooms, setAvailableRooms] = useState(roomListSimple);
+  const [filteredRooms, setFilteredRooms] = useState(roomListSimple);
 
   // Convert slider value (0–47) to time in "hh:mm AM/PM" format
   const formatTime = (value) => {
@@ -111,7 +112,7 @@ const RoomSearch = ({ handleSearch }) => {
       <form onSubmit={handleSubmit} className="px-5 py-3">
 
         {/* Room Name Search */}
-        <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName} />
+        <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName} filteredRooms={filteredRooms} setFilteredRooms={setFilteredRooms}/>
         <hr />
         <br />
         {/* Date and Time Selection */}
@@ -172,7 +173,7 @@ const RoomSearch = ({ handleSearch }) => {
         </button>
       </form>
 
-      <RoomSelection availableRooms={availableRooms}/>
+      <RoomSelection availableRooms={availableRooms} filteredRooms={filteredRooms} />
     </Fragment>
   );
 };
