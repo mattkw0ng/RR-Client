@@ -7,7 +7,7 @@ import axios from 'axios';
 import RoomSelection from "./RoomSelection";
 
 
-const RoomSearch = ({ handleSearch }) => {
+function RoomSearch({ handleSearch }) {
   const [roomName, setRoomName] = useState("");
   const [capacity, setCapacity] = useState("");
   const [resources, setResources] = useState([]);
@@ -58,7 +58,7 @@ const RoomSearch = ({ handleSearch }) => {
   useEffect(() => {
     setStartTime(formatTime(timeRange[0]));
     setEndTime(formatTime(timeRange[1]));
-  }, [timeRange, setStartTime, setEndTime])
+  }, [timeRange, setStartTime, setEndTime]);
 
   const convertToDateTimeUTC = (date, time) => {
     const dateTimeString = `${date} ${time}`;
@@ -70,20 +70,13 @@ const RoomSearch = ({ handleSearch }) => {
       throw new Error('Invalid Date or Time format');
     }
 
-    console.log("CombineDateTimeInUTC")
-    console.log(dateTimeString)
-    console.log(localDateTime)
-    console.log(localDateTime.toUTCString())
-
     return localDateTime.toUTCString();
-  }
+  };
 
   // Handle submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Prepare search criteria
-
-
     try {
 
       const startDateTime = convertToDateTimeUTC(date, startTime);
@@ -109,73 +102,77 @@ const RoomSearch = ({ handleSearch }) => {
 
   return (
     <Fragment>
-      <form onSubmit={handleSubmit} className="px-5 py-3">
-
-        {/* Room Name Search */}
-        <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName} filteredRooms={filteredRooms} setFilteredRooms={setFilteredRooms}/>
-        <hr />
-        <br />
-        {/* Date and Time Selection */}
-        <div className="mb-3">
-          <label className="form-label">Select Date</label>
-          <input
-            type="date"
-            className="form-control"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-        </div>
-        {/* TimeRangeSlider */}
-        <label className="form-label">Select Time Range</label>
-        <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange} formatTime={formatTime} />
-        <hr />
-
-        {/* Room Capacity Selection */}
-        <div className="mb-3">
-          <label className="form-label">Select Room Capacity</label>
-          <select
-            className="form-select"
-            value={capacity}
-            onChange={(e) => setCapacity(e.target.value)}
-          >
-            <option value="">Any Capacity</option>
-            {availableCapacities.map((cap) => (
-              <option key={cap} value={cap}>
-                {cap}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Room Resources Selection */}
-        <div className="mb-3">
-          <label className="form-label">Select Room Resources</label>
-          {availableResources.map((resource) => (
-            <div key={resource} className="form-check">
+      {/* Filters */}
+      <div className="d-flex"> 
+        <div className="form-filter-container d-flex bg-light">
+          <form onSubmit={handleSubmit} id="form-filter" className="px-5 py-3">
+            {/* Room Name Search */}
+            <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName} filteredRooms={filteredRooms} setFilteredRooms={setFilteredRooms} />
+            <hr />
+            <br />
+            {/* Date and Time Selection */}
+            <div className="mb-3">
+              <label className="form-label">Select Date</label>
               <input
-                type="checkbox"
-                className="form-check-input"
-                value={resource}
-                id={resource}
-                onChange={handleResourceChange}
-                checked={resources.includes(resource)}
-              />
-              <label className="form-check-label" htmlFor={resource}>
-                {resource}
-              </label>
+                type="date"
+                className="form-control"
+                value={date}
+                onChange={(e) => setDate(e.target.value)} />
             </div>
-          ))}
+            {/* TimeRangeSlider */}
+            <label className="form-label">Select Time Range</label>
+            <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange} formatTime={formatTime} />
+            <hr />
+
+            {/* Room Capacity Selection */}
+            <div className="mb-3">
+              <label className="form-label">Select Room Capacity</label>
+              <select
+                className="form-select"
+                value={capacity}
+                onChange={(e) => setCapacity(e.target.value)}
+              >
+                <option value="">Any Capacity</option>
+                {availableCapacities.map((cap) => (
+                  <option key={cap} value={cap}>
+                    {cap}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Room Resources Selection */}
+            <div className="mb-3">
+              <label className="form-label">Select Room Resources</label>
+              {availableResources.map((resource) => (
+                <div key={resource} className="form-check">
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    value={resource}
+                    id={resource}
+                    onChange={handleResourceChange}
+                    checked={resources.includes(resource)} />
+                  <label className="form-check-label" htmlFor={resource}>
+                    {resource}
+                  </label>
+                </div>
+              ))}
+            </div>
+
+            {/* Submit Button */}
+            <button type="submit" className="btn btn-primary">
+              Search
+            </button>
+          </form>
         </div>
-
-        {/* Submit Button */}
-        <button type="submit" className="btn btn-primary">
-          Search
-        </button>
-      </form>
-
-      <RoomSelection availableRooms={availableRooms} filteredRooms={filteredRooms} />
+      
+        <div className="room-card-container">
+          <RoomSelection availableRooms={availableRooms} filteredRooms={filteredRooms} />
+        </div>
+      </div>
     </Fragment>
   );
-};
+}
 
 export default RoomSearch;

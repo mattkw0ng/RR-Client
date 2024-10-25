@@ -67,6 +67,7 @@ code {
   text-align: left;
   font-style: italic;
   cursor: pointer;
+  min-width: 150px;
   transition: background-color 0.2s;
 }
 
@@ -91,6 +92,7 @@ code {
 .room-card p {
   margin-top: 8px;
   margin-bottom: 0px;
+  margin-right: 10px;
   font-style: italic;
 }
 
