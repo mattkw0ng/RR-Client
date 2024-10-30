@@ -77,7 +77,6 @@ const UserProfile = () => {
                 <h5>Your Upcoming Events</h5>
                 {events ? (
                     <div className='user-events'>
-                        <h2>Pending Events</h2>
                         <ListGroup>
                             {events['pending'].map(event => (
                             <ListGroupItem key={event.id}>
@@ -88,6 +87,7 @@ const UserProfile = () => {
                             </ListGroupItem>
                             ))}
                         </ListGroup>
+                        <hr />
                         <ListGroup>
                             {events['approved'].map(event => (
                             <ListGroupItem key={event.id}>
