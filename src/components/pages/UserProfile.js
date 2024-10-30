@@ -24,6 +24,7 @@ const UserProfile = () => {
             .then((res) => {
                 console.log("Successfully loaded User's Events")
                 setEvents(res.data); // Assuming you have a state variable for events
+                console.log(res.data);
             })
             .catch((err) => {
                 console.error('Failed to load events', err);
