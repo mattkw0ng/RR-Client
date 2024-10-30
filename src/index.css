@@ -18,26 +18,6 @@ code {
   gap: 10px; /* Space between the columns and rows */
 }
 
-/* Responsive iFrame */
-
-.responsive-iframe-container {
-  position: relative;
-  padding-bottom: 56.25%;
-  padding-top: 30px;
-  height: 0;
-  overflow: hidden;
-  }
-  
-  .responsive-iframe-container iframe,
-  .vresponsive-iframe-container object,
-  .vresponsive-iframe-container embed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  }
-
 /* Style the building headers on mobile */
 .building-header {
   text-align: left;
@@ -186,5 +166,13 @@ code {
   cursor: pointer;
   padding: 10px;
   font-size: 14px;
+}
+
+.date-time label {
+  width: 90px;
+}
+
+.date-time .react-datepicker__input-container {
+  width: 225px;
 }
 

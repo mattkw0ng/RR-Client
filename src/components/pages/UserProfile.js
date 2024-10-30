@@ -36,26 +36,37 @@ const UserProfile = () => {
     }, []);
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div className='p-5'>Loading...</div>;
     }
 
     return (
-        <div>
+        <div className='p-5'>
             <h1>Welcome, {user.displayName}</h1>
             <p>Email: {user.emails[0].value}</p>
             <a href={API_URL + "/logout"}>Logout</a>
             <div>
-                <h2>Your Upcoming Events</h2>
+                <h5>Your Upcoming Events</h5>
                 {events ? (
-                    <ul>
-                        {events.map(event => (
-                            <li key={event.id}>
-                                <h3>{event.summary}</h3>
-                                <p>Date: {new Date(event.start.dateTime).toLocaleString()}</p>
-                                <p>Status: Pending Approval</p>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className='user-events'>
+                        <ul>
+                            {events['pending'].map(event => (
+                                <li key={event.id}>
+                                    <h3>{event.summary}</h3>
+                                    <p>Date: {new Date(event.start.dateTime).toLocaleString()}</p>
+                                    <p>Status: Pending Approval</p>
+                                </li>
+                            ))}
+                        </ul>
+                        <ul>
+                            {events['approved'].map(event => (
+                                <li key={event.id}>
+                                    <h3>{event.summary}</h3>
+                                    <p>Date: {new Date(event.start.dateTime).toLocaleString()}</p>
+                                    <p>Status: Approved</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 ) : (
                     <p>No upcoming events found.</p>
                 )}

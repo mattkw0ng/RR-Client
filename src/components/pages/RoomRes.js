@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DateTime from '../form/DateTime';
-import RoomButton from '../RoomButton';
-import SearchRoom from '../SearchRoom';
+// import RoomButton from '../RoomButton';
+// import SearchRoom from '../SearchRoom';
 import API_URL from '../../config';
 import { roomsGrouped, roomListSimple } from '../../data/rooms';
 
@@ -29,7 +29,6 @@ function RoomRes() {
   const [switchCalendar, setSwitchCalendar] = useState(true);
 
   useEffect(() => {
-    console.log("useLocation:",preLoadRooms, preLoadData)
 
     axios
       .get(API_URL + '/auth/user', { withCredentials: true })
@@ -41,7 +40,7 @@ function RoomRes() {
         }
       })
       .catch((err) => console.error(err));
-  }, [preLoadRooms, preLoadData]);
+  }, []);
 
   const handleStartDateTimeChange = (date) => {
     setStartDateTime(date);
@@ -120,13 +119,7 @@ function RoomRes() {
   return (
     <div className="container">
 
-      <h1 className="my-4">Room Reservation System</h1>
-      <button onClick={() => setSwitchCalendar(!switchCalendar)} className='btn btn-secondary'>{switchCalendar ? 'View Individual Calendars' : 'View All'}</button>
-      <br />
-      <div class="responsive-iframe-container">
-        <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
-      </div>
-      <h2 className="my-4">Room Request Form</h2>
+      <h1 className="my-4">Room Reservation Request Form</h1>
 
       {/* Room Request Form */}
       <form onSubmit={handleSubmit}>
@@ -264,10 +257,18 @@ function RoomRes() {
 
 
       </form>
+
+      <div class="responsive-iframe-container">
+        <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
+      </div>
       <br />
+      <button onClick={() => setSwitchCalendar(!switchCalendar)} className='btn btn-outline-secondary'>{switchCalendar ? 'View Individual Calendars' : 'View All'}</button>
+      <br />
+      <h2 className="my-4">Room Request Form</h2>
+      {/* <br />
       <RoomButton />
       <br />
-      <SearchRoom />
+      <SearchRoom /> */}
     </div>
   );
 }

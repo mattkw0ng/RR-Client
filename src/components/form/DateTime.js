@@ -4,10 +4,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 function DateTime({ startDateTime, endDateTime, handleStartDateTimeChange, handleEndDateTimeChange, minEndDateTime }) {
   return (
-    <div>
+    <div className="date-time">
       {/* Start Date/Time */}
       <div className="mb-3">
-        <label className="form-label">Start DateTime</label>
+        <label className="form-label">Start Time:&nbsp;&nbsp;</label>
         <DatePicker
           selected={startDateTime}
           onChange={handleStartDateTimeChange}
@@ -19,7 +19,7 @@ function DateTime({ startDateTime, endDateTime, handleStartDateTimeChange, handl
       </div>
       {/* End Date/Time */}
       <div className="mb-3">
-        <label className="form-label">End DateTime</label>
+        <label className="form-label">End Time:&nbsp;&nbsp;</label>
         <DatePicker
           selected={endDateTime}
           onChange={handleEndDateTimeChange}
