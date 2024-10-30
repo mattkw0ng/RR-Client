@@ -52,7 +52,7 @@ const UserProfile = () => {
                             <li key={event.id}>
                                 <h3>{event.summary}</h3>
                                 <p>Date: {new Date(event.start.dateTime).toLocaleString()}</p>
-                                <p>Status: {event.status === 'confirmed' ? 'Accepted' : 'Pending Approval'}</p>
+                                <p>Status: Pending Approval</p>
                             </li>
                         ))}
                     </ul>

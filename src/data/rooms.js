@@ -30,7 +30,7 @@ const ROOMS = {
   A101: {
     resources: [ 'Folding Tables', 'Chairs' ],
     capacity: 15,
-    calendarID: 'c_188dilmvbopimgirhfjmcpdo1jshi@resource.calendar.google.com'
+    calendarID: 'c_188bqg20i62qsh0mkf5tsllv6hsfg@resource.calendar.google.com'
   },
   A102: {
     resources: [ 'Folding Tables', 'Chairs' ],
