@@ -1,12 +1,31 @@
-import React, { useState } from 'react';
-
+import React, {useState} from 'react';
 import { roomsGrouped } from '../data/rooms';
+import SelectedRoomsBar from './SelectedRoomsBar';
+import Lightbox from './lightbox/RoomLightbox';
 
-function RoomSelection({ availableRooms, filteredRooms }) {
-  const [selectedRooms, setSelectedRooms] = useState([]);
+/**
+ * @description Provides the list of rooms as selectable cards. Used in : @see RoomSearch
+ * @param {Array} availableRooms : List of rooms that are available (given capacity and date/time)
+ * @param {Array} filteredRooms : List of filtered rooms from the search bar
+ * @param {Array} selectedRooms : List of selected rooms
+ * @param {function} setSelectedRooms : Set state method for @see selectedRooms
+ * @param {function} handleCheckout : Handle 'Checkout' AKA redirect to @see RoomReservation page, with state variables (preLoadRooms, preLoadData)
+ * @param {boolean} verified : If the checkAvailability function has been called to verify which rooms are available at some time
+ * @returns A view of all available/filtered rooms as selectable cards @see SelectedRoomsBar @see RoomLightbox
+ */
+function RoomSelection({ availableRooms, filteredRooms, selectedRooms, setSelectedRooms, handleCheckout, verified }) {
+
+  const [isLightboxOpen, setLightboxOpen] = useState(false);
+  const [displayRoom, setDisplayRoom] = useState("Sanctuary");
+
+  const handleCardClick = (room) => {
+    setDisplayRoom(room);
+    setLightboxOpen(true);
+  };
 
   // Toggle room selection
-  const handleRoomToggle = (room) => {
+  const handleRoomToggle = (e, room) => {
+    e.stopPropagation();
     if (selectedRooms.includes(room)) {
       setSelectedRooms(selectedRooms.filter(r => r !== room));
     } else {
@@ -14,55 +33,56 @@ function RoomSelection({ availableRooms, filteredRooms }) {
     }
   };
 
-  const checkoutButton = <button className='btn btn-primary'>Checkout</button>
-
   return (
-    <div className="room-selection p-5">
-      {/* Display Search Query */}
-      <div className='search-query-container'>
-        <p className='text-italic'>Search results for "" on "" at ""</p>
-      </div>
+    <div className={`room-selection p-5 room-selection-${verified}`}>
 
-      {/* Display Selected Rooms */}
-      <div className="selected-rooms">
-        <h4>Selected Rooms:</h4>
-        <div className='d-flex justify-content-between'>
-          <ul className='list-group list-group-horizontal'>
-            {selectedRooms.map((room) => (
-              <li key={room} className='list-group-item'>{room}</li>
-            ))}
-          </ul>
-
-          {selectedRooms.length > 0 ? checkoutButton : null}
-        </div>
-      </div>
+      <SelectedRoomsBar selectedRooms={selectedRooms} handleCheckout={handleCheckout} />
 
       {/* Display Room Cards */}
       {Object.keys(roomsGrouped).map((building) => (
-        <div key={building}>
-          <h4>{building}</h4>
-          <div className="room-cards d-flex flex-row">
-            {roomsGrouped[building].map((room) => (
-              filteredRooms.includes(room) ?
-                <div
-                  key={room}
-                  className={`room-card ${selectedRooms.includes(room) ? 'selected' : ''} ${availableRooms.includes(room) ? 'room-available' : 'room-unavailable'}`}
-                  onClick={() => handleRoomToggle(room)}
-                >
-                  <h5 className='mb-0'>{room}</h5>
-                  <hr className='my-2'></hr>
-                  <div className='d-flex justify-content-between'>
-                    <p>{availableRooms.includes(room) ? "Available" : "Unavailable"}</p> {/* Replace with dynamic availability */}
-                    <button disabled={!availableRooms.includes(room)} className={selectedRooms.includes(room) ? 'btn btn-secondary' : (availableRooms.includes(room) ? 'btn btn-outline-primary' : 'btn btn-outline-danger')}>{selectedRooms.includes(room) ? "-" : "+"}</button>
+        roomsGrouped[building].some(elem => filteredRooms.includes(elem)) ?
+          <div key={building} className='building-group w-100'>
+
+            {/* Building Group Name */}
+            <div className='d-flex justify-content-between'>
+              <div className='w-100'>
+                <hr />
+              </div>
+              <p className='text-italic building-label'>{building}</p>
+            </div>
+
+            {/* Room Card List */}
+            <div className="room-cards d-flex flex-row flex-wrap">
+              {roomsGrouped[building].map((room) => (
+                filteredRooms.includes(room) ?
+                  <div
+                    key={room}
+                    className={`room-card ${selectedRooms.includes(room) ? 'selected' : ''} ${availableRooms.includes(room) ? verified ? 'room-available' : 'room-pending' : 'room-unavailable'}`}
+                  onClick={() => handleCardClick(room)}
+                  >
+                    {/* Room Card */}
+                    <h5 className='mb-0'>{room}</h5>
+                    <hr className='my-2'></hr>
+                    <div className='d-flex justify-content-between'>
+                      <p>{availableRooms.includes(room) ? verified ? "Available" : "check availability" : "Unavailable"}</p>
+                      <button onClick={(e) => handleRoomToggle(e, room)} disabled={!availableRooms.includes(room)} className={selectedRooms.includes(room) ? 'btn btn-secondary' : (availableRooms.includes(room) ? 'btn btn-outline-primary' : 'btn btn-outline-danger')}>{selectedRooms.includes(room) ? "-" : "+"}</button>
+                    </div>
                   </div>
-                </div>
-                :
-                null
-            ))}
+                  :
+                  null
+              ))}
+            </div>
           </div>
-          <hr />
-        </div>
+          : null
       ))}
+
+      <Lightbox
+        room={displayRoom}
+        isOpen={isLightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        selectedRooms={selectedRooms}
+        handleRoomToggle={handleRoomToggle}
+      />
 
     </div>
   );

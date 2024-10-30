@@ -1,23 +1,50 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { roomListSimple } from "../data/rooms";
-import RoomSearchBar from "./RoomSearchBar";
-import TimeRangeSlider from "./form/TimeRangeSlider";
-import API_URL from "../config";
+import { useNavigate } from 'react-router-dom';
+import { roomListSimple } from "../../data/rooms";
+import RoomSearchBar from "../RoomSearchBar";
+import TimeRangeSlider from "../form/TimeRangeSlider";
+import API_URL from "../../config";
 import axios from 'axios';
-import RoomSelection from "./RoomSelection";
+import RoomSelection from "../RoomSelection";
 
+/**
+ * @description '/search' page
+ * @param {*} param0 
+ * @returns A room filtering/searching form with a list of the resulting available rooms. Components: @see RoomSearchBar and @see RoomSelection components
+ */
 
 function RoomSearch({ handleSearch }) {
-  const [roomName, setRoomName] = useState("");
+  const navigate = useNavigate();
+  
+  const [roomName, setRoomName] = useState("");   // Search Query
+  const [verifiedAvailability, setVerifiedAvailability] = useState(false)
+  const [selectedRooms, setSelectedRooms] = useState(["A101"]);
   const [capacity, setCapacity] = useState("");
   const [resources, setResources] = useState([]);
   const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+
   // Slider value state [startTime, endTime]
-  const [timeRange, setTimeRange] = useState([16, 32]); // Default time: 8:00 AM - 4:00 PM (slider values)
+  const [timeRange, setTimeRange] = useState([20, 24]); // Default time: 8:00 AM - 4:00 PM (slider values)
+
   const [availableRooms, setAvailableRooms] = useState(roomListSimple);
   const [filteredRooms, setFilteredRooms] = useState(roomListSimple);
+
+  // Handle Redirecting to next stem (Room Reservation Form Page)
+  const handleProceedToReservation = () => {
+    const startDateTime = convertToDateTimeUTC(date, startTime);
+    const endDateTime = convertToDateTimeUTC(date, endTime);
+    const preLoadData = {
+      capacity,
+      resources,
+      startDateTime,
+      endDateTime
+    };
+    const preLoadRooms = selectedRooms
+    console.log("Moving to RoomReservation",selectedRooms,preLoadData)
+    navigate("/", { state: { preLoadRooms, preLoadData  } });
+  };
 
   // Convert slider value (0–47) to time in "hh:mm AM/PM" format
   const formatTime = (value) => {
@@ -54,6 +81,14 @@ function RoomSearch({ handleSearch }) {
     setTimeRange(newTimeRange);
   };
 
+  const handleDateChange = (date) => {
+    setDate(date);
+  }
+
+  useEffect(() => {
+    setVerifiedAvailability(false);
+  }, [timeRange, date])
+
   // Update the state variables startTime and endTime when timeRange finished updating (see above)
   useEffect(() => {
     setStartTime(formatTime(timeRange[0]));
@@ -82,10 +117,8 @@ function RoomSearch({ handleSearch }) {
       const startDateTime = convertToDateTimeUTC(date, startTime);
       const endDateTime = convertToDateTimeUTC(date, endTime);
       const searchCriteria = {
-        roomName,
         capacity,
         resources,
-        date,
         startDateTime,
         endDateTime
       };
@@ -94,6 +127,7 @@ function RoomSearch({ handleSearch }) {
 
       console.log('Available rooms', res.data);
       setAvailableRooms(res.data);
+      setVerifiedAvailability(true);
     } catch (error) {
       console.error('Error adding event', error);
     }
@@ -117,7 +151,7 @@ function RoomSearch({ handleSearch }) {
                 type="date"
                 className="form-control"
                 value={date}
-                onChange={(e) => setDate(e.target.value)} />
+                onChange={(e) => handleDateChange(e.target.value)} />
             </div>
             {/* TimeRangeSlider */}
             <label className="form-label">Select Time Range</label>
@@ -167,8 +201,8 @@ function RoomSearch({ handleSearch }) {
           </form>
         </div>
       
-        <div className="room-card-container">
-          <RoomSelection availableRooms={availableRooms} filteredRooms={filteredRooms} />
+        <div className="room-card-container w-100">
+          <RoomSelection availableRooms={availableRooms} filteredRooms={filteredRooms} selectedRooms={selectedRooms} setSelectedRooms={setSelectedRooms} handleCheckout={handleProceedToReservation} verified={verifiedAvailability}/>
         </div>
       </div>
     </Fragment>

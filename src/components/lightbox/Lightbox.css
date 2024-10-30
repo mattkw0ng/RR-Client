@@ -1,0 +1,54 @@
+/* Lightbox.css */
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.lightbox-content {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.room-images {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.room-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.room-calendar {
+  margin-top: 20px;
+}
+
+.room-details {
+  margin-top: 20px;
+}

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AdminPage from './components/AdminPage';
-import RoomRes from './components/RoomRes'; // Assuming you have a home page
+import AdminPage from './components/pages/AdminPage';
+import RoomRes from './components/pages/RoomRes'; // Assuming you have a home page
 import Login from './components/Login';
-import UserProfile from './components/UserProfile';
+import UserProfile from './components/pages/UserProfile';
 import NavBar from './components/NavBar';
-import RoomSearch from './components/RoomSearch';
+import RoomSearch from './components/pages/RoomSearch';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('authToken');

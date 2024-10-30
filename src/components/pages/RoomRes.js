@@ -1,27 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DateTime from './form/DateTime';
-import RoomButton from './RoomButton';
-import SearchRoom from './SearchRoom';
-import API_URL from '../config';
-import { roomsGrouped, roomListSimple } from '../data/rooms';
+import DateTime from '../form/DateTime';
+import RoomButton from '../RoomButton';
+import SearchRoom from '../SearchRoom';
+import API_URL from '../../config';
+import { roomsGrouped, roomListSimple } from '../../data/rooms';
 
 
 // Room Reservation Page
 function RoomRes() {
+  const preLoadLocation = useLocation();
+  const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};
+
   const [summary, setSummary] = useState('');
   const [location, setLocation] = useState('San Jose Christian Alliance Church');
   const [description, setDescription] = useState('');
-  const [startDateTime, setStartDateTime] = useState(new Date());
-  const [endDateTime, setEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Initial end time 1 hour after start
+
+  // Pre Loaded Data from RoomSearch page
+  const [startDateTime, setStartDateTime] = useState(preLoadData.startDateTime ? new Date(preLoadData.startDateTime) : new Date());
+  const [endDateTime, setEndDateTime] = useState(preLoadData.endDateTime ? new Date(preLoadData.endDateTime) : new Date(new Date().getTime() + 60 * 60 * 1000)); // Initial end time 1 hour after start
   const [minEndDateTime, setMinEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Minimum end time 1 hour after start
-  const [selectedRooms, setSelectedRooms] = useState([]); // Default room selection
+  const [selectedRooms, setSelectedRooms] = useState(preLoadRooms ? preLoadRooms : []); // Default room selection
+
   const [user, setUser] = useState(null);
   const [availableRooms, setAvailableRooms] = useState(roomListSimple);
   const [switchCalendar, setSwitchCalendar] = useState(true);
 
   useEffect(() => {
+    console.log("useLocation:",preLoadRooms, preLoadData)
+
     axios
       .get(API_URL + '/auth/user', { withCredentials: true })
       .then((response) => {
@@ -32,7 +41,7 @@ function RoomRes() {
         }
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, [preLoadRooms, preLoadData]);
 
   const handleStartDateTimeChange = (date) => {
     setStartDateTime(date);
@@ -114,7 +123,9 @@ function RoomRes() {
       <h1 className="my-4">Room Reservation System</h1>
       <button onClick={() => setSwitchCalendar(!switchCalendar)} className='btn btn-secondary'>{switchCalendar ? 'View Individual Calendars' : 'View All'}</button>
       <br />
-      <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
+      <div class="responsive-iframe-container">
+        <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
+      </div>
       <h2 className="my-4">Room Request Form</h2>
 
       {/* Room Request Form */}
