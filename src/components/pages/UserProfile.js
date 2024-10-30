@@ -1,9 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import API_URL from '../../config';
 import axios from 'axios';
+import { Button, ListGroup, ListGroupItem } from 'reactstrap';
 
 const UserProfile = () => {
-    const [user, setUser] = useState(null);
+
+    const example = {
+        id: '111710622873388516085',
+        displayName: 'Matthew Kwong',
+        name: { familyName: 'Kwong', givenName: 'Matthew' },
+        emails: [ {'value':'mattkwong52@gmail.com'} ],
+        photos: [ [Object] ],
+        provider: 'google',
+        _raw: '{\n' +
+          '  "sub": "111710622873388516085",\n' +
+          '  "name": "Matthew Kwong",\n' +
+          '  "given_name": "Matthew",\n' +
+          '  "family_name": "Kwong",\n' +
+          '  "picture": "https://lh3.googleusercontent.com/a/ACg8ocLXjTQG-YRqP_YOmuaVtH74jSsi_P4pkB93LJ05v50YIm4YYA\\u003ds96-c",\n' +
+          '  "email": "fudgenuggetgames@gmail.com",\n' +
+          '  "email_verified": true\n' +
+          '}',
+        _json: {
+          sub: '111710622873388516085',
+          name: 'Matthew Kwong',
+          given_name: 'Matthew',
+          family_name: 'Kwong',
+          picture: 'https://lh3.googleusercontent.com/a/ACg8ocLXjTQG-YRqP_YOmuaVtH74jSsi_P4pkB93LJ05v50YIm4YYA=s96-c',
+          email: 'fudgenuggetgames@gmail.com',
+          email_verified: true
+        }
+      }
+    const [user, setUser] = useState(example);
     const [events, setEvents] = useState(null);
 
     const getUser = async () => {
@@ -42,31 +70,34 @@ const UserProfile = () => {
 
     return (
         <div className='p-5'>
-            <h1>Welcome, {user.displayName}</h1>
+            <h1>Welcome, {user.displayName}</h1><a href={API_URL + "/logout"}>Logout</a>
             <p>Email: {user.emails[0].value}</p>
-            <a href={API_URL + "/logout"}>Logout</a>
+            
             <div>
                 <h5>Your Upcoming Events</h5>
                 {events ? (
                     <div className='user-events'>
-                        <ul>
+                        <h2>Pending Events</h2>
+                        <ListGroup>
                             {events['pending'].map(event => (
-                                <li key={event.id}>
-                                    <h3>{event.summary}</h3>
-                                    <p>Date: {new Date(event.start.dateTime).toLocaleString()}</p>
-                                    <p>Status: Pending Approval</p>
-                                </li>
+                            <ListGroupItem key={event.id}>
+                                <h5>{event.summary}</h5>
+                                <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
+                                <p>{event.description}</p>
+                                <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
+                            </ListGroupItem>
                             ))}
-                        </ul>
-                        <ul>
+                        </ListGroup>
+                        <ListGroup>
                             {events['approved'].map(event => (
-                                <li key={event.id}>
-                                    <h3>{event.summary}</h3>
-                                    <p>Date: {new Date(event.start.dateTime).toLocaleString()}</p>
-                                    <p>Status: Approved</p>
-                                </li>
+                            <ListGroupItem key={event.id}>
+                                <h5>{event.summary}</h5>
+                                <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
+                                <p>{event.description}</p>
+                                <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
+                            </ListGroupItem>
                             ))}
-                        </ul>
+                        </ListGroup>
                     </div>
                 ) : (
                     <p>No upcoming events found.</p>
