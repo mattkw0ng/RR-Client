@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import API_URL from '../../config';
 import axios from 'axios';
 import { Button, ListGroup, ListGroupItem } from 'reactstrap';
+import { format, isSameDay, parseISO } from 'date-fns';
 
 const UserProfile = () => {
 
@@ -9,28 +10,28 @@ const UserProfile = () => {
         id: '111710622873388516085',
         displayName: 'Matthew Kwong',
         name: { familyName: 'Kwong', givenName: 'Matthew' },
-        emails: [ {'value':'mattkwong52@gmail.com'} ],
-        photos: [ [Object] ],
+        emails: [{ 'value': 'mattkwong52@gmail.com' }],
+        photos: [[Object]],
         provider: 'google',
         _raw: '{\n' +
-          '  "sub": "111710622873388516085",\n' +
-          '  "name": "Matthew Kwong",\n' +
-          '  "given_name": "Matthew",\n' +
-          '  "family_name": "Kwong",\n' +
-          '  "picture": "https://lh3.googleusercontent.com/a/ACg8ocLXjTQG-YRqP_YOmuaVtH74jSsi_P4pkB93LJ05v50YIm4YYA\\u003ds96-c",\n' +
-          '  "email": "fudgenuggetgames@gmail.com",\n' +
-          '  "email_verified": true\n' +
-          '}',
+            '  "sub": "111710622873388516085",\n' +
+            '  "name": "Matthew Kwong",\n' +
+            '  "given_name": "Matthew",\n' +
+            '  "family_name": "Kwong",\n' +
+            '  "picture": "https://lh3.googleusercontent.com/a/ACg8ocLXjTQG-YRqP_YOmuaVtH74jSsi_P4pkB93LJ05v50YIm4YYA\\u003ds96-c",\n' +
+            '  "email": "fudgenuggetgames@gmail.com",\n' +
+            '  "email_verified": true\n' +
+            '}',
         _json: {
-          sub: '111710622873388516085',
-          name: 'Matthew Kwong',
-          given_name: 'Matthew',
-          family_name: 'Kwong',
-          picture: 'https://lh3.googleusercontent.com/a/ACg8ocLXjTQG-YRqP_YOmuaVtH74jSsi_P4pkB93LJ05v50YIm4YYA=s96-c',
-          email: 'fudgenuggetgames@gmail.com',
-          email_verified: true
+            sub: '111710622873388516085',
+            name: 'Matthew Kwong',
+            given_name: 'Matthew',
+            family_name: 'Kwong',
+            picture: 'https://lh3.googleusercontent.com/a/ACg8ocLXjTQG-YRqP_YOmuaVtH74jSsi_P4pkB93LJ05v50YIm4YYA=s96-c',
+            email: 'fudgenuggetgames@gmail.com',
+            email_verified: true
         }
-      }
+    }
     const [user, setUser] = useState(example);
     const [events, setEvents] = useState(null);
 
@@ -59,6 +60,19 @@ const UserProfile = () => {
             });
     }
 
+    function formatEventDates(startDate, endDate) {
+        const start = parseISO(startDate);
+        const end = parseISO(endDate);
+
+        // Format for single time range if both dates are on the same day
+        if (isSameDay(start, end)) {
+            return `${format(start, 'eee, MMM do h:mmaaa')}-${format(end, 'h:mmaaa')}`;
+        }
+
+        // Format separately if the dates are on different days
+        return `${format(start, 'eee, MMM do h:mmaaa')} - ${format(end, 'eee, MMM do h:mmaaa')}`;
+    }
+
     useEffect(() => {
         getUser();
         getUserEvents();
@@ -72,30 +86,30 @@ const UserProfile = () => {
         <div className='p-5'>
             <h1>Welcome, {user.displayName}</h1><a href={API_URL + "/logout"}>Logout</a>
             <p>Email: {user.emails[0].value}</p>
-            
+
             <div>
                 <h5>Your Upcoming Events</h5>
                 {events ? (
                     <div className='user-events'>
                         <ListGroup>
                             {events['pending'].map(event => (
-                            <ListGroupItem key={event.id}>
-                                <h5>{event.summary}</h5>
-                                <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
-                                <p>{event.description}</p>
-                                <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
-                            </ListGroupItem>
+                                <ListGroupItem key={event.id}>
+                                    <h5>{event.summary}</h5>
+                                    <p>{formatEventDates(event.start.dateTime, event.end.dateTime)}</p>
+                                    <p>{event.description}</p>
+                                    <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
+                                </ListGroupItem>
                             ))}
                         </ListGroup>
                         <hr />
                         <ListGroup>
                             {events['approved'].map(event => (
-                            <ListGroupItem key={event.id}>
-                                <h5>{event.summary}</h5>
-                                <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
-                                <p>{event.description}</p>
-                                <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
-                            </ListGroupItem>
+                                <ListGroupItem key={event.id}>
+                                    <h5>{event.summary}</h5>
+                                    <p>{formatEventDates(event.start.dateTime, event.end.dateTime)}</p>
+                                    <p>{event.description}</p>
+                                    <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
+                                </ListGroupItem>
                             ))}
                         </ListGroup>
                     </div>
