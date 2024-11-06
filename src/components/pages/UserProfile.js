@@ -3,37 +3,12 @@ import API_URL from '../../config';
 import axios from 'axios';
 import { Button, ListGroup, ListGroupItem } from 'reactstrap';
 import { format, isSameDay, parseISO } from 'date-fns';
+import { EVENTS, USER } from '../../data/example';
 
 const UserProfile = () => {
 
-    const example = {
-        id: '111710622873388516085',
-        displayName: 'Matthew Kwong',
-        name: { familyName: 'Kwong', givenName: 'Matthew' },
-        emails: [{ 'value': 'mattkwong52@gmail.com' }],
-        photos: [[Object]],
-        provider: 'google',
-        _raw: '{\n' +
-            '  "sub": "111710622873388516085",\n' +
-            '  "name": "Matthew Kwong",\n' +
-            '  "given_name": "Matthew",\n' +
-            '  "family_name": "Kwong",\n' +
-            '  "picture": "https://lh3.googleusercontent.com/a/ACg8ocLXjTQG-YRqP_YOmuaVtH74jSsi_P4pkB93LJ05v50YIm4YYA\\u003ds96-c",\n' +
-            '  "email": "fudgenuggetgames@gmail.com",\n' +
-            '  "email_verified": true\n' +
-            '}',
-        _json: {
-            sub: '111710622873388516085',
-            name: 'Matthew Kwong',
-            given_name: 'Matthew',
-            family_name: 'Kwong',
-            picture: 'https://lh3.googleusercontent.com/a/ACg8ocLXjTQG-YRqP_YOmuaVtH74jSsi_P4pkB93LJ05v50YIm4YYA=s96-c',
-            email: 'fudgenuggetgames@gmail.com',
-            email_verified: true
-        }
-    }
-    const [user, setUser] = useState(example);
-    const [events, setEvents] = useState(null);
+    const [user, setUser] = useState(USER);
+    const [events, setEvents] = useState(EVENTS);
 
     const getUser = async () => {
         axios.get(API_URL + '/auth/user', { withCredentials: true })
@@ -89,14 +64,17 @@ const UserProfile = () => {
 
             <div>
                 <h5>Your Upcoming Events</h5>
+                <hr />
                 {events ? (
                     <div className='user-events'>
                         <ListGroup>
                             {events['pending'].map(event => (
-                                <ListGroupItem key={event.id}>
-                                    <h5>{event.summary}</h5>
+                                <ListGroupItem key={event.id} className='p-3'>
+                                    <h5>{event.summary}</h5><small>status: pending</small><br />
+                                    <hr />
                                     <p>{formatEventDates(event.start.dateTime, event.end.dateTime)}</p>
-                                    <p>{event.description}</p>
+                                    <p>description: {event.description}</p>
+                                    
                                     <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
                                 </ListGroupItem>
                             ))}
@@ -105,9 +83,11 @@ const UserProfile = () => {
                         <ListGroup>
                             {events['approved'].map(event => (
                                 <ListGroupItem key={event.id}>
-                                    <h5>{event.summary}</h5>
+                                    <h5>{event.summary}</h5><small>status: pending</small><br />
+                                    <hr />
                                     <p>{formatEventDates(event.start.dateTime, event.end.dateTime)}</p>
-                                    <p>{event.description}</p>
+                                    <p>description: {event.description}</p>
+                                    
                                     <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
                                 </ListGroupItem>
                             ))}
