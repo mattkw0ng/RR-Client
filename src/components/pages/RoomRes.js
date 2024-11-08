@@ -184,6 +184,12 @@ function RoomRes() {
               {/* Number of People */}
               <TextInput label={"Number of People"} name={'numPeople'} handleFormChange={handleFormChange} formData={formData} type={'number'} />
             </div>
+
+            {/* Group Name */}
+            <TextInput label={"Group Name"} name={'groupName'} handleFormChange={handleFormChange} formData={formData} />
+
+            {/* Group Leader's Name */}
+            <TextInput label={"Group Leader's Name (if different from requester's name)"} name={'groupLeader'} handleFormChange={handleFormChange} formData={formData} />
             
             {/* Start Date/Time */}
             <DateTime startDateTime={startDateTime} endDateTime={endDateTime} minEndDateTime={minEndDateTime} handleStartDateTimeChange={handleStartDateTimeChange} handleEndDateTimeChange={handleEndDateTimeChange} />
