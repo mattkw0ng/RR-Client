@@ -12,6 +12,42 @@ code {
     monospace;
 }
 
+nav.navbar {
+  background-color: #652B2B;
+}
+
+.navbar .nav-item .nav-link {
+  color: white;
+}
+
+.navbar .navbar-brand {
+  color: white;
+}
+
+.navbar .navbar-brand:hover {
+  color: white;
+}
+
+.form-filter-container .rc-slider-handle {
+  border-color: #652B2B;
+  opacity: 1;
+  height: 10px;
+  width: 10px;
+  margin-top: -3px;
+}
+
+.form-filter-container .rc-slider-handle:hover {
+  border-color: #652B2B;
+}
+
+.form-filter-container .rc-slider-handle-dragging {
+  border-color: #652B2B !important;
+}
+
+.form-filter-container .rc-slider-track, .rc-slider-tracks {
+  background-color: #652B2B;
+}
+
 .room-grid {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two equal-width columns */

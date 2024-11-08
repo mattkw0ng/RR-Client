@@ -10,6 +10,7 @@ import { roomsGrouped, roomListSimple } from '../../data/rooms';
 import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
+import RecurrenceForm from '../form/RecurrenceForm';
 
 
 // Room Reservation Page
@@ -17,6 +18,7 @@ function RoomRes() {
   const preLoadLocation = useLocation();
   const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};
 
+  const [rRule, setRRULE] = useState();
   const [formData, setFormData] = useState({
     eventName: "",
     location: "San Jose Christian Alliance Church",
@@ -24,7 +26,7 @@ function RoomRes() {
     congregation: "",
     groupName: "",
     groupLeader: "",
-    numPeople: 10,
+    numPeople: preLoadData.capacity,
   });
 
   // Pre Loaded Data from RoomSearch page
@@ -90,16 +92,22 @@ function RoomRes() {
 
       console.log(selectedRooms);
 
-      const { eventName, location, description } = formData;
+      const { eventName, location, description, congregation, groupName, groupLeader, numPeople } = formData;
 
       await axios.post(API_URL + '/api/addEventWithRooms', {
         eventName,
         location,
         description,
+        congregation,
+        groupName,
+        groupLeader,
+        numPeople,
         startDateTime: start,
         endDateTime: end,
         rooms: selectedRooms, // Pass selected room to server
         userEmail: user.emails[0].value,
+        rRule,
+
       });
       alert('Event added successfully');
     } catch (error) {
@@ -176,12 +184,17 @@ function RoomRes() {
               {/* Number of People */}
               <TextInput label={"Number of People"} name={'numPeople'} handleFormChange={handleFormChange} formData={formData} type={'number'} />
             </div>
+            
             {/* Start Date/Time */}
             <DateTime startDateTime={startDateTime} endDateTime={endDateTime} minEndDateTime={minEndDateTime} handleStartDateTimeChange={handleStartDateTimeChange} handleEndDateTimeChange={handleEndDateTimeChange} />
+
+            {/* Recurrence */}
+
+            <RecurrenceForm setRRULE={setRRULE}/>
           </div>
 
           {/* Room List (Right Column) */}
-          <div className="col-md-6">
+          <div className="col-md-6 px-5">
             <div className="room-selection">
               {Object.entries(roomsGrouped).map(([building, roomsList], index) => (
                 <div key={building} className="mb-3">

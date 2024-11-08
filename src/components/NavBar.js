@@ -52,10 +52,10 @@ const NavBar = () => {
           </NavItem>
           <NavbarText>
             {user ? (
-              <span>Welcome, {user.displayName}!</span>
+              <span className='text-white' >Welcome, {user.displayName}!</span>
             ) : (
               <span>
-                <a href={API_URL + "/auth/google"}>Login</a>
+                <a className='text-white' href={API_URL + "/auth/google"}>Login</a>
               </span>
             )}
           </NavbarText>

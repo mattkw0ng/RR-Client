@@ -18,7 +18,7 @@ function RoomSearch({ handleSearch }) {
   
   const [roomName, setRoomName] = useState("");   // Search Query
   const [verifiedAvailability, setVerifiedAvailability] = useState(false)
-  const [selectedRooms, setSelectedRooms] = useState(["A101"]);
+  const [selectedRooms, setSelectedRooms] = useState([]);
   const [capacity, setCapacity] = useState("");
   const [resources, setResources] = useState([]);
   const [date, setDate] = useState(new Date().toISOString().substring(0, 10));
