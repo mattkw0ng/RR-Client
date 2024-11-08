@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Container, Row, Col, ListGroup, ListGroupItem, Button, Badge } from 'reactstrap';
 import API_URL from '../../config';
 
 const AdminPage = () => {
@@ -9,7 +9,7 @@ const AdminPage = () => {
 
   const fetchApprovedEvents = async () => {
     try {
-      const response = await axios.get(API_URL + '/api/approvedEvents', { withCredentials: true});
+      const response = await axios.get(API_URL + '/api/approvedEvents', { withCredentials: true });
       setApprovedEvents(response.data);
     } catch (error) {
       console.error('Error fetching approved events:', error);
@@ -18,13 +18,13 @@ const AdminPage = () => {
 
   const fetchPendingEvents = async () => {
     try {
-      const response = await axios.get(API_URL + '/api/pendingEvents', { withCredentials: true});
+      const response = await axios.get(API_URL + '/api/pendingEvents', { withCredentials: true });
       setPendingEvents(response.data);
     } catch (error) {
       console.error('Error fetching pending events:', error);
     }
   };
-  
+
   useEffect(() => {
     fetchApprovedEvents();
     fetchPendingEvents();
@@ -32,16 +32,16 @@ const AdminPage = () => {
 
   const handleApproveEvent = async (eventId) => {
     console.log("Approving", eventId);
-    axios.post(API_URL + '/api/approveEvent', { eventId }, { withCredentials: true})
-    .then(response => {
-      alert('Event approved successfully:', response.data);
-      fetchApprovedEvents();
-      fetchPendingEvents();
-      // Optionally, you could trigger a re-render or refresh the list of pending events
-    })
-    .catch(error => {
-      console.error('Error approving event:', error.response ? error.response.data : error.message);
-    });
+    axios.post(API_URL + '/api/approveEvent', { eventId }, { withCredentials: true })
+      .then(response => {
+        alert('Event approved successfully:', response.data);
+        fetchApprovedEvents();
+        fetchPendingEvents();
+        // Optionally, you could trigger a re-render or refresh the list of pending events
+      })
+      .catch(error => {
+        console.error('Error approving event:', error.response ? error.response.data : error.message);
+      });
   };
 
   return (
@@ -68,10 +68,19 @@ const AdminPage = () => {
           <h2>Pending Events</h2>
           <ListGroup>
             {pendingEvents.map(event => (
-              <ListGroupItem key={event.id}>
-                <h5>{event.summary}</h5>
-                <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
-                <p>{event.description}</p>
+              <ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 className="mb-1">
+                    {event.summary}
+                    {event.recurrence || event.recurringEventId ? (
+                      <Badge bg="info" pill className="ms-2" style={{ fontSize: '0.8em' }}>
+                        Recurring
+                      </Badge>
+                    ) : null}
+                  </h5>
+                  <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
+                  <p>{event.description}</p>
+                </div>
                 <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
               </ListGroupItem>
             ))}
