@@ -28,6 +28,10 @@ nav.navbar {
   color: white;
 }
 
+.text-italic {
+  font-style: italic;
+}
+
 .form-filter-container .rc-slider-handle {
   border-color: #652B2B;
   opacity: 1;

@@ -68,45 +68,44 @@ const AdminPage = () => {
           <h2>Pending Events</h2>
           <ListGroup>
             {pendingEvents.map(event => (
-              event.conflicts.length === 0 ? 
-              (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
-                <div>
-                  <h5 className="mb-1">
-                    {event.summary}<small className='text-italic text-secondary'>{event.id}</small>
+              event.conflicts.length === 0 ?
+                (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 className="mb-1">
+                      {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
 
-                    {/* Recurring Badge */}
-                    {event.recurrence || event.recurringEventId ? (
-                      <Badge bg="info" pill className="ms-2" color='success' style={{ fontSize: '0.6em' }}>
-                        Recurring
-                      </Badge>
-                    ) : null}
+                      {/* Recurring Badge */}
+                      {event.recurrence || event.recurringEventId ? (
+                        <Badge bg="info" pill className="ms-2" color='success' style={{ fontSize: '0.6em' }}>
+                          Recurring
+                        </Badge>
+                      ) : null}
 
 
-                  </h5>
-                  <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
-                  <p>{event.description}</p>
-                </div>
-                <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
-              </ListGroupItem>)
-              :
-              (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
-                <div>
-                  <h5 className="mb-1">
-                    {event.summary}<small className='text-italic text-secondary'>{event.id}</small>
+                    </h5>
+                    <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
+                    <p>{event.description}</p>
+                  </div>
+                  <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
+                </ListGroupItem>)
+                :
+                // Conflict Events
+                (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
+                  <div>
+                    <h5 className="mb-1 text-danger">
+                      {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
 
-                    {/* Recurring Badge */}
-                    {event.recurrence || event.recurringEventId ? (
+                      {/* Recurring Badge */}
                       <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
                         Conflict
                       </Badge>
-                    ) : null}
-                  </h5>
-                  <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
-                  <p>{event.description}</p>
-                  <p>Conflicts with: {event.conflicts[0].summary} {event.conflicts[0].id}</p>
-                </div>
-                <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
-              </ListGroupItem>)
+                    </h5>
+                    <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
+                    <p>{event.description}</p>
+                    <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p>
+                  </div>
+                  <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
+                </ListGroupItem>)
             ))}
           </ListGroup>
 
