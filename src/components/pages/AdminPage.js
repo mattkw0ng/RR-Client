@@ -68,7 +68,7 @@ const AdminPage = () => {
           <h2>Pending Events</h2>
           <ListGroup>
             {pendingEvents.map(event => (
-              event.conflicts.length === 0 ?
+              (!event.conflicts || event.conflicts.length === 0) ?
                 (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
                   <div>
                     <h5 className="mb-1">
@@ -83,7 +83,21 @@ const AdminPage = () => {
 
 
                     </h5>
-                    <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
+                    {/* Show all instances of recurring event (times and conflict information) */}
+                    {event.recurrence ?
+                      event.instances.map(instance => (
+                        <div key={instance.id}>
+                          <p>{new Date(instance.start.dateTime).toLocaleString()} - {new Date(instance.end.dateTime).toLocaleString()}</p>
+                          {instance.conflicts.length === 0 ?
+                            null :
+                            <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
+                              Conflict
+                            </Badge>
+                          }
+                        </div>
+                      ))
+                      : <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
+                    }
                     <p>{event.description}</p>
                   </div>
                   <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
