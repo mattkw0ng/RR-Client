@@ -11,7 +11,7 @@ const UserProfile = () => {
     const [events, setEvents] = useState(EVENTS);
 
     const getUser = async () => {
-        axios.get(API_URL + '/auth/user', { withCredentials: true })
+        axios.get(API_URL + '/api/auth/user', { withCredentials: true })
             .then((response) => {
                 if (response.data.user) {
                     console.log("Successfully loaded User's Profile")
@@ -59,7 +59,7 @@ const UserProfile = () => {
 
     return (
         <div className='p-5'>
-            <h1>Welcome, {user.displayName}</h1><a href={API_URL + "/logout"}>Logout</a>
+            <h1>Welcome, {user.displayName}</h1><a href={API_URL + "/api/logout"}>Logout</a>
             <p>Email: {user.emails[0].value}</p>
 
             <div>

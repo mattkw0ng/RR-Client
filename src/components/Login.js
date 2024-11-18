@@ -3,7 +3,7 @@ import API_URL from '../config';
 
 const Login = ({auth}) => {
     const handleLogin = () => {
-        window.location.href = API_URL+'/auth/google'; // Redirect to Google OAuth
+        window.location.href = API_URL+'/api/auth/google'; // Redirect to Google OAuth
     };
 
     return (

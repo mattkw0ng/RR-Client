@@ -42,7 +42,7 @@ function RoomRes() {
   useEffect(() => {
 
     axios
-      .get(API_URL + '/auth/user', { withCredentials: true })
+      .get(API_URL + '/api/auth/user', { withCredentials: true })
       .then((response) => {
         if (response.data.user) {
           setUser(response.data.user);
@@ -124,8 +124,9 @@ function RoomRes() {
     }));
   }
 
-  const checkAvailability = async () => {
+  const checkAvailability = async (e) => {
     try {
+      e.preventDefault();
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
 
@@ -285,7 +286,7 @@ function RoomRes() {
 
           {/* Submit */}
           <div>
-            <button type="submit" className="btn btn-primary my-3">Add Event</button>
+            {user ? <button type="submit" className="btn btn-primary my-3">Add Event</button> : <a href="/login" className='btn btn-disabled'>Please Login</a>}
           </div>
 
         </div>

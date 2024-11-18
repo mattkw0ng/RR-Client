@@ -15,7 +15,7 @@ const NavBar = () => {
 
   useEffect(() => {
     axios
-      .get(API_URL + '/auth/user', { withCredentials: true })
+      .get(API_URL + '/api/auth/user', { withCredentials: true })
       .then((response) => {
         if (response.data.user) {
           setUser(response.data.user);
@@ -55,7 +55,7 @@ const NavBar = () => {
               <span className='text-white' >Welcome, {user.displayName}!</span>
             ) : (
               <span>
-                <a className='text-white' href={API_URL + "/auth/google"}>Login</a>
+                <a className='text-white' href={API_URL + "/api/auth/google"}>Login</a>
               </span>
             )}
           </NavbarText>
