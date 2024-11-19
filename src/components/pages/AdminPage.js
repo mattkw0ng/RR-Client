@@ -107,7 +107,7 @@ const AdminPage = () => {
 
           <h2>Pending Events</h2>
           <ListGroup>
-            {pendingEvents.map(event => (
+            {pendingEvents.conflicts.map(event => (
               // Conflict Events
               (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
                 <div>
