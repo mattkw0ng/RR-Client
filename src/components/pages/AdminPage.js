@@ -65,61 +65,83 @@ const AdminPage = () => {
       <br />
       <Row>
         <Col>
+          <h2>Quick Approve Events</h2>
+          <ListGroup>
+            {/* Non-Conflicting Events Section */}
+            {pendingEvents.quickApprove.map(event => (
+              (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 className="mb-1">
+                    {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
+
+                    {/* Recurring Badge */}
+                    {event.recurrence || event.recurringEventId ? (
+                      <Badge bg="info" pill className="ms-2" color='success' style={{ fontSize: '0.6em' }}>
+                        Recurring
+                      </Badge>
+                    ) : null}
+
+
+                  </h5>
+                  {/* Show all instances of recurring event (times and conflict information) */}
+                  {event.recurrence ?
+                    event.instances.map(instance => (
+                      <div key={instance.id}>
+                        <p>{new Date(instance.start.dateTime).toLocaleString()} - {new Date(instance.end.dateTime).toLocaleString()}</p>
+                        {instance.conflicts.length === 0 ?
+                          null :
+                          <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
+                            Conflict
+                          </Badge>
+                        }
+                      </div>
+                    ))
+                    : <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
+                  }
+                  <p>{event.description}</p>
+                </div>
+                <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
+              </ListGroupItem>)
+            ))}
+          </ListGroup>
+
           <h2>Pending Events</h2>
           <ListGroup>
             {pendingEvents.map(event => (
-              (!event.conflicts || event.conflicts.length === 0) ?
-                (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
-                  <div>
-                    <h5 className="mb-1">
-                      {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
+              // Conflict Events
+              (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 className="mb-1 text-danger">
+                    {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
 
-                      {/* Recurring Badge */}
-                      {event.recurrence || event.recurringEventId ? (
-                        <Badge bg="info" pill className="ms-2" color='success' style={{ fontSize: '0.6em' }}>
-                          Recurring
-                        </Badge>
-                      ) : null}
+                    <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
+                      Conflict
+                    </Badge>
+                  </h5>
+                  <p>{event.description}</p>
 
+                  {event.recurrence ?
+                    event.instances.map(instance => (
+                      <div key={instance.id}>
+                        <p>{new Date(instance.start.dateTime).toLocaleString()} - {new Date(instance.end.dateTime).toLocaleString()}</p>
+                        {instance.conflicts.length === 0 ?
+                          null :
+                          <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
+                            Conflict
+                          </Badge>
+                        }
+                      </div>
+                    ))
+                    :
+                    <div>
+                      <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
+                      <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p>
+                    </div>
+                  }
 
-                    </h5>
-                    {/* Show all instances of recurring event (times and conflict information) */}
-                    {event.recurrence ?
-                      event.instances.map(instance => (
-                        <div key={instance.id}>
-                          <p>{new Date(instance.start.dateTime).toLocaleString()} - {new Date(instance.end.dateTime).toLocaleString()}</p>
-                          {instance.conflicts.length === 0 ?
-                            null :
-                            <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
-                              Conflict
-                            </Badge>
-                          }
-                        </div>
-                      ))
-                      : <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
-                    }
-                    <p>{event.description}</p>
-                  </div>
-                  <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
-                </ListGroupItem>)
-                :
-                // Conflict Events
-                (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
-                  <div>
-                    <h5 className="mb-1 text-danger">
-                      {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
-
-                      {/* Recurring Badge */}
-                      <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
-                        Conflict
-                      </Badge>
-                    </h5>
-                    <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
-                    <p>{event.description}</p>
-                    <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p>
-                  </div>
-                  <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
-                </ListGroupItem>)
+                </div>
+                <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
+              </ListGroupItem>)
             ))}
           </ListGroup>
 
