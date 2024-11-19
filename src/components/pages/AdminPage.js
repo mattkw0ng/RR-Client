@@ -5,7 +5,7 @@ import API_URL from '../../config';
 
 const AdminPage = () => {
   const [approvedEvents, setApprovedEvents] = useState([]);
-  const [pendingEvents, setPendingEvents] = useState([]);
+  const [pendingEvents, setPendingEvents] = useState({ quickApprove: [], conflicts: []});
 
   const fetchApprovedEvents = async () => {
     try {
