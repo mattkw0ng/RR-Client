@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, ListGroup, ListGroupItem, Button, Badge } from 'reactstrap';
+import { Container, Row, Col, ListGroup, ListGroupItem, Button, Badge, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import API_URL from '../../config';
+import { ADMINEVENTS } from '../../data/example';
+
+import StackedTimeline from '../StackedTimeline';
 
 const AdminPage = () => {
   const [approvedEvents, setApprovedEvents] = useState([]);
-  const [pendingEvents, setPendingEvents] = useState({ quickApprove: [], conflicts: []});
+  const [pendingEvents, setPendingEvents] = useState(ADMINEVENTS);
 
   const fetchApprovedEvents = async () => {
     try {
@@ -44,8 +47,68 @@ const AdminPage = () => {
       });
   };
 
+  const RecurringEventList = ({ list }) => {
+    return (
+      <div>
+        {list.map(instance => (
+          <span key={instance.id}>
+            {new Date(instance.start.dateTime).toLocaleString()} - {new Date(instance.end.dateTime).toLocaleString()}
+            {instance.conflicts.length === 0 ?
+              null :
+              <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
+                Conflict
+              </Badge>
+            }
+            <br />
+          </span>
+        ))}
+      </div>
+    )
+  }
+
+  const ConflictModal = ({ conflictEvent, event }) => {
+    const [modal, setModal] = useState(false);
+
+    const toggle = () => setModal(!modal);
+
+    const myTimeRanges = [
+      { start: conflictEvent.start, end: conflictEvent.end },
+      { start: event.start, end: event.end }
+    ]
+    return (
+      <div>
+        <Button color="danger" onClick={toggle}>
+          View Conflict
+        </Button>
+        <Modal isOpen={modal} toggle={toggle} size='xl'>
+          <ModalHeader toggle={toggle}>{conflictEvent.summary} | <span className='text-decoration-line-through text-danger'> {event.summary} </span></ModalHeader>
+          <ModalBody>
+            {event.attendees.find((element) => element.resource).displayName}
+            {/* TimeLine */}
+            <StackedTimeline timeRanges={myTimeRanges} />
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={toggle}>
+              Do Something
+            </Button>{' '}
+            <Button color="secondary" onClick={toggle}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
+      </div>
+    );
+  }
+
   return (
-    <Container>
+    <Container className='my-4'>
       <Row>
         <Col>
           <h2>Approved Events</h2>
@@ -60,9 +123,9 @@ const AdminPage = () => {
           </ListGroup>
         </Col>
       </Row>
-      <br />
-      <hr />
-      <br />
+
+      <br /><hr /><br />
+
       <Row>
         <Col>
           <h2>Quick Approve Events</h2>
@@ -71,6 +134,7 @@ const AdminPage = () => {
             {pendingEvents.quickApprove.map(event => (
               (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
                 <div>
+                  {/* Title & ID & Badges */}
                   <h5 className="mb-1">
                     {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
 
@@ -83,28 +147,20 @@ const AdminPage = () => {
 
 
                   </h5>
+
+                  <p>Description {event.description}</p>
                   {/* Show all instances of recurring event (times and conflict information) */}
                   {event.recurrence ?
-                    event.instances.map(instance => (
-                      <div key={instance.id}>
-                        <p>{new Date(instance.start.dateTime).toLocaleString()} - {new Date(instance.end.dateTime).toLocaleString()}</p>
-                        {instance.conflicts.length === 0 ?
-                          null :
-                          <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
-                            Conflict
-                          </Badge>
-                        }
-                      </div>
-                    ))
+                    <RecurringEventList list={event.instances} />
                     : <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
                   }
-                  <p>{event.description}</p>
                 </div>
                 <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
               </ListGroupItem>)
             ))}
           </ListGroup>
 
+          <br />
           <h2>Pending Events</h2>
           <ListGroup>
             {pendingEvents.conflicts.map(event => (
@@ -118,24 +174,15 @@ const AdminPage = () => {
                       Conflict
                     </Badge>
                   </h5>
-                  <p>{event.description}</p>
+                  <p>Description: {event.description}</p>
 
                   {event.recurrence ?
-                    event.instances.map(instance => (
-                      <div key={instance.id}>
-                        <p>{new Date(instance.start.dateTime).toLocaleString()} - {new Date(instance.end.dateTime).toLocaleString()}</p>
-                        {instance.conflicts.length === 0 ?
-                          null :
-                          <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
-                            Conflict
-                          </Badge>
-                        }
-                      </div>
-                    ))
+                    <RecurringEventList list={event.instances} />
                     :
                     <div>
                       <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
-                      <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p>
+                      {/* <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p> */}
+                      <ConflictModal conflictEvent={event.conflicts[0]} event={event} />
                     </div>
                   }
 

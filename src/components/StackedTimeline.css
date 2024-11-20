@@ -1,0 +1,48 @@
+.stacked-timeline {
+  position: relative;
+  width: 100%;
+}
+
+.timeline-scale {
+  position: relative;
+  height: 20px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.timeline-scale span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.timeline-bars {
+  position: relative;
+  height: 90px; /* Space for stacked bars */
+}
+
+.timeline-bar {
+  position: absolute;
+  height: 30px;
+  border-radius: 5px;
+  top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.timeline-bar:nth-child(2) {
+  top: 50px; /* Stacked below the first bar */
+}
+
+.bar-text {
+  position: relative;
+  z-index: 1;
+}

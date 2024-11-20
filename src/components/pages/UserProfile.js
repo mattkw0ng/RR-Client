@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import API_URL from '../../config';
 import axios from 'axios';
-import { Button, ListGroup, ListGroupItem } from 'reactstrap';
+import { Button, ListGroup, ListGroupItem, Badge, Container } from 'reactstrap';
 import { format, isSameDay, parseISO } from 'date-fns';
 import { EVENTS, USER } from '../../data/example';
 
@@ -57,47 +57,63 @@ const UserProfile = () => {
         return <div className='p-5'>Loading...</div>;
     }
 
+    // Display Events
+    const EventList = ({ list, status}) => {
+        return (
+        <ListGroup>
+            {list.map(event => (
+                <ListGroupItem key={event.id} className='p-3'>
+                    {/* Title & Status & Other Badges */}
+                    <div className='d-flex'>
+                        <h5 className='mb-0'>{event.summary}</h5>
+                        <Badge pill className='ms-2' color={status === 'pending' ? 'secondary':'primary'} >{status}</Badge><br />
+                        {event.recurrence || event.recurringEventId ? (
+                            <Badge bg="info" pill className="ms-2" color='success' style={{ fontSize: '0.6em' }}>
+                                Recurring
+                            </Badge>
+                        ) : null}
+                    </div>
+
+                    <hr />
+                    <p>
+                        {formatEventDates(event.start.dateTime, event.end.dateTime)}
+                        <br />
+                        Description: {event.description}
+                    </p>
+
+                    <Button outline size="sm" onClick={() => console.log(event.id)} >Edit / Cancel</Button>
+                </ListGroupItem>
+            ))}
+        </ListGroup>
+    )};
+
     return (
-        <div className='p-5'>
-            <h1>Welcome, {user.displayName}</h1><a href={API_URL + "/api/logout"}>Logout</a>
-            <p>Email: {user.emails[0].value}</p>
+        <Container className='my-4'>
+            <div className='d-flex justify-content-between'>
+                <h2 className='mb-0'>Welcome, {user.displayName}</h2>
+                <a href={API_URL + "/api/logout"} className='btn btn-sm'>Logout</a>
+            </div>
+
+            <p>{user.emails[0].value}</p>
 
             <div>
-                <h5>Your Upcoming Events</h5>
+                <h5>My Reservations</h5>
                 <hr />
                 {events ? (
                     <div className='user-events'>
-                        <ListGroup>
-                            {events['pending'].map(event => (
-                                <ListGroupItem key={event.id} className='p-3'>
-                                    <h5>{event.summary}</h5><small>status: pending</small><br />
-                                    <hr />
-                                    <p>{formatEventDates(event.start.dateTime, event.end.dateTime)}</p>
-                                    <p>description: {event.description}</p>
-                                    
-                                    <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
-                                </ListGroupItem>
-                            ))}
-                        </ListGroup>
+                        {/* Pending Events First */}
+                        <EventList list={events['pending']} status={'pending'} />
+
                         <hr />
-                        <ListGroup>
-                            {events['approved'].map(event => (
-                                <ListGroupItem key={event.id}>
-                                    <h5>{event.summary}</h5><small>status: pending</small><br />
-                                    <hr />
-                                    <p>{formatEventDates(event.start.dateTime, event.end.dateTime)}</p>
-                                    <p>description: {event.description}</p>
-                                    
-                                    <Button onClick={() => console.log(event.id)}>Edit / Cancel</Button>
-                                </ListGroupItem>
-                            ))}
-                        </ListGroup>
+
+                        {/* Approved Events */}
+                        <EventList list={events['approved']} status={'approved'} />
                     </div>
                 ) : (
                     <p>No upcoming events found.</p>
                 )}
             </div>
-        </div>
+        </Container>
     );
 };
 
