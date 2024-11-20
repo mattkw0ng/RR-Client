@@ -4,7 +4,8 @@ import { Container, Row, Col, ListGroup, ListGroupItem, Button, Badge, Modal, Mo
 import API_URL from '../../config';
 import { ADMINEVENTS } from '../../data/example';
 
-import StackedTimeline from '../StackedTimeline';
+
+import StackedTimelineDraggable from '../StackedTimelineDraggable';
 
 const AdminPage = () => {
   const [approvedEvents, setApprovedEvents] = useState([]);
@@ -85,7 +86,7 @@ const AdminPage = () => {
           <ModalBody>
             {event.attendees.find((element) => element.resource).displayName}
             {/* TimeLine */}
-            <StackedTimeline timeRanges={myTimeRanges} />
+            <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[conflictEvent.summary, event.summary]} />
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
             minim veniam, quis nostrud exercitation ullamco laboris nisi ut
