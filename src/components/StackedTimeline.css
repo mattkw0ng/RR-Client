@@ -69,8 +69,14 @@
   margin-bottom: 10px;
 }
 
-.bar-time-info.changed {
-  color: #007bff;
+.hidden {
+  display: none;
+}
+.suggested-time.red {
+  color: #DC3545;
+}
+.suggested-time.green {
+  color: #4ac98a;
 }
 
 .drag-icon {

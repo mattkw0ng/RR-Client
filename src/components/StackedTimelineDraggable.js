@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Draggable from 'react-draggable';
 import './StackedTimeline.css';
 import { Button } from 'reactstrap';
-import { LuMoveHorizontal, LuMove, LuMoveLeft, LuMoveRight } from "react-icons/lu";
+import { LuMoveLeft, LuMoveRight } from "react-icons/lu";
 import { GrPowerReset } from "react-icons/gr";
 
 
@@ -30,15 +30,17 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
   );
 
   const [isOverlapping, setIsOverlapping] = useState(true);
+  const [isChanged, setIsChanged] = useState([false,false]);
 
   useEffect(() => {
     if (!initialRanges.length) {
+      console.log("Set Initial Ranges")
       // Store initial positions for reset
       setInitialRanges(ranges);
     }
   }, [ranges, initialRanges]);
 
-  const recalculateGridAndPositions = () => {
+  const recalculateGridAndPositions = useCallback(() => {
     if (timelineRef.current) {
       const timelineWidth = timelineRef.current.offsetWidth;
       setGridSize(timelineWidth / (totalHours * 2));
@@ -55,16 +57,19 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
         })
       );
     }
-  };
+  }, [totalHours, rangeStart]);
+  
 
   useEffect(() => {
+    console.log("recalculating grid and positions");
     recalculateGridAndPositions();
     const handleResize = () => recalculateGridAndPositions();
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  });
+  }, [recalculateGridAndPositions]);
+  
 
   const positionToTime = (x) => {
     const timelineWidth = timelineRef.current.offsetWidth;
@@ -87,6 +92,11 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
     );
   };
 
+  const checkChange = (index, updatedRanges) => {
+    const range = updatedRanges[index];
+    return !(range?.startHour === initialRanges[index]?.startHour && range?.endHour === initialRanges[index]?.endHour) // Returns true if there was change
+  } 
+
   const handleDrag = (id, data) => {
     setRanges((prevRanges) => {
       const updatedRanges = prevRanges.map((range) => {
@@ -98,8 +108,8 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
           const newEndHour = newStartHour + (range.endHour - range.startHour);
           return {
             ...range,
-            startHour: newStartHour,
-            endHour: newEndHour,
+            startHour: Math.round(newStartHour*10)/10, // round to 1 decimal place
+            endHour: Math.round(newEndHour*10)/10,
             formattedStart: formatTime(newStartHour),
             formattedEnd: formatTime(newEndHour),
           };
@@ -108,6 +118,7 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
       });
 
       setIsOverlapping(checkOverlap(updatedRanges));
+      setIsChanged([checkChange(0, updatedRanges), checkChange(1, updatedRanges)]);
       return updatedRanges;
     });
   };
@@ -115,6 +126,7 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
   const resetPositions = () => {
     setRanges(initialRanges);
     setIsOverlapping(checkOverlap(initialRanges));
+    setIsChanged([false, false]);
   };
 
   const DisplayTime = ({ r }) => {
@@ -126,8 +138,13 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
                 ? 'linear-gradient(to right, #ff7e5f, #feb47b)' // Overlapping: red gradient
                 : 'linear-gradient(to right, #38ef7d, #11998e)'; // No overlap: green gradient
     return (
-      <div className={range?.startHour === initialRanges[r]?.startHour && range?.endHour === initialRanges[r]?.endHour ? "bar-time-info" : "bar-time-info changed"}>
-        <span className='time-label p-1' style={{background:gradient}}>{eventNames[r]}</span> {range.formattedStart} - {range.formattedEnd}
+      <div className="bar-time-info">
+        <span className='time-label p-1' style={{background:gradient}}>{eventNames[r]}</span> {/* Event Name */}
+        {initialRanges[r]?.formattedStart} - {initialRanges[r]?.formattedEnd}
+        <span className={isChanged[r] ? isOverlapping ? "suggested-time red" : "suggested-time green": "hidden"}>
+          &nbsp; &gt; &nbsp;{range?.formattedStart} - {range?.formattedEnd}
+        </span>
+
       </div>)
   }
 
