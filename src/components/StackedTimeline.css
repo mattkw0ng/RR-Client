@@ -49,7 +49,11 @@
 }
 
 .timeline-bar:hover {
-  cursor: pointer;
+  cursor: grab;
+}
+
+.timeline-bar:active {
+  cursor: grabbing;
 }
 
 .timeline-bar:nth-child(2) {
@@ -71,13 +75,22 @@
 
 .drag-icon {
   position: absolute;
-  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: white;
-  opacity: 75%;
+  /* opacity: 75%; */
   font-size: 1.35rem;
   cursor: grab;
+}
+
+.drag-icon.left {
+  left: 10px;
+}
+.drag-icon.right {
+  right: 10px;
+}
+.drag-icon:active {
+  cursor: grabbing;
 }
 
 .reset-button {

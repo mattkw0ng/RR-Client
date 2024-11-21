@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import './StackedTimeline.css';
 import { Button } from 'reactstrap';
-import { LuMoveHorizontal } from "react-icons/lu";
+import { LuMoveHorizontal, LuMove, LuMoveLeft, LuMoveRight } from "react-icons/lu";
 import { GrPowerReset } from "react-icons/gr";
 
 
 const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
-  const rangeStart = 1; // 1:00 AM
+  const rangeStart = 6; // 1:00 AM
   const rangeEnd = 24; // Midnight
   const timelineRef = useRef(null);
 
@@ -36,7 +36,7 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
       // Store initial positions for reset
       setInitialRanges(ranges);
     }
-  }, [ranges]);
+  }, [ranges, initialRanges]);
 
   const recalculateGridAndPositions = () => {
     if (timelineRef.current) {
@@ -64,7 +64,7 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  });
 
   const positionToTime = (x) => {
     const timelineWidth = timelineRef.current.offsetWidth;
@@ -136,7 +136,7 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
       <div className="timeline-scale">
         {Array.from({ length: totalHours + 1 }, (_, i) => {
           const hour = rangeStart + i;
-          return (
+          return ( hour % 2 === 0 &&
             <span key={hour} style={{ left: `${(i / totalHours) * 100}%` }}>
               {hour > 12 ? `${hour - 12} PM` : `${hour} AM`}
             </span>
@@ -167,11 +167,9 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
                 position={{ x: startX, y: 30 * index }}
                 onDrag={(e, data) => handleDrag(range.id, data)}
               >
-                <div
-                  className="timeline-bar"
-                  style={{ width: `${width}px`, background: gradient }}
-                >
-                  <LuMoveHorizontal className="drag-icon" /> {/* Add moveable icon */}
+                <div className="timeline-bar" style={{ width: `${width}px`, background: gradient }}>
+                  <LuMoveLeft className="drag-icon left" />
+                  <LuMoveRight className="drag-icon right" />
                 </div>
               </Draggable>
 
@@ -186,7 +184,7 @@ const StackedTimelineDraggable = ({ timeRanges, eventNames=[] }) => {
           <DisplayTime r={1} />
         </div>
         <Button size='sm' color='secondary' outline onClick={resetPositions} style={{ height: '32px' }}>
-          <GrPowerReset />
+          <GrPowerReset /> Reset 
         </Button>
       </div>
     </div>
