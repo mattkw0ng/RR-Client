@@ -6,6 +6,7 @@ import { ADMINEVENTS } from '../../data/example';
 
 
 import StackedTimelineDraggable from '../StackedTimelineDraggable';
+import StandardEvent from '../events/StandardEvent';
 
 const AdminPage = () => {
   const [approvedEvents, setApprovedEvents] = useState([]);
@@ -103,6 +104,67 @@ const AdminPage = () => {
 
   return (
     <Container className='my-4'>
+
+      <Row>
+        <Col>
+        <iframe title="pendingEvents" src="https://calendar.google.com/calendar/embed?src=c_0430068aa84472bdb1aa16b35d4061cd867e4888a8ace5fa3d830bb67587dfad%40group.calendar.google.com&ctz=America%2FLos_Angeles" style={{ border: 0 }} width="100%" height="500" frameborder="0" ></iframe>
+        </Col>
+        <Col>
+          <h2>Quick Approve Events</h2>
+          <ListGroup>
+            {/* Non-Conflicting Events Section */}
+
+            {pendingEvents.quickApprove.map(event => (
+              (<StandardEvent key={event.id} event={event} buttonText={"Approve"} buttonHandler={handleApproveEvent} />)
+            ))}
+          </ListGroup>
+
+          <br />
+          <h3>Conflicts</h3>
+          <ListGroup>
+            {pendingEvents.conflicts.map(event => (
+              // Conflict Events
+              (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
+                <div>
+                  {/* Title */}
+                  <h5 className="mb-1 text-danger">
+                    {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
+
+                    <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
+                      Conflict
+                    </Badge>
+                  </h5>
+
+                  {/* Details */}
+                  <p>
+                    {/* Room */}
+                    {event.attendees.find((element) => element.resource).displayName}
+                    <br />
+                    {/* Description */}
+                    Description: {event.description}
+                    <br />
+                    Congregation: {event.extendedProperties.private.congregation}
+                  </p>
+
+                  {event.recurrence ?
+                    <RecurringEventList list={event.instances} />
+                    :
+                    <div>
+                      <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
+                      {/* <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p> */}
+                      <ConflictModal conflictEvent={event.conflicts[0]} event={event} />
+                    </div>
+                  }
+
+                </div>
+              </ListGroupItem>)
+            ))}
+          </ListGroup>
+
+        </Col>
+      </Row>
+
+
       <Row>
         <Col>
           <h2>Approved Events</h2>
@@ -119,75 +181,6 @@ const AdminPage = () => {
       </Row>
 
       <br /><hr /><br />
-
-      <Row>
-        <Col>
-          <h2>Quick Approve Events</h2>
-          <ListGroup>
-            {/* Non-Conflicting Events Section */}
-            {pendingEvents.quickApprove.map(event => (
-              (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
-                <div>
-                  {/* Title & ID & Badges */}
-                  <h5 className="mb-1">
-                    {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
-
-                    {/* Recurring Badge */}
-                    {event.recurrence || event.recurringEventId ? (
-                      <Badge bg="info" pill className="ms-2" color='success' style={{ fontSize: '0.6em' }}>
-                        Recurring
-                      </Badge>
-                    ) : null}
-
-
-                  </h5>
-
-                  <p>Description {event.description}</p>
-                  {/* Show all instances of recurring event (times and conflict information) */}
-                  {event.recurrence ?
-                    <RecurringEventList list={event.instances} />
-                    : <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
-                  }
-                </div>
-                <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
-              </ListGroupItem>)
-            ))}
-          </ListGroup>
-
-          <br />
-          <h2>Pending Events</h2>
-          <ListGroup>
-            {pendingEvents.conflicts.map(event => (
-              // Conflict Events
-              (<ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
-                <div>
-                  <h5 className="mb-1 text-danger">
-                    {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
-
-                    <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
-                      Conflict
-                    </Badge>
-                  </h5>
-                  <p>Description: {event.description}</p>
-
-                  {event.recurrence ?
-                    <RecurringEventList list={event.instances} />
-                    :
-                    <div>
-                      <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
-                      {/* <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p> */}
-                      <ConflictModal conflictEvent={event.conflicts[0]} event={event} />
-                    </div>
-                  }
-
-                </div>
-                <Button onClick={() => handleApproveEvent(event.id)}>Approve</Button>
-              </ListGroupItem>)
-            ))}
-          </ListGroup>
-
-        </Col>
-      </Row>
     </Container>
   );
 };

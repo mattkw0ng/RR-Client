@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import API_URL from '../../config';
 import axios from 'axios';
-import { Button, ListGroup, ListGroupItem, Badge, Container } from 'reactstrap';
-import { format, isSameDay, parseISO } from 'date-fns';
+import { ListGroup, Badge, Container } from 'reactstrap';
+
 import { EVENTS, USER } from '../../data/example';
+import StandardEvent from '../events/StandardEvent';
 
 const UserProfile = () => {
 
@@ -35,19 +36,6 @@ const UserProfile = () => {
             });
     }
 
-    function formatEventDates(startDate, endDate) {
-        const start = parseISO(startDate);
-        const end = parseISO(endDate);
-
-        // Format for single time range if both dates are on the same day
-        if (isSameDay(start, end)) {
-            return `${format(start, 'eee, MMM do h:mmaaa')}-${format(end, 'h:mmaaa')}`;
-        }
-
-        // Format separately if the dates are on different days
-        return `${format(start, 'eee, MMM do h:mmaaa')} - ${format(end, 'eee, MMM do h:mmaaa')}`;
-    }
-
     useEffect(() => {
         getUser();
         getUserEvents();
@@ -57,35 +45,8 @@ const UserProfile = () => {
         return <div className='p-5'>Loading...</div>;
     }
 
-    // Display Events
-    const EventList = ({ list, status}) => {
-        return (
-        <ListGroup>
-            {list.map(event => (
-                <ListGroupItem key={event.id} className='p-3'>
-                    {/* Title & Status & Other Badges */}
-                    <div className='d-flex'>
-                        <h5 className='mb-0'>{event.summary}</h5>
-                        <Badge pill className='ms-2' color={status === 'pending' ? 'secondary':'primary'} >{status}</Badge><br />
-                        {event.recurrence || event.recurringEventId ? (
-                            <Badge bg="info" pill className="ms-2" color='success' style={{ fontSize: '0.6em' }}>
-                                Recurring
-                            </Badge>
-                        ) : null}
-                    </div>
-
-                    <hr />
-                    <p>
-                        {formatEventDates(event.start.dateTime, event.end.dateTime)}
-                        <br />
-                        Description: {event.description}
-                    </p>
-
-                    <Button outline size="sm" onClick={() => console.log(event.id)} >Edit / Cancel</Button>
-                </ListGroupItem>
-            ))}
-        </ListGroup>
-    )};
+    const approvedBadge = <Badge pill className='ms-2' color={'primary'} style={{ fontSize: '0.6em' }}>approved</Badge>
+    const pendingBadge = <Badge pill className='ms-2' color={'secondary'} style={{ fontSize: '0.6em' }} >pending</Badge>
 
     return (
         <Container className='my-4'>
@@ -102,12 +63,20 @@ const UserProfile = () => {
                 {events ? (
                     <div className='user-events'>
                         {/* Pending Events First */}
-                        <EventList list={events['pending']} status={'pending'} />
+                        <ListGroup>
+                            {events['pending'].map(event => (
+                                (<StandardEvent key={event.id} event={event} buttonText={"Edit/Cancel"} buttonHandler={console.log} badge={pendingBadge} />)
+                            ))}
+                        </ListGroup>
 
                         <hr />
 
                         {/* Approved Events */}
-                        <EventList list={events['approved']} status={'approved'} />
+                        <ListGroup>
+                            {events['approved'].map(event => (
+                                (<StandardEvent key={event.id} event={event} buttonText={"Edit/Cancel"} buttonHandler={console.log} badge={approvedBadge} />)
+                            ))}
+                        </ListGroup>
                     </div>
                 ) : (
                     <p>No upcoming events found.</p>

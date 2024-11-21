@@ -97,6 +97,9 @@ nav.navbar {
   margin-right: 0;
 }
 
+.event-id {
+  font-size: .75em;
+}
 
 
 .room-selection {
