@@ -96,7 +96,7 @@ const StandardEvent = ({ event, buttonText, buttonHandler, badge }) => {
 
         <p>
           {/* Room */}
-          {event.attendees.find((element) => element.resource).displayName}
+          {event.extendedProperties?.private.rooms.map((element) => element.displayName)}
           <br />
           {/* Description */}
           Description: {event.description}
