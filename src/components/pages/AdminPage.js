@@ -137,7 +137,7 @@ const AdminPage = () => {
                   {/* Details */}
                   <p>
                     {/* Room */}
-                    {JSON.parse(event.extendedProperties.private.rooms).map((room) => <p>{room.displayName}</p>)}
+                    {event.extendedProperties.private.rooms ? JSON.parse(event.extendedProperties.private.rooms).map((room) => <p>{room.displayName}</p>) : null}
                     <br />
                     {/* Description */}
                     Description: {event.description}
