@@ -296,6 +296,12 @@ export const ADMINEVENTS = {
             ],
             "extendedProperties": {
                 "private": {
+                    "rooms": [{
+                        "email": "c_188bqg20i62qsh0mkf5tsllv6hsfg@resource.calendar.google.com",
+                        "displayName": "A-1-A101 (15)",
+                        "resource": true,
+                        "responseStatus": "accepted"
+                    }],
                     "congregation": "English Ministry / Small Group",
                     "groupName": "Friends",
                     "numPeople": "5",
@@ -714,4 +720,661 @@ export const ADMINEVENTS = {
             ]
         }
     ]
+}
+
+export const ROOMEVENTS = [
+    [
+        {
+            "kind": "calendar#event",
+            "etag": "\"3447698627572000\"",
+            "id": "62g2g51mcmnnokkgil1rtimv23_20241222T160000Z",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=NjJnMmc1MW1jbW5ub2trZ2lsMXJ0aW12MjNfMjAyNDEyMjJUMTYwMDAwWiBjXzE4ODM1ZzMxbzI5NXVpaDRpdjQwcWdwbDltc2t1QHJlc291cmNlLmNhbGVuZGFyLmdvb2dsZS5jb20",
+            "created": "2024-08-08T23:27:26.000Z",
+            "updated": "2024-08-16T23:01:53.786Z",
+            "summary": "Weekly Event",
+            "location": "A-1-Sanctuary (325)",
+            "creator": {
+                "email": "rooms@sjcac.org"
+            },
+            "organizer": {
+                "email": "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079@group.calendar.google.com",
+                "displayName": "Approved"
+            },
+            "start": {
+                "dateTime": "2024-12-22T08:00:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "end": {
+                "dateTime": "2024-12-22T09:00:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "recurringEventId": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000",
+            "originalStartTime": {
+                "dateTime": "2024-12-22T08:00:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "iCalUID": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000@google.com",
+            "sequence": 0,
+            "attendees": [
+                {
+                    "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+                    "displayName": "A-1-Sanctuary (325)",
+                    "self": true,
+                    "resource": true,
+                    "responseStatus": "accepted"
+                }
+            ],
+            "reminders": {
+                "useDefault": true
+            },
+            "eventType": "default"
+        }
+    ],
+    [
+        {
+            "kind": "calendar#event",
+            "etag": "\"3466544402498000\"",
+            "id": "jq7bggv82n9f4be4c33mv5ensg",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=dGgzaGcwdDkxdW44MGlxcHRhaTNidDlvczggY18wNDMwMDY4YWE4NDQ3MmJkYjFhYTE2YjM1ZDQwNjFjZDg2N2U0ODg4YThhY2U1ZmEzZDgzMGJiNjc1ODdkZmFkQGc",
+            "created": "2024-12-04T00:30:01.000Z",
+            "updated": "2024-12-04T00:30:01.249Z",
+            "summary": "Prayer",
+            "description": "Opening Gifts!!",
+            "location": "San Jose Christian Alliance Church",
+            "creator": {
+                "email": "rooms@sjcac.org"
+            },
+            "organizer": {
+                "email": "c_0430068aa84472bdb1aa16b35d4061cd867e4888a8ace5fa3d830bb67587dfad@group.calendar.google.com",
+                "displayName": "Pending Approval",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2024-12-22T08:30:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "end": {
+                "dateTime": "2024-12-25T12:00:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "iCalUID": "th3hg0t91un80iqptai3bt9os8@google.com",
+            "sequence": 0,
+            "attendees": [
+                {
+                    "email": "fudgenuggetgames@gmail.com",
+                    "responseStatus": "needsAction"
+                }
+            ],
+            "extendedProperties": {
+                "private": {
+                    "congregation": "English Ministry / Small Group",
+                    "rooms": "[{\"email\":\"c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com\",\"resource\":true}]",
+                    "groupName": "Matt's Buddies",
+                    "numPeople": "10",
+                    "groupLeader": "Matt"
+                }
+            },
+            "reminders": {
+                "useDefault": false,
+                "overrides": [
+                    {
+                        "method": "popup",
+                        "minutes": 10
+                    },
+                    {
+                        "method": "email",
+                        "minutes": 1440
+                    }
+                ]
+            },
+            "eventType": "default"
+        },
+        {
+            "kind": "calendar#event",
+            "etag": "\"3466537236696000\"",
+            "id": "1nnaf2debnjite2iifj3r3r7j0",
+            "status": "confirmed",
+            "htmlLink": "https://www.google.com/calendar/event?eid=MW5uYWYyZGVibmppdGUyaWlmajNyM3I3ajAgY18wNDMwMDY4YWE4NDQ3MmJkYjFhYTE2YjM1ZDQwNjFjZDg2N2U0ODg4YThhY2U1ZmEzZDgzMGJiNjc1ODdkZmFkQGc",
+            "created": "2024-12-03T23:30:18.000Z",
+            "updated": "2024-12-03T23:30:18.348Z",
+            "summary": "Christmas Event",
+            "description": "Opening Gifts!!",
+            "location": "San Jose Christian Alliance Church",
+            "creator": {
+                "email": "rooms@sjcac.org"
+            },
+            "organizer": {
+                "email": "c_0430068aa84472bdb1aa16b35d4061cd867e4888a8ace5fa3d830bb67587dfad@group.calendar.google.com",
+                "displayName": "Pending Approval",
+                "self": true
+            },
+            "start": {
+                "dateTime": "2024-12-22T10:00:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "end": {
+                "dateTime": "2024-12-25T12:00:00-08:00",
+                "timeZone": "America/Los_Angeles"
+            },
+            "iCalUID": "1nnaf2debnjite2iifj3r3r7j0@google.com",
+            "sequence": 0,
+            "attendees": [
+                {
+                    "email": "fudgenuggetgames@gmail.com",
+                    "responseStatus": "needsAction"
+                }
+            ],
+            "extendedProperties": {
+                "private": {
+                    "congregation": "English Ministry / Small Group",
+                    "rooms": "[{\"email\":\"c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com\",\"resource\":true}]",
+                    "groupName": "Matt's Buddies",
+                    "numPeople": "10",
+                    "groupLeader": "Matt"
+                }
+            },
+            "reminders": {
+                "useDefault": false,
+                "overrides": [
+                    {
+                        "method": "email",
+                        "minutes": 1440
+                    },
+                    {
+                        "method": "popup",
+                        "minutes": 10
+                    }
+                ]
+            },
+            "eventType": "default"
+        }
+    ]
+]
+
+export const ROOMEVENTS_OLD = {
+    roomName: "Sanctuary",
+    approvedEvents: [
+    {
+        "kind": "calendar#event",
+        "etag": "\"3462705635602000\"",
+        "id": "8iirk08tk7tmg3ce12q9uhomks",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=OGlpcmswOHRrN3RtZzNjZTEycTl1aG9ta3MgY18xODgzNWczMW8yOTV1aWg0aXY0MHFncGw5bXNrdUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t",
+        "created": "2024-11-11T19:07:24.000Z",
+        "updated": "2024-11-11T19:20:17.801Z",
+        "summary": "Event 1",
+        "description": "aaa",
+        "location": "San Jose Christian Alliance Church, A-1-Sanctuary (325)",
+        "creator": {
+            "email": "rooms@sjcac.org"
+        },
+        "organizer": {
+            "email": "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079@group.calendar.google.com",
+            "displayName": "Approved"
+        },
+        "start": {
+            "dateTime": "2024-11-29T10:00:00-08:00",
+            "timeZone": "America/Los_Angeles"
+        },
+        "end": {
+            "dateTime": "2024-11-29T12:00:00-08:00",
+            "timeZone": "America/Los_Angeles"
+        },
+        "iCalUID": "8iirk08tk7tmg3ce12q9uhomks@google.com",
+        "sequence": 0,
+        "attendees": [
+            {
+                "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+                "displayName": "A-1-Sanctuary (325)",
+                "self": true,
+                "resource": true,
+                "responseStatus": "accepted"
+            },
+            {
+                "email": "fudgenuggetgames@gmail.com",
+                "responseStatus": "needsAction"
+            }
+        ],
+        "reminders": {
+            "useDefault": true
+        },
+        "eventType": "default"
+    },
+    {
+        "kind": "calendar#event",
+        "etag": "\"3462705635602000\"",
+        "id": "8iirk08tk7tmg3ce12q9uhomks",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=OGlpcmswOHRrN3RtZzNjZTEycTl1aG9ta3MgY18xODgzNWczMW8yOTV1aWg0aXY0MHFncGw5bXNrdUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t",
+        "created": "2024-11-11T19:07:24.000Z",
+        "updated": "2024-11-11T19:20:17.801Z",
+        "summary": "Event 2",
+        "description": "aaa",
+        "location": "San Jose Christian Alliance Church, A-1-Sanctuary (325)",
+        "creator": {
+            "email": "rooms@sjcac.org"
+        },
+        "organizer": {
+            "email": "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079@group.calendar.google.com",
+            "displayName": "Approved"
+        },
+        "start": {
+            "dateTime": "2024-11-29T14:00:00-08:00",
+            "timeZone": "America/Los_Angeles"
+        },
+        "end": {
+            "dateTime": "2024-11-29T18:00:00-08:00",
+            "timeZone": "America/Los_Angeles"
+        },
+        "iCalUID": "8iirk08tk7tmg3ce12q9uhomks@google.com",
+        "sequence": 0,
+        "attendees": [
+            {
+                "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+                "displayName": "A-1-Sanctuary (325)",
+                "self": true,
+                "resource": true,
+                "responseStatus": "accepted"
+            },
+            {
+                "email": "fudgenuggetgames@gmail.com",
+                "responseStatus": "needsAction"
+            }
+        ],
+        "reminders": {
+            "useDefault": true
+        },
+        "eventType": "default"
+    }
+]}
+
+export const AVAILABLE_ROOMS = {
+    "Sanctuary": {
+        "approvedEvents": [
+            {
+                "kind": "calendar#event",
+                "etag": "\"3447698625904000\"",
+                "id": "62g2g51mcmnnokkgil1rtimv23_20241222T160000Z",
+                "status": "confirmed",
+                "htmlLink": "https://www.google.com/calendar/event?eid=NjJnMmc1MW1jbW5ub2trZ2lsMXJ0aW12MjNfMjAyNDEyMjJUMTYwMDAwWiBjXzhmOWEyMjFiZDEyODgyY2NkYTIxYzVmYjgxZWZmYmFkNzc4ODU0Y2M5NDBjODU1YjI1MDg2NDE0YmFiYjEwNzlAZw",
+                "created": "2024-08-08T23:27:26.000Z",
+                "updated": "2024-08-16T23:01:52.952Z",
+                "summary": "Weekly Event",
+                "location": "A-1-Sanctuary (325)",
+                "creator": {
+                    "email": "rooms@sjcac.org"
+                },
+                "organizer": {
+                    "email": "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079@group.calendar.google.com",
+                    "displayName": "Approved",
+                    "self": true
+                },
+                "start": {
+                    "dateTime": "2024-12-22T08:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "end": {
+                    "dateTime": "2024-12-22T09:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "recurringEventId": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000",
+                "originalStartTime": {
+                    "dateTime": "2024-12-22T08:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "iCalUID": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000@google.com",
+                "sequence": 0,
+                "attendees": [
+                    {
+                        "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+                        "displayName": "A-1-Sanctuary (325)",
+                        "resource": true,
+                        "responseStatus": "accepted"
+                    }
+                ],
+                "reminders": {
+                    "useDefault": true
+                },
+                "eventType": "default"
+            },
+            {
+                "kind": "calendar#event",
+                "etag": "\"3447698625904000\"",
+                "id": "62g2g51mcmnnokkgil1rtimv23_20241222T160000Z",
+                "status": "confirmed",
+                "htmlLink": "https://www.google.com/calendar/event?eid=NjJnMmc1MW1jbW5ub2trZ2lsMXJ0aW12MjNfMjAyNDEyMjJUMTYwMDAwWiBjXzhmOWEyMjFiZDEyODgyY2NkYTIxYzVmYjgxZWZmYmFkNzc4ODU0Y2M5NDBjODU1YjI1MDg2NDE0YmFiYjEwNzlAZw",
+                "created": "2024-08-08T23:27:26.000Z",
+                "updated": "2024-08-16T23:01:52.952Z",
+                "summary": "Event 2",
+                "location": "A-1-Sanctuary (325)",
+                "creator": {
+                    "email": "rooms@sjcac.org"
+                },
+                "organizer": {
+                    "email": "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079@group.calendar.google.com",
+                    "displayName": "Approved",
+                    "self": true
+                },
+                "start": {
+                    "dateTime": "2024-12-22T18:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "end": {
+                    "dateTime": "2024-12-22T22:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "recurringEventId": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000",
+                "originalStartTime": {
+                    "dateTime": "2024-12-22T08:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "iCalUID": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000@google.com",
+                "sequence": 0,
+                "attendees": [
+                    {
+                        "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+                        "displayName": "A-1-Sanctuary (325)",
+                        "resource": true,
+                        "responseStatus": "accepted"
+                    }
+                ],
+                "reminders": {
+                    "useDefault": true
+                },
+                "eventType": "default"
+            }
+        ],
+        "pendingEvents": [
+            {
+                "kind": "calendar#event",
+                "etag": "\"3447698625904000\"",
+                "id": "62g2g51mcmnnokkgil1rtimv23_20241222T160000Z",
+                "status": "confirmed",
+                "htmlLink": "https://www.google.com/calendar/event?eid=NjJnMmc1MW1jbW5ub2trZ2lsMXJ0aW12MjNfMjAyNDEyMjJUMTYwMDAwWiBjXzhmOWEyMjFiZDEyODgyY2NkYTIxYzVmYjgxZWZmYmFkNzc4ODU0Y2M5NDBjODU1YjI1MDg2NDE0YmFiYjEwNzlAZw",
+                "created": "2024-08-08T23:27:26.000Z",
+                "updated": "2024-08-16T23:01:52.952Z",
+                "summary": "Pending Event",
+                "location": "A-1-Sanctuary (325)",
+                "creator": {
+                    "email": "rooms@sjcac.org"
+                },
+                "organizer": {
+                    "email": "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079@group.calendar.google.com",
+                    "displayName": "Approved",
+                    "self": true
+                },
+                "start": {
+                    "dateTime": "2024-12-22T14:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "end": {
+                    "dateTime": "2024-12-22T16:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "recurringEventId": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000",
+                "originalStartTime": {
+                    "dateTime": "2024-12-22T08:00:00-08:00",
+                    "timeZone": "America/Los_Angeles"
+                },
+                "iCalUID": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000@google.com",
+                "sequence": 0,
+                "attendees": [
+                    {
+                        "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+                        "displayName": "A-1-Sanctuary (325)",
+                        "resource": true,
+                        "responseStatus": "accepted"
+                    }
+                ],
+                "reminders": {
+                    "useDefault": true
+                },
+                "eventType": "default"
+            }
+        ],
+        "details": {
+            "id": 1,
+            "room_name": "Sanctuary",
+            "calendar_id": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+            "capacity": 325,
+            "resources": [
+                "Chairs",
+                "TV",
+                "Piano",
+                "a/v sound system",
+                "keyboard",
+                "drums",
+                "podium",
+                "microphones"
+            ],
+            "building_location": null
+        }
+    },
+    "A102": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 4,
+            "room_name": "A102",
+            "calendar_id": "c_188dilmvbopimgirhfjmcpdo1jshi@resource.calendar.google.com",
+            "capacity": 15,
+            "resources": [
+                "Folding Tables",
+                "Chairs"
+            ],
+            "building_location": null
+        }
+    },
+    "A103/104": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 5,
+            "room_name": "A103/104",
+            "calendar_id": "c_18848ij2sabpqis0ll3sqg3s95ivs@resource.calendar.google.com",
+            "capacity": 30,
+            "resources": [
+                "Folding Tables",
+                "Chairs",
+                "TV",
+                "White Board"
+            ],
+            "building_location": null
+        }
+    },
+    "A105": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 6,
+            "room_name": "A105",
+            "calendar_id": "c_188e5euhmi4nmjeng6nkl34o22fq8@resource.calendar.google.com",
+            "capacity": 15,
+            "resources": [
+                "Table",
+                "Chairs",
+                "TV",
+                "Piano"
+            ],
+            "building_location": null
+        }
+    },
+    "A114/115": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 7,
+            "room_name": "A114/115",
+            "calendar_id": "c_188fltio3106ogrtgluj5te8rvfmg@resource.calendar.google.com",
+            "capacity": 20,
+            "resources": [
+                "Folding Tables",
+                "Chairs",
+                "White Board",
+                "Piano"
+            ],
+            "building_location": null
+        }
+    },
+    "A201": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 8,
+            "room_name": "A201",
+            "calendar_id": "c_188756kclcd6ahthi4sqbp673sh5o@resource.calendar.google.com",
+            "capacity": 40,
+            "resources": [
+                "Folding Tables",
+                "Chairs",
+                "TV",
+                "White Board",
+                "sound system"
+            ],
+            "building_location": null
+        }
+    },
+    "B101/102": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 9,
+            "room_name": "B101/102",
+            "calendar_id": "c_188fcf8i3p5niju4k2a6f6fvaehp0@resource.calendar.google.com",
+            "capacity": 30,
+            "resources": [
+                "Tables",
+                "Chairs",
+                "TV",
+                "White Board"
+            ],
+            "building_location": null
+        }
+    },
+    "B103/104": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 10,
+            "room_name": "B103/104",
+            "calendar_id": "c_188bc4he6clu0gpljf13ggahd7v7i@resource.calendar.google.com",
+            "capacity": 30,
+            "resources": [
+                "Tables",
+                "Chairs",
+                "TV",
+                "White Board"
+            ],
+            "building_location": null
+        }
+    },
+    "B105": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 11,
+            "room_name": "B105",
+            "calendar_id": "c_188auklb38pvcj4uhn6jeqk5foprk@resource.calendar.google.com",
+            "capacity": 20,
+            "resources": [
+                "Tables",
+                "Chairs",
+                "TV",
+                "Copier / Printer"
+            ],
+            "building_location": null
+        }
+    },
+    "C101/102": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 12,
+            "room_name": "C101/102",
+            "calendar_id": "c_1888gb8fgqvdcij6j9h2u90hatk9e@resource.calendar.google.com",
+            "capacity": 40,
+            "resources": [
+                "Folding Tables",
+                "Chairs",
+                "TV",
+                "White Board",
+                "Piano"
+            ],
+            "building_location": null
+        }
+    },
+    "C103/104": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 13,
+            "room_name": "C103/104",
+            "calendar_id": "c_188d87cvkjb86hl7hite45rpp9d8u@resource.calendar.google.com",
+            "capacity": 40,
+            "resources": [
+                "Folding Tables",
+                "Chairs",
+                "TV",
+                "White Board",
+                "Piano",
+                "adjoining bathroom"
+            ],
+            "building_location": null
+        }
+    },
+    "C201/202": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 14,
+            "room_name": "C201/202",
+            "calendar_id": "c_188d6pkuca12kjr6mmul2blipac9s@resource.calendar.google.com",
+            "capacity": 40,
+            "resources": [
+                "Folding Tables",
+                "Chairs",
+                "TV",
+                "White Board",
+                "Piano"
+            ],
+            "building_location": null
+        }
+    },
+    "C203/204": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 15,
+            "room_name": "C203/204",
+            "calendar_id": "c_188a3ogonup3cit1ka152tcaun0bc@resource.calendar.google.com",
+            "capacity": 40,
+            "resources": [
+                "Folding Tables",
+                "Chairs",
+                "TV",
+                "White Board",
+                "Piano"
+            ],
+            "building_location": null
+        }
+    },
+    "D103 Conf. Rm": {
+        "approvedEvents": [],
+        "pendingEvents": [],
+        "details": {
+            "id": 16,
+            "room_name": "D103 Conf. Rm",
+            "calendar_id": "c_188768fts4homhkshlt79oqef6i2e@resource.calendar.google.com",
+            "capacity": 25,
+            "resources": [
+                "Tables",
+                "Chairs",
+                "TV",
+                "White Board"
+            ],
+            "building_location": null
+        }
+    }
 }

@@ -52,11 +52,7 @@ nav.navbar {
   background-color: #652B2B;
 }
 
-.room-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Two equal-width columns */
-  gap: 10px; /* Space between the columns and rows */
-}
+
 
 /* Style the building headers on mobile */
 .building-header {

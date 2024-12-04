@@ -1,0 +1,18 @@
+.room-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.room-badge:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.room-badge.selected {
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.8);
+}
+
+.room-selector span {
+  line-height: 1;
+}

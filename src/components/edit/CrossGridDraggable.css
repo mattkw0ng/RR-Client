@@ -1,0 +1,72 @@
+.toggle-drag-container {
+  padding: 20px;
+}
+
+button {
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.grid {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.grid h4 {
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.grid-bar {
+  position: relative;
+  height: 80px; /* Adjust height for two rows */
+  background-color: #e9ecef;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.draggable-element {
+  width: 100px;
+  height: 30px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: absolute;
+  transition: transform 0.2s, z-index 0.2s;
+  z-index: 1; /* Default z-index */
+}
+
+.draggable-element.dragging {
+  z-index: 10; /* Bring the dragging element to the front */
+}
+
+.preview-element {
+  width: 100px;
+  height: 30px;
+  background-color: rgba(0, 123, 255, 0.5);
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  border-radius: 4px;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 5; /* Render above static elements */
+}

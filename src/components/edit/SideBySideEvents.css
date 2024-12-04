@@ -1,0 +1,57 @@
+.side-by-side-events {
+  display: flex;
+  width: 100%;
+  height: 600px; /* Height of the container (adjustable) */
+  position: relative;
+  border: 1px solid #ddd;
+  background-color: #f8f9fa;
+  border-radius: 1em;
+}
+
+.side-by-side-events .column {
+  padding: 2em;
+}
+
+.column {
+  width: 50%;
+  position: relative;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.divider {
+  width: 1px;
+  background-color: #ccc;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.event-container {
+  position: relative;
+  height: 100%;
+}
+
+.event {
+  position: absolute;
+  width: 100%; /* Adjust for padding/margins */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: white;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.approved-event {
+  background-color: #007bff; /* Blue for approved */
+}
+
+.pending-event {
+  width: 85%;
+  background-color: #9899a0; /* Yellow for pending */
+}
+
+.pending-event.conflict-event {
+  width: 100%;
+  background-color: #dc3545;
+}

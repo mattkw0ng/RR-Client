@@ -4,9 +4,8 @@ import { Container, Row, Col, ListGroup, ListGroupItem, Button, Badge, Modal, Mo
 import API_URL from '../../config';
 import { ADMINEVENTS } from '../../data/example';
 
-
-import StackedTimelineDraggable from '../StackedTimelineDraggable';
 import StandardEvent from '../events/StandardEvent';
+import ConflictEditor from '../edit/ConflictEditor';
 
 const AdminPage = () => {
   const [approvedEvents, setApprovedEvents] = useState([]);
@@ -68,26 +67,25 @@ const AdminPage = () => {
     )
   }
 
-  const ConflictModal = ({ conflictEvent, event }) => {
+  const ConflictModal = ({ approvedEvents, pendingEvent }) => {
     const [modal, setModal] = useState(false);
+
 
     const toggle = () => setModal(!modal);
 
-    const myTimeRanges = [
-      { start: conflictEvent.start, end: conflictEvent.end },
-      { start: event.start, end: event.end }
-    ]
     return (
       <div>
         <Button color="danger" onClick={toggle}>
           View Conflict
         </Button>
         <Modal isOpen={modal} toggle={toggle} size='xl'>
-          <ModalHeader toggle={toggle}>{conflictEvent.summary} | <span className='text-decoration-line-through text-danger'> {event.summary} </span></ModalHeader>
+          <ModalHeader toggle={toggle}>{approvedEvents.summary} | <span className='text-decoration-line-through text-danger'> {pendingEvent.summary} </span></ModalHeader>
           <ModalBody className='px-3'>
-            {event.attendees.find((element) => element.resource).displayName}
+            {pendingEvent.attendees.find((element) => element.resource).displayName}
             {/* TimeLine */}
-            <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[conflictEvent.summary, event.summary]} />
+            {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
+
+            <ConflictEditor approvedEvents={approvedEvents} pendingEvent={pendingEvent} conflictId={pendingEvent.id} />
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={toggle}>
@@ -107,7 +105,7 @@ const AdminPage = () => {
 
       <Row>
         <Col>
-        <iframe title="pendingEvents" src="https://calendar.google.com/calendar/embed?src=c_0430068aa84472bdb1aa16b35d4061cd867e4888a8ace5fa3d830bb67587dfad%40group.calendar.google.com&ctz=America%2FLos_Angeles" style={{ border: 0 }} width="100%" height="500" frameborder="0" ></iframe>
+          <iframe title="pendingEvents" src="https://calendar.google.com/calendar/embed?src=c_0430068aa84472bdb1aa16b35d4061cd867e4888a8ace5fa3d830bb67587dfad%40group.calendar.google.com&ctz=America%2FLos_Angeles" style={{ border: 0 }} width="100%" height="500" frameborder="0" ></iframe>
         </Col>
         <Col>
           <h2>Quick Approve Events</h2>
@@ -149,11 +147,14 @@ const AdminPage = () => {
                   {event.recurrence ?
                     <RecurringEventList list={event.instances} />
                     :
-                    <div>
-                      <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
-                      {/* <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p> */}
-                      <ConflictModal conflictEvent={event.conflicts[0]} event={event} />
-                    </div>
+                    event.conflicts.map((conflict) => 
+                      <div id={conflict.id}>
+                        <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
+                        {/* <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p> */}
+                        <ConflictModal approvedEvents={conflict} pendingEvent={event} />
+                      </div>
+                    )
+
                   }
 
                 </div>
