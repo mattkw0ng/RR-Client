@@ -137,7 +137,7 @@ const AdminPage = () => {
                   {/* Details */}
                   <p>
                     {/* Room */}
-                    {event.attendees.filter((element) => element.resource)?.map((room) => <p>{room.displayName}</p>)}
+                    {JSON.parse(event.extendedProperties.private.rooms).map((room) => <p>{room.displayName}</p>)}
                     <br />
                     {/* Description */}
                     Description: {event.description}
