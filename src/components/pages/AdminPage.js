@@ -136,7 +136,7 @@ const AdminPage = () => {
                   {/* Details */}
                   <p>
                     {/* Room */}
-                    {event.attendees.find((element) => element.resource).displayName}
+                    {event.attendees.filter((element) => element.resource)?.map((room) => <p>{room.displayName}</p>)}
                     <br />
                     {/* Description */}
                     Description: {event.description}
