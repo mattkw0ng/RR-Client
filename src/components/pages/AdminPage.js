@@ -14,7 +14,6 @@ const AdminPage = () => {
   const fetchApprovedEvents = async () => {
     try {
       const response = await axios.get(API_URL + '/api/approvedEvents', { withCredentials: true });
-      console.log("ApprovedEvents():", response.data)
       setApprovedEvents(response.data);
     } catch (error) {
       console.error('Error fetching approved events:', error);
@@ -24,7 +23,7 @@ const AdminPage = () => {
   const fetchPendingEvents = async () => {
     try {
       const response = await axios.get(API_URL + '/api/pendingEventsWithConflicts', { withCredentials: true });
-      console.log("PendingEvents():", response.data)
+      console.log("PendingEvents()", response.data);
       setPendingEvents(response.data);
     } catch (error) {
       console.error('Error fetching pending events:', error);
@@ -166,6 +165,24 @@ const AdminPage = () => {
 
         </Col>
       </Row>
+
+
+      <Row>
+        <Col>
+          <h2>Approved Events</h2>
+          <ListGroup>
+            {approvedEvents.map(event => (
+              <ListGroupItem key={event.id}>
+                <h5>{event.summary}</h5>
+                <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
+                <p>{event.description}</p>
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+        </Col>
+      </Row>
+
+      <br /><hr /><br />
     </Container>
   );
 };
