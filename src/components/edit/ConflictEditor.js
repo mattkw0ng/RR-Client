@@ -35,7 +35,7 @@ const ConflictEditor = ({ approvedEvents, pendingEvent , conflictId, roomId}) =>
       const response = await axios.get(API_URL + '/api/getAvailableRooms', { withCredentials: true, params: {
         timeMin: event.start.dateTime,
         timeMax: event.end.dateTime,
-        excludeRooms: [event.conflicts.map((room) => (room.roomId))],
+        excludeRooms: event.conflicts.map((room) => (room.roomId)),
       }})
       console.log("fetchAvailableRooms()", response);
       setAvailableRooms(response);
