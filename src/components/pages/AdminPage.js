@@ -26,14 +26,13 @@ const AdminPage = () => {
       console.log("PendingEvents()", response.data);
 
       // Parse JSON object
-      for (const elem of response.quickApprove) {
+      for (const elem of response.data.quickApprove) {
         elem.extendedProperties.private.rooms = JSON.parse(elem.extendedProperties.private.rooms);
       }
-      for (const elem of response.conflicts) {
+      for (const elem of response.data.conflicts) {
         elem.extendedProperties.private.rooms = JSON.parse(elem.extendedProperties.private.rooms);
       }
-      console.log(response)
-      setPendingEvents(response);
+      setPendingEvents(response.data);
     } catch (error) {
       console.error('Error fetching pending events:', error);
     }
