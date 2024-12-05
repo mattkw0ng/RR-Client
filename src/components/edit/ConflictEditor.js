@@ -11,31 +11,33 @@ import SideBySideEvents from "./SideBySideEvents";
  * 
  * @param {Object} pendingEvent the pending event that is in conflict with some other event 
  */
-const ConflictEditor = ({ approvedEvents, pendingEvent , conflictId}) => {
+const ConflictEditor = ({ approvedEvents, pendingEvent , conflictId, roomId}) => {
   const [roomEvents, setRoomEvents] = useState(ROOMEVENTS); //all other events taking place in room(s)
   const [availableRooms, setAvailableRooms] = useState(AVAILABLE_ROOMS);
 
   const [selectedRoom, setSelectedRoom] = useState("");
 
-  const fetchRoomEvents = async () => {
+  const fetchRoomEvents = async (id, time) => {
     try {
       const response = await axios.get(API_URL + '/api/getEventsByRoom', { withCredentials: true}, {params: {
-        roomId: null,
-        time: null
+        roomId: id,
+        time: time
       }})
+      console.log("fetchRoomEvents()", response);
       setRoomEvents(response)
     } catch (error) {
       console.error("Error fetching RoomEvents: ", error);
     }
   }
 
-  const fetchAvailableRooms = async () => {
+  const fetchAvailableRooms = async (event) => {
     try {
       const response = await axios.get(API_URL + '/api/getAvailableRooms', { withCredentials: true}, {params: {
-        timeMin: null,
-        timeMax: null,
-        excludeRooms: [],
+        timeMin: event.start.dateTime,
+        timeMax: event.end.dateTime,
+        excludeRooms: [event.conflicts.map((room) => (room.roomId))],
       }})
+      console.log("fetchAvailableRooms()", response);
       setAvailableRooms(response);
     } catch (error) {
       console.error("Error fetching RoomEvents: ", error);
@@ -43,10 +45,9 @@ const ConflictEditor = ({ approvedEvents, pendingEvent , conflictId}) => {
   }
 
   useEffect(() => {
-    fetchRoomEvents();
-    fetchAvailableRooms();
-
-  }, [])
+    fetchRoomEvents(roomId, pendingEvent.start.dateTime);
+    fetchAvailableRooms(pendingEvent);
+  }, [pendingEvent, roomId])
 
   return (
     <div>
