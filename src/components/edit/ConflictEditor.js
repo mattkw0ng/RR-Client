@@ -24,7 +24,7 @@ const ConflictEditor = ({ approvedEvents, pendingEvent , conflictId, roomId}) =>
         time: time
       }})
       console.log("fetchRoomEvents()", response);
-      setRoomEvents(response)
+      setRoomEvents(response.data)
     } catch (error) {
       console.error("Error fetching RoomEvents: ", error);
     }
@@ -38,7 +38,7 @@ const ConflictEditor = ({ approvedEvents, pendingEvent , conflictId, roomId}) =>
         excludeRooms: event.conflicts.map((room) => (room.roomId)),
       }})
       console.log("fetchAvailableRooms()", response);
-      setAvailableRooms(response);
+      setAvailableRooms(response.data);
     } catch (error) {
       console.error("Error fetching RoomEvents: ", error);
     }
