@@ -78,7 +78,7 @@ const AdminPage = () => {
 
   const ConflictModal = ({ approvedEvents, pendingEvent, roomId }) => {
     const [modal, setModal] = useState(false);
-
+    console.log(approvedEvents);
 
     const toggle = () => setModal(!modal);
 
@@ -88,13 +88,13 @@ const AdminPage = () => {
           View Conflict
         </Button>
         <Modal isOpen={modal} toggle={toggle} size='xl'>
-          <ModalHeader toggle={toggle}>{approvedEvents.summary} | <span className='text-decoration-line-through text-danger'> {pendingEvent.summary} </span></ModalHeader>
+          <ModalHeader toggle={toggle}><span className='text-danger'> {pendingEvent.summary} </span></ModalHeader>
           <ModalBody className='px-3'>
 
             {/* TimeLine */}
             {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
             {roomId}
-            <ConflictEditor approvedEvents={approvedEvents} pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId}/>
+            <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId}/>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={toggle}>
