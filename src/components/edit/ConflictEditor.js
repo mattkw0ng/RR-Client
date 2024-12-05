@@ -19,7 +19,7 @@ const ConflictEditor = ({ approvedEvents, pendingEvent , conflictId, roomId}) =>
 
   const fetchRoomEvents = async (id, time) => {
     try {
-      const response = await axios.get(API_URL + '/api/getEventsByRoom', { withCredentials: true}, {params: {
+      const response = await axios.get(API_URL + '/api/getEventsByRoom', { withCredentials: true, params: {
         roomId: id,
         time: time
       }})
@@ -32,7 +32,7 @@ const ConflictEditor = ({ approvedEvents, pendingEvent , conflictId, roomId}) =>
 
   const fetchAvailableRooms = async (event) => {
     try {
-      const response = await axios.get(API_URL + '/api/getAvailableRooms', { withCredentials: true}, {params: {
+      const response = await axios.get(API_URL + '/api/getAvailableRooms', { withCredentials: true, params: {
         timeMin: event.start.dateTime,
         timeMax: event.end.dateTime,
         excludeRooms: [event.conflicts.map((room) => (room.roomId))],
