@@ -644,12 +644,12 @@ export const ADMINEVENTS = {
             ],
             "extendedProperties": {
                 "private": {
-                    "rooms": {
+                    "rooms": [{
                         "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
                         "displayName": "A-1-Sanctuary (325)",
                         "resource": true,
                         "responseStatus": "declined"
-                    },
+                    }],
                     "congregation": "",
                     "groupName": "Matt's Buddies",
                     "numPeople": "5",
@@ -672,50 +672,13 @@ export const ADMINEVENTS = {
             "eventType": "default",
             "conflicts": [
                 {
-                    "kind": "calendar#event",
-                    "etag": "\"3462705635602000\"",
-                    "id": "8iirk08tk7tmg3ce12q9uhomks",
-                    "status": "confirmed",
-                    "htmlLink": "https://www.google.com/calendar/event?eid=OGlpcmswOHRrN3RtZzNjZTEycTl1aG9ta3MgY18xODgzNWczMW8yOTV1aWg0aXY0MHFncGw5bXNrdUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t",
-                    "created": "2024-11-11T19:07:24.000Z",
-                    "updated": "2024-11-11T19:20:17.801Z",
-                    "summary": "My Event",
-                    "description": "aaa",
-                    "location": "San Jose Christian Alliance Church, A-1-Sanctuary (325)",
-                    "creator": {
-                        "email": "rooms@sjcac.org"
-                    },
-                    "organizer": {
-                        "email": "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079@group.calendar.google.com",
-                        "displayName": "Approved"
-                    },
-                    "start": {
-                        "dateTime": "2024-11-29T10:00:00-08:00",
-                        "timeZone": "America/Los_Angeles"
-                    },
-                    "end": {
-                        "dateTime": "2024-11-29T16:00:00-08:00",
-                        "timeZone": "America/Los_Angeles"
-                    },
-                    "iCalUID": "8iirk08tk7tmg3ce12q9uhomks@google.com",
-                    "sequence": 0,
-                    "attendees": [
+                    "roomId": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+                    "times": [
                         {
-                            "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
-                            "displayName": "A-1-Sanctuary (325)",
-                            "self": true,
-                            "resource": true,
-                            "responseStatus": "accepted"
-                        },
-                        {
-                            "email": "fudgenuggetgames@gmail.com",
-                            "responseStatus": "needsAction"
+                            "start": "2024-12-22T08:30:00-08:00",
+                            "end": "2024-12-22T09:00:00-08:00"
                         }
-                    ],
-                    "reminders": {
-                        "useDefault": true
-                    },
-                    "eventType": "default"
+                    ]
                 }
             ]
         }

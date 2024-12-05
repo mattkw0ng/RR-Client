@@ -24,7 +24,16 @@ const AdminPage = () => {
     try {
       const response = await axios.get(API_URL + '/api/pendingEventsWithConflicts', { withCredentials: true });
       console.log("PendingEvents()", response.data);
-      setPendingEvents(response.data);
+
+      // Parse JSON object
+      for (const elem of response.quickApprove) {
+        elem.extendedProperties.private.rooms = JSON.parse(elem.extendedProperties.private.rooms);
+      }
+      for (const elem of response.conflicts) {
+        elem.extendedProperties.private.rooms = JSON.parse(elem.extendedProperties.private.rooms);
+      }
+      console.log(response)
+      setPendingEvents(response);
     } catch (error) {
       console.error('Error fetching pending events:', error);
     }
@@ -68,7 +77,7 @@ const AdminPage = () => {
     )
   }
 
-  const ConflictModal = ({ approvedEvents, pendingEvent }) => {
+  const ConflictModal = ({ approvedEvents, pendingEvent, roomId }) => {
     const [modal, setModal] = useState(false);
 
 
@@ -82,10 +91,10 @@ const AdminPage = () => {
         <Modal isOpen={modal} toggle={toggle} size='xl'>
           <ModalHeader toggle={toggle}>{approvedEvents.summary} | <span className='text-decoration-line-through text-danger'> {pendingEvent.summary} </span></ModalHeader>
           <ModalBody className='px-3'>
-            {pendingEvent.attendees.find((element) => element.resource).displayName}
+
             {/* TimeLine */}
             {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
-
+            {roomId}
             <ConflictEditor approvedEvents={approvedEvents} pendingEvent={pendingEvent} conflictId={pendingEvent.id} />
           </ModalBody>
           <ModalFooter>
@@ -137,7 +146,7 @@ const AdminPage = () => {
                   {/* Details */}
                   <p>
                     {/* Room */}
-                    {event.extendedProperties.private.rooms ? JSON.parse(event.extendedProperties.private.rooms).map((room) => <p>{room.displayName}</p>) : null}
+                    {event.extendedProperties.private.rooms.map((room) => <p key={room.email}>{room.displayName}</p>)}
                     <br />
                     {/* Description */}
                     Description: {event.description}
@@ -149,10 +158,10 @@ const AdminPage = () => {
                     <RecurringEventList list={event.instances} />
                     :
                     event.conflicts.map((conflict) => 
-                      <div id={conflict.id}>
+                      <div id={conflict.roomId}>
                         <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
                         {/* <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p> */}
-                        <ConflictModal approvedEvents={conflict} pendingEvent={event} />
+                        <ConflictModal approvedEvents={conflict} pendingEvent={event} roomId={conflict.roomId} />
                       </div>
                     )
 
