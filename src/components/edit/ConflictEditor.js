@@ -75,7 +75,7 @@ const ConflictEditor = ({ approvedEvents, pendingEvent, conflictId, roomId }) =>
   return (
     <div>
       <div className="d-flex gap-2">
-        <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[...roomEvents[1], pendingEventCopy]} conflictId={conflictId} />
+        <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} />
         {selectedRoom ?
           // If a room has been selected, display it in a new side-by-side viewer & add the pending event to the list of pending events attatched to new room
           <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[...availableRooms[selectedRoom].pendingEvents, pendingEvent]} conflictId={conflictId} />
@@ -83,7 +83,7 @@ const ConflictEditor = ({ approvedEvents, pendingEvent, conflictId, roomId }) =>
         }
       </div>
 
-      <RoomTimeline timeRange={pendingEventCopy} setTimeRange={setpendingEventCopy} setTimeHasBeenChanged={setTimeHasBeenChanged} />
+      <RoomTimeline timeRange={pendingEventCopy} setTimeRange={setpendingEventCopy} timeHasBeenChanged={timeHasBeenChanged} setTimeHasBeenChanged={setTimeHasBeenChanged} />
 
       {/* Display Room name and Time + updated Room names and Times (if changed) */}
       <div>

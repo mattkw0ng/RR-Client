@@ -69,7 +69,7 @@ const RoomTimeline = ({ timeRange, setTimeRange }) => {
     };
 
     setRange(updatedRange);
-    setTimeRange({
+    setTimeRange({...timeRange,
       start: { ...timeRange.start, dateTime: new Date(0, 0, 0, Math.floor(newStartHour), (newStartHour % 1) * 60).toISOString() },
       end: { ...timeRange.end, dateTime: new Date(0, 0, 0, Math.floor(newEndHour), (newEndHour % 1) * 60).toISOString() },
     });
