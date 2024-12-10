@@ -1,5 +1,5 @@
-const ROOMS = {
-  Sanctuary: {
+export const ROOMS = {
+  'Sanctuary': {
     resources: [
       'Chairs',
       'TV',
@@ -13,7 +13,7 @@ const ROOMS = {
     capacity: 325,
     calendarID: 'c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com'
   },
-  Chapel: {
+  'Chapel': {
     resources: [
       'Chairs',
       'TV',
@@ -27,12 +27,12 @@ const ROOMS = {
     capacity: 150,
     calendarID: 'c_188b6ubdo8seaildk4f2le23o49uk@resource.calendar.google.com'
   },
-  A101: {
+  'A101': {
     resources: [ 'Folding Tables', 'Chairs' ],
     capacity: 15,
     calendarID: 'c_188bqg20i62qsh0mkf5tsllv6hsfg@resource.calendar.google.com'
   },
-  A102: {
+  'A102': {
     resources: [ 'Folding Tables', 'Chairs' ],
     capacity: 15,
     calendarID: 'c_188dilmvbopimgirhfjmcpdo1jshi@resource.calendar.google.com'
@@ -42,7 +42,7 @@ const ROOMS = {
     capacity: 30,
     calendarID: 'c_18848ij2sabpqis0ll3sqg3s95ivs@resource.calendar.google.com'
   },
-  A105: {
+  'A105': {
     resources: [ 'Table', 'Chairs', 'TV', 'Piano' ],
     capacity: 15,
     calendarID: 'c_188e5euhmi4nmjeng6nkl34o22fq8@resource.calendar.google.com'
@@ -52,7 +52,7 @@ const ROOMS = {
     capacity: 20,
     calendarID: 'c_188fltio3106ogrtgluj5te8rvfmg@resource.calendar.google.com'
   },
-  A201: {
+  'A201': {
     resources: [ 'Folding Tables', 'Chairs', 'TV', 'White Board', 'sound system' ],
     capacity: 40,
     calendarID: 'c_188756kclcd6ahthi4sqbp673sh5o@resource.calendar.google.com'
@@ -67,7 +67,7 @@ const ROOMS = {
     capacity: 30,
     calendarID: 'c_188bc4he6clu0gpljf13ggahd7v7i@resource.calendar.google.com'
   },
-  B105: {
+  'B105': {
     resources: [ 'Tables', 'Chairs', 'TV', 'Copier / Printer' ],
     capacity: 20,
     calendarID: 'c_188auklb38pvcj4uhn6jeqk5foprk@resource.calendar.google.com'

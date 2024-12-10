@@ -93,7 +93,6 @@ const AdminPage = () => {
 
             {/* TimeLine */}
             {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
-            {roomId}
             <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId}/>
           </ModalBody>
           <ModalFooter>

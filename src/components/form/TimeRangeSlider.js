@@ -1,8 +1,9 @@
 import React from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { formatTime } from "../../util/util";
 
-function TimeRangeSlider({timeRange, handleSliderChange, formatTime}) {
+function TimeRangeSlider({timeRange, handleSliderChange}) {
 
   return (
     <div>

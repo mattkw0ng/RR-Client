@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate } from 'react-router-dom';
 import { roomListSimple } from "../../data/rooms";
+import { formatTime } from "../../util/util";
 import RoomSearchBar from "../RoomSearchBar";
 import TimeRangeSlider from "../form/TimeRangeSlider";
 import API_URL from "../../config";
@@ -44,15 +45,6 @@ function RoomSearch({ handleSearch }) {
     const preLoadRooms = selectedRooms
     console.log("Moving to RoomReservation",selectedRooms,preLoadData)
     navigate("/", { state: { preLoadRooms, preLoadData  } });
-  };
-
-  // Convert slider value (0–47) to time in "hh:mm AM/PM" format
-  const formatTime = (value) => {
-    const hour = Math.floor(value / 2);
-    const minute = value % 2 === 0 ? "00" : "30";
-    const period = hour >= 12 ? "PM" : "AM";
-    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-    return `${formattedHour}:${minute} ${period}`;
   };
 
   const availableCapacities = [325, 150, 15, 30, 20, 40, 25];
@@ -155,7 +147,7 @@ function RoomSearch({ handleSearch }) {
             </div>
             {/* TimeRangeSlider */}
             <label className="form-label">Select Time Range</label>
-            <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange} formatTime={formatTime} />
+            <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange}/>
             <hr />
 
             {/* Room Capacity Selection */}

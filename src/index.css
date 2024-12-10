@@ -215,3 +215,14 @@ nav.navbar {
   width: 225px;
 }
 
+.gradient-blue {
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+}
+
+.gradient-green {
+  background: linear-gradient(to right, #38ef7d, #11998e);
+}
+
+.gradient-red {
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+}

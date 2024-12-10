@@ -1,164 +1,119 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Draggable from "react-draggable";
-import "./RoomTimeline.css";
+import "./StackedTimeline.css";
+import { LuMoveLeft, LuMoveRight } from "react-icons/lu";
 
-const RoomTimeline = () => {
-  const initialRooms = [
-    {
-      id: "room1",
-      name: "Room 1",
-      events: [
-        { id: "event1", name: "Event 1", grid: "room1", position: { x: 0, y: 50 } },
-        { id: "event2", name: "Event 2", grid: "room1", position: { x: 0, y: 150 } },
-      ],
-    },
-    {
-      id: "room2",
-      name: "Room 2",
-      events: [
-        { id: "event3", name: "Event 3", grid: "room2", position: { x: 0, y: 50 } },
-        { id: "event4", name: "Event 4", grid: "room2", position: { x: 0, y: 150 } },
-      ],
-    },
-    {
-      id: "room3",
-      name: "Room 3",
-      events: [],
-    },
-  ];
+const RoomTimeline = ({ timeRange, setTimeRange }) => {
+  const rangeStart = 6; // 6:00 AM
+  const rangeEnd = 24; // Midnight
+  const timelineRef = useRef(null);
 
-  const [rooms, setRooms] = useState(initialRooms);
-  const [draggingElement, setDraggingElement] = useState(null);
-  const [dragStartPos, setDragStartPos] = useState({ x: 0, y: 0 }); // Track initial drag position
-  const [deltaPosition, setDeltaPosition] = useState({ deltaX: 0, deltaY: 0 });
-  const [previewPosition, setPreviewPosition] = useState(null); // Store position of preview element
-  const [targetGrid, setTargetGrid] = useState(null); // Track which grid the element will be moved to
+  const totalHours = rangeEnd - rangeStart;
 
-  const handleStart = (e, data, event) => {
-    // Store the initial drag position when the drag starts
-    setDragStartPos(event.position);
-    setDraggingElement(event.id);
-    setDeltaPosition({ deltaX: 0, deltaY: 0 }); // Reset delta position on drag start
-    setPreviewPosition(event.position); // Initialize preview position
-    setTargetGrid(event.grid); // Track the initial grid for preview
+  const [gridSize, setGridSize] = useState(0);
+  const [range, setRange] = useState({
+    startHour: new Date(timeRange.start.dateTime).getHours() + new Date(timeRange.start.dateTime).getMinutes() / 60,
+    endHour: new Date(timeRange.end.dateTime).getHours() + new Date(timeRange.end.dateTime).getMinutes() / 60,
+    formattedStart: new Date(timeRange.start.dateTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    formattedEnd: new Date(timeRange.end.dateTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+  });
+
+  const recalculateGridAndPosition = useCallback(() => {
+    if (timelineRef.current) {
+      const timelineWidth = timelineRef.current.offsetWidth;
+      setGridSize(timelineWidth / (totalHours * 2));
+      const startX = ((range.startHour - rangeStart) / totalHours) * timelineWidth;
+      const width = ((range.endHour - range.startHour) / totalHours) * timelineWidth;
+      setRange((prev) => ({
+        ...prev,
+        startX,
+        width,
+      }));
+    }
+  }, [range.startHour, range.endHour, rangeStart, totalHours]);
+
+  useEffect(() => {
+    recalculateGridAndPosition();
+    const handleResize = () => recalculateGridAndPosition();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [recalculateGridAndPosition]);
+
+  const positionToTime = (x) => {
+    const timelineWidth = timelineRef.current.offsetWidth;
+    const timePerPixel = totalHours / timelineWidth;
+    return x * timePerPixel + rangeStart;
   };
 
-  const handleDrag = (e, data) => {
-    // Update delta position
-    const deltaX = data.x - dragStartPos.x;
-
-    // Calculate the target grid based on deltaX movement
-    let newTargetGridIndex = rooms.findIndex((room) => room.id === targetGrid);
-
-    if (Math.abs(deltaX) > 50) {
-      // If deltaX exceeds 50px, we increment or decrement the grid index based on the direction of deltaX
-      newTargetGridIndex = deltaX > 0 ? newTargetGridIndex + 1 : newTargetGridIndex - 1;
-    }
-
-    // Ensure the target grid index stays within bounds (0 to rooms.length - 1)
-    newTargetGridIndex = Math.max(0, Math.min(newTargetGridIndex, rooms.length - 1));
-
-    const newTargetGrid = rooms[newTargetGridIndex].id;
-
-    // Set the target grid for the preview
-    setPreviewPosition({ x: 0, y: data.y , grid: newTargetGrid}); // Preview position is reset to `y` with `x=0`
+  const formatTime = (hour) => {
+    const hours = Math.floor(hour);
+    const minutes = Math.round((hour - hours) * 60);
+    return new Date(0, 0, 0, hours, minutes).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
-  const handleStop = (e, data, event, currentRoomId) => {
-    const deltaX = data.x - dragStartPos.x;
-    const deltaY = data.y - dragStartPos.y;
+  const handleDrag = (data) => {
+    const newStartHour = Math.min(
+      Math.max(positionToTime(data.x), rangeStart),
+      rangeEnd - (range.endHour - range.startHour)
+    );
+    const newEndHour = newStartHour + (range.endHour - range.startHour);
 
-    // If the element has moved more than 50px horizontally, snap it to a new grid
-    if (Math.abs(deltaX) > 50) {
-      let newTargetGridIndex = rooms.findIndex((room) => room.id === targetGrid);
+    const updatedRange = {
+      ...range,
+      startHour: Math.round(newStartHour * 10) / 10, // Round to 1 decimal place
+      endHour: Math.round(newEndHour * 10) / 10,
+      formattedStart: formatTime(newStartHour),
+      formattedEnd: formatTime(newEndHour),
+    };
 
-      // Update target grid index based on the direction of deltaX
-      newTargetGridIndex = deltaX > 0 ? newTargetGridIndex + 1 : newTargetGridIndex - 1;
-
-      // Ensure the target grid index stays within bounds (0 to rooms.length - 1)
-      newTargetGridIndex = Math.max(0, Math.min(newTargetGridIndex, rooms.length - 1));
-
-      const targetRoom = rooms[newTargetGridIndex];
-      const eventToMove = {
-        ...event,
-        grid: targetRoom.id,
-        position: { x: 0, y: previewPosition.y }, // Use the preview `y` position and reset x to 0
-      };
-
-      setRooms((prevRooms) => {
-        return prevRooms.map((room) => {
-          if (room.id === currentRoomId) {
-            // Remove the event from the current room
-            return { ...room, events: room.events.filter((ev) => ev.id !== event.id) };
-          } else if (room.id === targetRoom.id) {
-            // Add the new event to the target room with x = 0
-            return {
-              ...room,
-              events: [...room.events, eventToMove],
-            };
-          }
-          return room;
-        });
-      });
-    } else {
-      // If deltaX is less than 50, allow vertical movement within the grid
-      setRooms((prevRooms) => {
-        return prevRooms.map((room) => {
-          if (room.id === currentRoomId) {
-            return {
-              ...room,
-              events: room.events.map((ev) =>
-                ev.id === event.id
-                  ? { ...ev, position: { x: ev.position.x, y: data.y } }
-                  : ev
-              ),
-            };
-          }
-          return room;
-        });
-      });
-    }
-
-    setDeltaPosition({ deltaX, deltaY }); // Update delta position after the drop
-    setDraggingElement(null); // Clear dragging state after drop
-    setPreviewPosition(null); // Clear the preview position
+    setRange(updatedRange);
+    setTimeRange({
+      start: { ...timeRange.start, dateTime: new Date(0, 0, 0, Math.floor(newStartHour), (newStartHour % 1) * 60).toISOString() },
+      end: { ...timeRange.end, dateTime: new Date(0, 0, 0, Math.floor(newEndHour), (newEndHour % 1) * 60).toISOString() },
+    });
   };
 
   return (
-    <div className="room-timeline">
-      {rooms.map((room) => (
-        <div key={room.id} className="room-grid">
-          <h4>{room.name}</h4>
-          <div className="grid-bar">
-            {room.events.map((event) => (
-              <Draggable
-                key={event.id}
-                axis="both" // Allow both x and y axis movement
-                position={event.position} // Preserve the current position
-                onStart={(e, data) => handleStart(e, data, event)} // Track the start position
-                onDrag={handleDrag} // Update preview during drag
-                onStop={(e, data) => handleStop(e, data, event, room.id)} // Handle drop
-              >
-                <div className="event">{event.name}</div>
-              </Draggable>
-            ))}
-            {/* Show preview only in the target grid */}
-            {previewPosition?.grid === room.id && previewPosition && (
-              <div
-                className="preview"
-                style={{
-                  left: `${previewPosition.x}px`,
-                  top: `${previewPosition.y}px`,
-                  opacity: 0.5,
-                  backgroundColor: "rgba(0, 123, 255, 0.3)", // Light blue transparent color for preview
-                }}
-              >
-                Preview
-              </div>
-            )}
-          </div>
+    <div className="stacked-timeline" ref={timelineRef}>
+      <div className="timeline-scale">
+        {Array.from({ length: totalHours + 1 }, (_, i) => {
+          const hour = rangeStart + i;
+          return (
+            hour % 2 === 0 && (
+              <span key={hour} style={{ left: `${(i / totalHours) * 100}%` }}>
+                {hour > 12 ? `${hour - 12} PM` : `${hour} AM`}
+              </span>
+            )
+          );
+        })}
+      </div>
+
+      <div className="timeline-bars">
+        <div className="timeline-bar-container">
+          <Draggable
+            axis="x"
+            bounds="parent"
+            grid={[gridSize, gridSize]}
+            position={{ x: range.startX, y: 0 }}
+            onDrag={(e, data) => handleDrag(data)}
+          >
+            <div className="timeline-bar gradient-red" style={{ width: `${range.width}px`}}>
+              <LuMoveLeft className="drag-icon left" />
+              <LuMoveRight className="drag-icon right" />
+            </div>
+          </Draggable>
         </div>
-      ))}
+      </div>
+
+      <div className="bar-time-info">
+        <span className="time-label p-1 gradient-red">
+          Time Range
+        </span>
+        &nbsp;
+        {range.formattedStart} - {range.formattedEnd}
+      </div>
     </div>
   );
 };

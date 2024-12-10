@@ -30,7 +30,7 @@ const SideBySideEvents = ({ approvedEvents, pendingEvents, conflictId }) => {
             return (
               <div
                 key={event.id}
-                className={`event ${eventStatus}-event ${conflictId === event.id ? 'conflict-event' : null}`}
+                className={`event ${eventStatus}-event ${conflictId === event.id ? 'conflict-event gradient-red' : eventStatus==='approved' ? 'gradient-blue' : 'gradient-gray'}`}
                 style={{ top, height }}
               >
                 <strong className="d-inline">{event.summary}&nbsp;</strong>

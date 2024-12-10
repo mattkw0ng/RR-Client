@@ -627,11 +627,11 @@ export const ADMINEVENTS = {
                 "self": true
             },
             "start": {
-                "dateTime": "2024-11-29T10:30:00-08:00",
+                "dateTime": "2024-11-29T08:30:00-08:00",
                 "timeZone": "America/Los_Angeles"
             },
             "end": {
-                "dateTime": "2024-11-29T11:30:00-08:00",
+                "dateTime": "2024-11-29T12:30:00-08:00",
                 "timeZone": "America/Los_Angeles"
             },
             "iCalUID": "jq7bggv82n9f4be4c33mv5ensg@google.com",

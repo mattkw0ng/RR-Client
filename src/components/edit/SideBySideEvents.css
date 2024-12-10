@@ -42,16 +42,15 @@
   line-height: 1;
 }
 
-.approved-event {
-  background-color: #007bff; /* Blue for approved */
-}
 
 .pending-event {
   width: 85%;
-  background-color: #9899a0; /* Yellow for pending */
 }
 
 .pending-event.conflict-event {
   width: 100%;
-  background-color: #dc3545;
+}
+
+.gradient-gray { 
+  background: linear-gradient(to right, #8a8a8a, #ababab);
 }
