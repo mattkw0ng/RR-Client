@@ -627,11 +627,11 @@ export const ADMINEVENTS = {
                 "self": true
             },
             "start": {
-                "dateTime": "2024-11-29T08:30:00-08:00",
+                "dateTime": "2024-12-22T08:30:00-08:00",
                 "timeZone": "America/Los_Angeles"
             },
             "end": {
-                "dateTime": "2024-11-29T12:30:00-08:00",
+                "dateTime": "2024-12-22T12:30:00-08:00",
                 "timeZone": "America/Los_Angeles"
             },
             "iCalUID": "jq7bggv82n9f4be4c33mv5ensg@google.com",
@@ -759,7 +759,7 @@ export const ROOMEVENTS = [
                 "timeZone": "America/Los_Angeles"
             },
             "end": {
-                "dateTime": "2024-12-25T12:00:00-08:00",
+                "dateTime": "2024-12-22T12:00:00-08:00",
                 "timeZone": "America/Los_Angeles"
             },
             "iCalUID": "th3hg0t91un80iqptai3bt9os8@google.com",
@@ -818,7 +818,7 @@ export const ROOMEVENTS = [
                 "timeZone": "America/Los_Angeles"
             },
             "end": {
-                "dateTime": "2024-12-25T12:00:00-08:00",
+                "dateTime": "2024-12-22T12:00:00-08:00",
                 "timeZone": "America/Los_Angeles"
             },
             "iCalUID": "1nnaf2debnjite2iifj3r3r7j0@google.com",
@@ -954,7 +954,7 @@ export const ROOMEVENTS_OLD = {
 ]}
 
 export const AVAILABLE_ROOMS = {
-    "Sanctuary": {
+    "Chapel": {
         "approvedEvents": [
             {
                 "kind": "calendar#event",
@@ -975,11 +975,11 @@ export const AVAILABLE_ROOMS = {
                     "self": true
                 },
                 "start": {
-                    "dateTime": "2024-12-22T08:00:00-08:00",
+                    "dateTime": "2024-12-22T07:00:00-08:00",
                     "timeZone": "America/Los_Angeles"
                 },
                 "end": {
-                    "dateTime": "2024-12-22T09:00:00-08:00",
+                    "dateTime": "2024-12-22T08:00:00-08:00",
                     "timeZone": "America/Los_Angeles"
                 },
                 "recurringEventId": "62g2g51mcmnnokkgil1rtimv23_R20240818T150000",

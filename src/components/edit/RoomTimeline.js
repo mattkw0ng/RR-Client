@@ -3,7 +3,7 @@ import Draggable from "react-draggable";
 import "./StackedTimeline.css";
 import { LuMoveLeft, LuMoveRight } from "react-icons/lu";
 
-const RoomTimeline = ({ timeRange, setTimeRange }) => {
+const RoomTimeline = ({ timeRange, setTimeRange, isOverlapping=true }) => {
   const rangeStart = 6; // 6:00 AM
   const rangeEnd = 24; // Midnight
   const timelineRef = useRef(null);
@@ -69,9 +69,23 @@ const RoomTimeline = ({ timeRange, setTimeRange }) => {
     };
 
     setRange(updatedRange);
-    setTimeRange({...timeRange,
-      start: { ...timeRange.start, dateTime: new Date(0, 0, 0, Math.floor(newStartHour), (newStartHour % 1) * 60).toISOString() },
-      end: { ...timeRange.end, dateTime: new Date(0, 0, 0, Math.floor(newEndHour), (newEndHour % 1) * 60).toISOString() },
+    // update the time
+    setTimeRange({
+      ...timeRange,
+      start: {
+        ...timeRange.start,
+        dateTime: new Date(new Date(timeRange.start.dateTime).setHours(
+          Math.floor(newStartHour), // New hour
+          Math.round((newStartHour % 1) * 60) // New minutes
+        )).toISOString(),
+      },
+      end: {
+        ...timeRange.end,
+        dateTime: new Date(new Date(timeRange.end.dateTime).setHours(
+          Math.floor(newEndHour), // New hour
+          Math.round((newEndHour % 1) * 60) // New minutes
+        )).toISOString(),
+      },
     });
   };
 
@@ -99,7 +113,7 @@ const RoomTimeline = ({ timeRange, setTimeRange }) => {
             position={{ x: range.startX, y: 0 }}
             onDrag={(e, data) => handleDrag(data)}
           >
-            <div className="timeline-bar gradient-red" style={{ width: `${range.width}px`}}>
+            <div className={`timeline-bar ${isOverlapping ? 'gradient-red' : 'gradient-green'}`} style={{ width: `${range.width}px` }}>
               <LuMoveLeft className="drag-icon left" />
               <LuMoveRight className="drag-icon right" />
             </div>

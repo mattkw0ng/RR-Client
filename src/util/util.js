@@ -10,3 +10,14 @@
   export const formatDisplayTime = (time) => {
     return new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
   }
+
+  export const areTimeRangesOverlapping = (range1, range2) => {
+    // Convert dateTime strings to Date objects
+    const start1 = new Date(range1.start.dateTime);
+    const end1 = new Date(range1.end.dateTime);
+    const start2 = new Date(range2.start.dateTime);
+    const end2 = new Date(range2.end.dateTime);
+  
+    // Check if ranges overlap
+    return start1 < end2 && start2 < end1;
+  }

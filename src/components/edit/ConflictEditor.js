@@ -31,11 +31,6 @@ const ConflictEditor = ({ approvedEvents, pendingEvent, conflictId, roomId }) =>
     return null; // Return null if no matching calendarID is found
   }
 
-  // const handleSliderChange = (newTimeRange) => {
-  //   setpendingEventCopy(newTimeRange);
-  // };
-
-
   const fetchRoomEvents = async (id, time) => {
     try {
       const response = await axios.get(API_URL + '/api/getEventsByRoom', {
@@ -78,7 +73,7 @@ const ConflictEditor = ({ approvedEvents, pendingEvent, conflictId, roomId }) =>
         <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} />
         {selectedRoom ?
           // If a room has been selected, display it in a new side-by-side viewer & add the pending event to the list of pending events attatched to new room
-          <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[...availableRooms[selectedRoom].pendingEvents, pendingEvent]} conflictId={conflictId} />
+          <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[pendingEventCopy ,...availableRooms[selectedRoom].pendingEvents]} conflictId={conflictId} />
           : null
         }
       </div>
