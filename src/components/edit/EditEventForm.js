@@ -59,29 +59,37 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
       },
     };
 
+    let timeOrRoomChanged = false;
+    const roomListAsAttendees = selectedRooms.map((roomName) => ({
+      email: ROOMS[roomName]?.calendarID || "",
+      resource: true,
+    }));
+
     // Update the rooms list (depending on if the event is pending or not)
     if (pending) {
-      updatedEvent.extendedProperties.private.rooms = selectedRooms.map((roomName) => ({
-        email: ROOMS[roomName]?.calendarID || "",
-        resource: true,
-      }))
+      updatedEvent.extendedProperties.private.rooms = roomListAsAttendees;
     } else {
-      updatedEvent.attendees = [
-        ...(event.attendees || []).filter((attendee) => !attendee.resource), // Keep non-resource attendees
-        ...selectedRooms.map((roomName) => ({
-          email: ROOMS[roomName]?.calendarID || "",
-          resource: true,
-          responseStatus: "accepted",
-        })),
-      ];
-    }
+      // Determine if the time or room list has been changed
+      timeOrRoomChanged = event.start?.dateTime !== formState.startDateTime ||
+        event.end?.dateTime !== formState.endDateTime ||
+        JSON.stringify(
+          event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || []
+        ) !== JSON.stringify(selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
 
-    // Determine if time or room has changed for approved events only
-    const timeOrRoomChanged = (!pending && event.start?.dateTime) !== formState.startDateTime ||
-      event.end?.dateTime !== formState.endDateTime ||
-      JSON.stringify(
-        event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || []
-      ) !== JSON.stringify(selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
+      if (timeOrRoomChanged) {
+        updatedEvent.attendees = (event.attendees || []).filter((attendee) => !attendee.resource) // Keep non-resource attendees
+        updatedEvent.extendedProperties.private.rooms = roomListAsAttendees;
+      } else {
+        updatedEvent.attendees = [
+          ...(event.attendees || []).filter((attendee) => !attendee.resource), // Keep non-resource attendees
+          ...roomListAsAttendees.map((room) => ({
+            ...room,
+            responseStatus: "accepted",
+          })),
+        ];
+      }
+
+    }
 
     try {
       const response = await axios.post("/editEvent", {
