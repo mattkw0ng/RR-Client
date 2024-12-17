@@ -132,7 +132,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
   };
 
   useEffect(() => {
-    console.log(event, selectedRooms, JSON.parse(event.extendedProperties.private.rooms));
+    console.log(event, selectedRooms, JSON.parse(event.extendedProperties.private.rooms).map((e) => getRoomNameByCalendarID(e.email)));
   },[selectedRooms, event])
 
   return (
