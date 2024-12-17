@@ -26,5 +26,6 @@ export const areTimeRangesOverlapping = (range1, range2) => {
 
 export function getRoomNameByCalendarID(calendarID) {
   const entry = Object.entries(ROOMS).find(([roomName, roomData]) => roomData.calendarID === calendarID);
+  console.log(calendarID, entry);
   return entry ? entry[0] : null; // Return the room name (key) or null if not found
 }
