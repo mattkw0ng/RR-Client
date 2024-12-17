@@ -132,7 +132,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
   };
 
   useEffect(() => {
-    console.log(event, selectedRooms);
+    console.log(event, selectedRooms, JSON.parse(event.extendedProperties.private.rooms));
   },[selectedRooms, event])
 
   return (
