@@ -77,8 +77,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
     }
 
     // Determine if time or room has changed for approved events only
-    const timeOrRoomChanged = !pending &&
-      event.start?.dateTime !== formState.startDateTime ||
+    const timeOrRoomChanged = (!pending && event.start?.dateTime) !== formState.startDateTime ||
       event.end?.dateTime !== formState.endDateTime ||
       JSON.stringify(
         event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || []
