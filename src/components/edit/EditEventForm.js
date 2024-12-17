@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { congregationOptions, roomListSimple } from "../../data/rooms";
 import axios from "axios";
@@ -130,6 +130,10 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
       alert("Failed to update event. Please try again.");
     }
   };
+
+  useEffect(() => {
+    console.log(selectedRooms);
+  },[selectedRooms])
 
   return (
     <div className="edit-event-form">
