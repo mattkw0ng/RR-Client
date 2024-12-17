@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { congregationOptions, roomListSimple } from "../../data/rooms";
 import axios from "axios";
@@ -22,7 +22,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
     congregation: event.extendedProperties?.private?.congregation || "",
   });
 
-  const [selectedRooms, setSelectedRooms] = useState(event.pending ? JSON.parse(event.extendedProperties.rooms).map((e) => getRoomNameByCalendarID(e.email)) : event.attendees.filter((e) => e.resource).map((e) => getRoomNameByCalendarID(e.email)));
+  const [selectedRooms, setSelectedRooms] = useState(event.pending ? JSON.parse(event.extendedProperties.private.rooms).map((e) => getRoomNameByCalendarID(e.email)) : event.attendees.filter((e) => e.resource).map((e) => getRoomNameByCalendarID(e.email)));
 
   const hasRoomsChanged = (original, updated) => {
     const originalRooms = new Set(
@@ -130,10 +130,6 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
       alert("Failed to update event. Please try again.");
     }
   };
-
-  useEffect(() => {
-    console.log(event, selectedRooms);
-  },[selectedRooms, event])
 
   return (
     <div className="edit-event-form">
