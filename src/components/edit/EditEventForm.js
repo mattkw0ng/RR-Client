@@ -132,8 +132,8 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
   };
 
   useEffect(() => {
-    console.log(event, selectedRooms, JSON.parse(event.extendedProperties.private.rooms).map((e) => getRoomNameByCalendarID(e.email)));
-  },[selectedRooms, event])
+    console.log(event, selectedRooms, JSON.parse(event.extendedProperties.private.rooms).map((e) => getRoomNameByCalendarID(e.email)), pending);
+  },[selectedRooms, event, pending])
 
   return (
     <div className="edit-event-form">
