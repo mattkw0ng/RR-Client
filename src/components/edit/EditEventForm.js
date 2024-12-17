@@ -24,6 +24,29 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
 
   const [selectedRooms, setSelectedRooms] = useState(event.pending ? event.extendedProperties.rooms.map((e) => getRoomNameByCalendarID(e.email)) : event.attendees.filter((e) => e.resource).map((e) => getRoomNameByCalendarID(e.email)));
 
+  const hasRoomsChanged = (original, updated) => {
+    const originalRooms = new Set(
+      original
+    );
+    const updatedRooms = new Set(
+      updated
+    );
+  
+    // Check if the sets have different sizes or different elements
+    if (originalRooms.size !== updatedRooms.size) {
+      return true; // Size mismatch means the lists have changed
+    }
+  
+    // Check if every element in `originalRooms` exists in `updatedRooms`
+    for (const room of originalRooms) {
+      if (!updatedRooms.has(room)) {
+        return true; // An element is missing in the updated list
+      }
+    }
+  
+    return false; // The sets are identical
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormState((prevState) => ({
@@ -67,18 +90,16 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
 
     // Update the rooms list (depending on if the event is pending or not)
     if (pending) {
-      updatedEvent.extendedProperties.private.rooms = roomListAsAttendees;
+      updatedEvent.extendedProperties.private.rooms = JSON.stringify(roomListAsAttendees);
     } else {
       // Determine if the time or room list has been changed
       timeOrRoomChanged = event.start?.dateTime !== formState.startDateTime ||
         event.end?.dateTime !== formState.endDateTime ||
-        JSON.stringify(
-          event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || []
-        ) !== JSON.stringify(selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
+        hasRoomsChanged(event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || [], selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
 
       if (timeOrRoomChanged) {
         updatedEvent.attendees = (event.attendees || []).filter((attendee) => !attendee.resource) // Keep non-resource attendees
-        updatedEvent.extendedProperties.private.rooms = roomListAsAttendees;
+        updatedEvent.extendedProperties.private.rooms = JSON.stringify(roomListAsAttendees);
       } else {
         updatedEvent.attendees = [
           ...(event.attendees || []).filter((attendee) => !attendee.resource), // Keep non-resource attendees
@@ -92,6 +113,11 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
     }
 
     try {
+      console.log({
+        event: updatedEvent,
+        timeOrRoomChanged,
+      })
+
       const response = await axios.post("/editEvent", {
         event: updatedEvent,
         timeOrRoomChanged,

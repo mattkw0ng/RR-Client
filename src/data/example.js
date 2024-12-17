@@ -52,15 +52,9 @@ export const EVENTS = {
                         "minutes": 1440
                     }
                 ]
-            },
-            "extendedProperties": {
+            },"extendedProperties": {
                 "private": {
-                    "rooms": [{
-                        "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
-                        "displayName": "A-1-Sanctuary (325)",
-                        "resource": true,
-                        "responseStatus": "declined"
-                    }],
+                    "rooms": "[{\"email\":\"c_188e5euhmi4nmjeng6nkl34o22fq8@resource.calendar.google.com\",\"resource\":true},{\"email\":\"c_188d87cvkjb86hl7hite45rpp9d8u@resource.calendar.google.com\",\"resource\":true}]",
                     "congregation": "",
                     "groupName": "Matt's Buddies",
                     "numPeople": "5",

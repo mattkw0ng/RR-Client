@@ -111,7 +111,7 @@ const UserProfile = () => {
                                             {/* Details */}
                                             <p>
                                                 {/* Room */}
-                                                {event.extendedProperties.private.rooms.map((room) => <p key={room.email}>{room.displayName}</p>)}
+                                                {JSON.parse(event.extendedProperties.private.rooms).map((room) => <p key={room.email}>{room.displayName}</p>)}
                                                 <br />
                                                 {/* Description */}
                                                 Description: {event.description}
