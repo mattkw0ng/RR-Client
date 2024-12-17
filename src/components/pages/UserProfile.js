@@ -73,8 +73,9 @@ const UserProfile = () => {
         );
     }
 
-    const handleCancelEvent = (event) => {
-        const confirmation = window.confirm(`Cancel '${event.sumary}?'`);
+    const handleCancelEvent = (e, event) => {
+        e.preventDefault();
+        const confirmation = window.confirm(`Cancel ${event.summary}?`);
         if (confirmation) {
             console.log("Deleting event");
         }
@@ -123,7 +124,7 @@ const UserProfile = () => {
                                                 :
                                                 <div className='d-flex gap-2'>
                                                     <EditorModal event={event} pending={true}/> 
-                                                    <Button color='danger' size='sm' onClick={handleCancelEvent(event)}>Cancel</Button>
+                                                    <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button>
                                                 </div>
                                             }
 
@@ -143,7 +144,7 @@ const UserProfile = () => {
                                 (<StandardEvent
                                     key={event.id}
                                     event={event}
-                                    button={<div className='d-flex gap-2'><EditorModal event={event} pending={false}/> <Button color='danger' size='sm'>Cancel</Button></div>}
+                                    button={<div className='d-flex gap-2'><EditorModal event={event} pending={false}/> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
                                     badge={approvedBadge}
                                 />)
                             ))}
