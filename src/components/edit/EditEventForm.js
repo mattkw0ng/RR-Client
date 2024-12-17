@@ -132,8 +132,8 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
   };
 
   useEffect(() => {
-    console.log(selectedRooms);
-  },[selectedRooms])
+    console.log(event, selectedRooms);
+  },[selectedRooms, event])
 
   return (
     <div className="edit-event-form">
