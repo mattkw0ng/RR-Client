@@ -53,6 +53,20 @@ export const EVENTS = {
                     }
                 ]
             },
+            "extendedProperties": {
+                "private": {
+                    "rooms": [{
+                        "email": "c_18835g31o295uih4iv40qgpl9msku@resource.calendar.google.com",
+                        "displayName": "A-1-Sanctuary (325)",
+                        "resource": true,
+                        "responseStatus": "declined"
+                    }],
+                    "congregation": "",
+                    "groupName": "Matt's Buddies",
+                    "numPeople": "5",
+                    "groupLeader": "Matt"
+                }
+            },
             "eventType": "default"
         }
     ],

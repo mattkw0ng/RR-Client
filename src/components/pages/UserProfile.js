@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import API_URL from '../../config';
 import axios from 'axios';
-import { ListGroup, Badge, Container } from 'reactstrap';
+import { Container, ListGroup, Button, Badge, Modal, ModalHeader, ModalBody, ListGroupItem } from 'reactstrap';
+import RecurringEventList from '../events/RecurringEventList';
 
 import { EVENTS, USER } from '../../data/example';
 import StandardEvent from '../events/StandardEvent';
+import EditEventForm from '../edit/EditEventForm';
 
 const UserProfile = () => {
 
@@ -48,6 +50,36 @@ const UserProfile = () => {
     const approvedBadge = <Badge pill className='ms-2' color={'primary'} style={{ fontSize: '0.6em' }}>approved</Badge>
     const pendingBadge = <Badge pill className='ms-2' color={'secondary'} style={{ fontSize: '0.6em' }} >pending</Badge>
 
+    const EditorModal = ({ event, pending }) => {
+
+        const [modal, setModal] = useState(false);
+
+        const toggle = () => setModal(!modal);
+
+        return (
+            <div>
+                <Button size='sm' color="secondary" onClick={toggle}>
+                    Edit
+                </Button>
+                <Modal isOpen={modal} toggle={toggle} size='xl'>
+                    <ModalHeader toggle={toggle}><span className='text-secondary'> {event.summary} </span></ModalHeader>
+                    <ModalBody className='px-3'>
+
+                        <EditEventForm event={event} pending={pending} />
+                    </ModalBody>
+
+                </Modal>
+            </div>
+        );
+    }
+
+    const handleCancelEvent = (event) => {
+        const confirmation = window.confirm(`Cancel '${event.sumary}?'`);
+        if (confirmation) {
+            console.log("Deleting event");
+        }
+    }
+
     return (
         <Container className='my-4'>
             <div className='d-flex justify-content-between'>
@@ -65,7 +97,41 @@ const UserProfile = () => {
                         {/* Pending Events First */}
                         <ListGroup>
                             {events['pending'].map(event => (
-                                (<StandardEvent key={event.id} event={event} buttonText={"Edit/Cancel"} buttonHandler={console.log} badge={pendingBadge} />)
+                                <div>
+                                    <ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            {/* Title */}
+                                            <h5 className="mb-1 text-secondary">
+                                                {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
+
+                                                {pendingBadge}
+                                            </h5>
+
+                                            {/* Details */}
+                                            <p>
+                                                {/* Room */}
+                                                {event.extendedProperties.private.rooms.map((room) => <p key={room.email}>{room.displayName}</p>)}
+                                                <br />
+                                                {/* Description */}
+                                                Description: {event.description}
+                                                <br />
+                                                Congregation: {event.extendedProperties.private.congregation}
+                                            </p>
+
+                                            {event.recurrence ?
+                                                <RecurringEventList list={event.instances} />
+                                                :
+                                                <div className='d-flex gap-2'>
+                                                    <EditorModal event={event} pending={true}/> 
+                                                    <Button color='danger' size='sm' onClick={handleCancelEvent(event)}>Cancel</Button>
+                                                </div>
+                                            }
+
+                                        </div>
+                                    </ListGroupItem>
+                                </div>
+
+
                             ))}
                         </ListGroup>
 
@@ -74,7 +140,12 @@ const UserProfile = () => {
                         {/* Approved Events */}
                         <ListGroup>
                             {events['approved'].map(event => (
-                                (<StandardEvent key={event.id} event={event} buttonText={"Edit/Cancel"} buttonHandler={console.log} badge={approvedBadge} />)
+                                (<StandardEvent
+                                    key={event.id}
+                                    event={event}
+                                    button={<div className='d-flex gap-2'><EditorModal event={event} pending={false}/> <Button color='danger' size='sm'>Cancel</Button></div>}
+                                    badge={approvedBadge}
+                                />)
                             ))}
                         </ListGroup>
                     </div>

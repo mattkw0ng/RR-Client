@@ -121,7 +121,7 @@ const AdminPage = () => {
             {/* Non-Conflicting Events Section */}
 
             {pendingEvents.quickApprove.map(event => (
-              (<StandardEvent key={event.id} event={event} buttonText={"Approve"} buttonHandler={handleApproveEvent} />)
+              (<StandardEvent key={event.id} event={event} button={<Button onClick={() => handleApproveEvent(event.id)} size="sm">Approve</Button>} />)
             ))}
           </ListGroup>
 

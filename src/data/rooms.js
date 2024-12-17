@@ -133,4 +133,18 @@ export const roomListSimple = [
   "D103 Conf. Rm"
 ];
 
+export const congregationOptions = [
+  "English Ministry / Small Group",
+  "Mandarin Ministry / Fellowship",
+  "Cantonese Ministry / Fellowship",
+  "Children's Ministry",
+  "Young Adult Ministry",
+  "Youth Ministry",
+  "Worship Ministry - CS",
+  "Worship Ministry - ES",
+  "Worship Ministry - MS",
+  "Partnering Church",
+  "Other"
+];
+
 export default ROOMS;

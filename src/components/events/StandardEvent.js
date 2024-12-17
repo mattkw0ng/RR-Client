@@ -1,9 +1,9 @@
 import React from "react";
-import { Button, Badge, ListGroupItem } from 'reactstrap';
+import { Badge, ListGroupItem } from 'reactstrap';
 import RecurringEventList from "./RecurringEventList";
 import { format, isSameDay, parseISO } from 'date-fns';
 
-const StandardEvent = ({ event, buttonText, buttonHandler, badge }) => {
+const StandardEvent = ({ event, button, badge }) => {
   // Display Recurrence Rule as a Sentence
   function parseRecurrenceRule(rrule) {
     const daysMap = {
@@ -110,8 +110,8 @@ const StandardEvent = ({ event, buttonText, buttonHandler, badge }) => {
           <RecurringEventList list={event.instances} />
           : <p>{formatEventDates(event.start.dateTime, event.end.dateTime)} </p>
         }
-        <br />
-        <Button onClick={() => buttonHandler(event.id)} size="sm">{buttonText}</Button>
+
+        {button}
       </div>
     </ListGroupItem>
   )
