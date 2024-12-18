@@ -7,6 +7,7 @@ import ROOMS from "../../data/rooms";
 import SelectInput from "../form/SelectInput";
 import RoomSelector from "./RoomSelector";
 import { getRoomNameByCalendarID } from "../../util/util";
+import API_URL from "../../config";
 
 const EditEventForm = ({ event, onSubmit, pending }) => {
   const [formState, setFormState] = useState({
@@ -118,7 +119,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
         timeOrRoomChanged,
       })
 
-      const response = await axios.post("/editEvent", {
+      const response = await axios.post(API_URL + "/api/editEvent", {
         event: updatedEvent,
         timeOrRoomChanged,
       });
