@@ -18,29 +18,36 @@ function RecurrenceForm({ setRRULE }) {
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
     );
   };
-  const handleEndAfterOccurrencesChange = (e) => setEndAfterOccurrences(e.target.value);
-  const handleEndDateChange = (e) => setEndDate(e.target.value);
-
-  // Generate RRULE
-  const generateRecurrenceRule = () => {
-    let rrule = `FREQ=${frequency.toUpperCase()}`;
-
-    if (interval > 1) rrule += `;INTERVAL=${interval}`;
-
-    if (frequency === 'weekly' && daysOfWeek.length > 0) {
-      rrule += `;BYDAY=${daysOfWeek.join(',')}`;
-    }
-
-    if (endAfterOccurrences) {
-      rrule += `;COUNT=${endAfterOccurrences}`;
-    } else if (endDate) {
-      rrule += `;UNTIL=${new Date(endDate).toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
-    }
-
-    return rrule;
+  const handleEndAfterOccurrencesChange = (e) => {
+    setEndAfterOccurrences(e.target.value);
+    setEndDate('');
+  };
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value)
+    setEndAfterOccurrences(null);
   };
 
+  
+  // const generateRecurrenceRule = () => {
+  //   let rrule = `FREQ=${frequency.toUpperCase()}`;
+
+  //   if (interval > 1) rrule += `;INTERVAL=${interval}`;
+
+  //   if (frequency === 'weekly' && daysOfWeek.length > 0) {
+  //     rrule += `;BYDAY=${daysOfWeek.join(',')}`;
+  //   }
+
+  //   if (endAfterOccurrences) {
+  //     rrule += `;COUNT=${endAfterOccurrences}`;
+  //   } else if (endDate) {
+  //     rrule += `;UNTIL=${new Date(endDate).toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
+  //   }
+
+  //   return rrule;
+  // };
+
   useEffect(() => {
+    // Generate RRULE
     let rrule = `FREQ=${frequency.toUpperCase()}`;
 
     if (interval > 1) rrule += `;INTERVAL=${interval}`;
@@ -60,7 +67,7 @@ function RecurrenceForm({ setRRULE }) {
 
   return (
     <div className="container my-4">
-      <h3 className="mb-3">Set Recurrence Options</h3>
+      <h5 className="mb-3">Set Recurrence Options</h5>
 
       <div className='d-flex justify-content-start'>
         {/* Frequency Selection */}
@@ -149,11 +156,6 @@ function RecurrenceForm({ setRRULE }) {
             />
           </div>
         </div>
-      </div>
-
-      {/* Generated RRULE */}
-      <div className="mt-4">
-        <p><strong>Generated RRULE:</strong> {generateRecurrenceRule()}</p>
       </div>
     </div>
   );

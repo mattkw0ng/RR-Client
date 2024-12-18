@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { Collapse, Input, Label, FormGroup, } from 'reactstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DateTime from '../form/DateTime';
@@ -38,6 +39,7 @@ function RoomRes() {
   const [user, setUser] = useState(null);
   const [availableRooms, setAvailableRooms] = useState(roomListSimple);
   const [switchCalendar, setSwitchCalendar] = useState(true);
+  const [isRepeating, setIsRepeating] = useState(false);
 
   useEffect(() => {
 
@@ -124,6 +126,11 @@ function RoomRes() {
     }));
   }
 
+  const handleCheckboxChange = () => {
+    setRRULE(null) // reset RRULE
+    setIsRepeating(!isRepeating);
+  };
+
   const checkAvailability = async (e) => {
     try {
       e.preventDefault();
@@ -131,7 +138,7 @@ function RoomRes() {
       const end = endDateTime.toISOString();
 
       const response = await axios.get(API_URL + `/api/checkAvailability?startDateTime=${start}&endDateTime=${end}`, { withCredentials: true });
-      alert(`Available rooms: ${response.data.join(', ')}`);
+      console.log(`Available rooms: ${response.data.join(', ')}`);
       setAvailableRooms(response.data)
     } catch (error) {
       console.error('Error checking availability', error);
@@ -177,13 +184,28 @@ function RoomRes() {
 
             {/* Group Leader's Name */}
             <TextInput label={"Group Leader's Name (if different from requester's name)"} name={'groupLeader'} handleFormChange={handleFormChange} formData={formData} />
-            
+
             {/* Start Date/Time */}
             <DateTime startDateTime={startDateTime} endDateTime={endDateTime} minEndDateTime={minEndDateTime} handleStartDateTimeChange={handleStartDateTimeChange} handleEndDateTimeChange={handleEndDateTimeChange} />
 
             {/* Recurrence */}
+            {/* Checkbox for Advanced Options */}
+            <FormGroup check>
+              <Label check>
+                <Input
+                  type="checkbox"
+                  checked={isRepeating}
+                  onChange={handleCheckboxChange}
+                />
+                Repeating Event
+              </Label>
+            </FormGroup>
 
-            <RecurrenceForm setRRULE={setRRULE}/>
+            {/* Advanced Options */}
+            <Collapse isOpen={isRepeating}>
+              <RecurrenceForm setRRULE={setRRULE} />
+            </Collapse>
+
           </div>
 
           {/* Room List (Right Column) */}
@@ -228,10 +250,10 @@ function RoomRes() {
                           onChange={handleRoomChange}
                           disabled={!availableRooms.includes(room)}
                         />
-                        <label className="form-check-label" htmlFor={room}>
+                        <label className={`form-check-label`} htmlFor={room}>
                           {room}{" "}
                           {availableRooms.includes(room) ? (
-                            ""
+                            <small>available</small>
                           ) : (
                             <small>unavailable</small>
                           )}
