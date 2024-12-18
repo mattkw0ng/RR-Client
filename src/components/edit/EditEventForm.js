@@ -22,7 +22,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
     congregation: event.extendedProperties?.private?.congregation || "",
   });
 
-  const [selectedRooms, setSelectedRooms] = useState(event.pending ? JSON.parse(event.extendedProperties.private.rooms).map((e) => getRoomNameByCalendarID(e.email)) : event.attendees.filter((e) => e.resource).map((e) => getRoomNameByCalendarID(e.email)));
+  const [selectedRooms, setSelectedRooms] = useState(pending ? JSON.parse(event.extendedProperties.private.rooms).map((e) => getRoomNameByCalendarID(e.email)) : event.attendees.filter((e) => e.resource).map((e) => getRoomNameByCalendarID(e.email)));
 
   const hasRoomsChanged = (original, updated) => {
     const originalRooms = new Set(
