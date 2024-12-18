@@ -253,9 +253,9 @@ function RoomRes() {
                         <label className={`form-check-label`} htmlFor={room}>
                           {room}{" "}
                           {availableRooms.includes(room) ? (
-                            <small>available</small>
+                            <small className='text-primary'>available</small>
                           ) : (
-                            <small>unavailable</small>
+                            <small className='text-danger '>unavailable</small>
                           )}
                         </label>
                       </div>
