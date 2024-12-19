@@ -161,12 +161,8 @@ function RoomRes() {
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
 
-      const response = await axios.post(`${API_URL}/api/checkConflicts`, {
-        startDateTime: start,
-        endDateTime: end,
-        rooms: selectedRooms,
-      });
-
+      const response = await axios.get(`${API_URL}/api/checkConflicts?startDateTime=${start}&endDateTime=${end}&rooms=${selectedRooms}`, { withCredentials: true });
+      console.log(`checking for conflicts: ${response.data}`);
       setConflicts(response.data || []);
     } catch (error) {
       console.error("Error checking conflicts", error);
@@ -181,7 +177,7 @@ function RoomRes() {
 
   const SummaryModal = () => {
     return (
-    <Modal size='lg' isOpen={isSummaryVisible} toggle={() => setIsSummaryVisible(!isSummaryVisible)}>
+      <Modal size='lg' isOpen={isSummaryVisible} toggle={() => setIsSummaryVisible(!isSummaryVisible)}>
         <ModalHeader toggle={() => setIsSummaryVisible(false)}>Event Summary</ModalHeader>
         <ModalBody>
           <h5>Event Details</h5>
