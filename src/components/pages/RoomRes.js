@@ -220,10 +220,8 @@ function RoomRes() {
               <h5 className="text-danger">Conflicts Found</h5>
                 {conflicts.map((conflict, index) => (
                   <p key={index}>
-                    {`${getRoomNameByCalendarID(conflict.roomId)} is busy`}
-                    {conflict.times.map((timeRange) => (
-                      <span className='conflicting-time'>{`${formatDisplayTime(timeRange.start)} - ${formatDisplayTime(timeRange.end)}`}</span>
-                    ))}
+                    {`${getRoomNameByCalendarID(conflict.roomId)} is busy from: `}
+                    {conflict.times.map((timeRange) => (`${formatDisplayTime(timeRange.start)} - ${formatDisplayTime(timeRange.end)}`)).join(', ')}
                   </p>
                 ))}
             </>
