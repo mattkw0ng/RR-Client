@@ -97,8 +97,8 @@ const StandardEvent = ({ event, button, badge, pending=true }) => {
 
         <p>
           {/* Room */}
-          {pending ? event.extendedProperties?.private.rooms?.map((room) => getRoomNameByCalendarID(room.email)) :
-            event.attendees.filter((attendee) => attendee.resource === true).map((room) => getRoomNameByCalendarID(room.email))
+          {pending ? event.extendedProperties?.private.rooms?.map((room) => getRoomNameByCalendarID(room.email).join(', ')) :
+            event.attendees.filter((attendee) => attendee.resource === true).map((room) => getRoomNameByCalendarID(room.email).join(', '))
           }
           <br />
           {/* Description */}
