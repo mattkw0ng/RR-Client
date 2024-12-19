@@ -10,7 +10,7 @@ import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
 import RecurrenceForm from '../form/RecurrenceForm';
-import { parseRRule, roundToNearestHalfHour } from '../../util/util';
+import { getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
 
 
 // Room Reservation Page
@@ -220,7 +220,7 @@ function RoomRes() {
               <h5 className="text-danger">Conflicts Found</h5>
               <ul>
                 {conflicts.map((conflict, index) => (
-                  <li key={index}>{conflict}</li>
+                  <li key={index}>{`${getRoomNameByCalendarID(conflict.roomId)} is busy`}</li>
                 ))}
               </ul>
             </>
