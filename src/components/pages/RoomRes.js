@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Collapse, Input, Label, FormGroup, } from 'reactstrap';
+import { Collapse, Input, Label, FormGroup, Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DateTime from '../form/DateTime';
-// import RoomButton from '../RoomButton';
-// import SearchRoom from '../SearchRoom';
 import API_URL from '../../config';
 import { roomsGrouped, roomListSimple, congregationOptions } from '../../data/rooms';
 import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
 import RecurrenceForm from '../form/RecurrenceForm';
+import { parseRRule, roundToNearestHalfHour } from '../../util/util';
 
 
 // Room Reservation Page
@@ -31,15 +30,18 @@ function RoomRes() {
   });
 
   // Pre Loaded Data from RoomSearch page
-  const [startDateTime, setStartDateTime] = useState(preLoadData.startDateTime ? new Date(preLoadData.startDateTime) : new Date());
-  const [endDateTime, setEndDateTime] = useState(preLoadData.endDateTime ? new Date(preLoadData.endDateTime) : new Date(new Date().getTime() + 60 * 60 * 1000)); // Initial end time 1 hour after start
+  const [startDateTime, setStartDateTime] = useState(preLoadData.startDateTime ? new Date(preLoadData.startDateTime) : roundToNearestHalfHour(new Date()));
+  const [endDateTime, setEndDateTime] = useState(preLoadData.endDateTime ? new Date(preLoadData.endDateTime) : roundToNearestHalfHour(new Date(new Date().getTime() + 60 * 60 * 1000))); // Initial end time 1 hour after start
   const [minEndDateTime, setMinEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Minimum end time 1 hour after start
   const [selectedRooms, setSelectedRooms] = useState(preLoadRooms ? preLoadRooms : []); // Default room selection
 
   const [user, setUser] = useState(null);
   const [availableRooms, setAvailableRooms] = useState(roomListSimple);
-  const [switchCalendar, setSwitchCalendar] = useState(true);
+  // const [switchCalendar, setSwitchCalendar] = useState(true);
   const [isRepeating, setIsRepeating] = useState(false);
+  const [isSummaryVisible, setIsSummaryVisible] = useState(false); // Controls the summary modal
+  const [conflicts, setConflicts] = useState([]); // Stores any detected conflicts
+
 
   useEffect(() => {
 
@@ -85,9 +87,17 @@ function RoomRes() {
     }
   };
 
+  const handleSummary = async (e) => {
+    e.preventDefault();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+    // Check for conflicts before proceeding
+    await checkForConflicts();
+
+    // Show the summary modal
+    setIsSummaryVisible(true);
+  };
+
+  const handleSubmit = async () => {
     try {
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
@@ -146,10 +156,92 @@ function RoomRes() {
     }
   };
 
-  const approvedCalendarId = "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com"
-  const separatedIframeSrc = "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FLos_Angeles&bgcolor=%23ffffff&src=Y18xODhkaWxtdmJvcGltZ2lyaGZqbWNwZG8xanNoaUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgzNWczMW8yOTV1aWg0aXY0MHFncGw5bXNrdUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhiNnViZG84c2VhaWxkazRmMmxlMjNvNDl1a0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg0OGlqMnNhYnBxaXMwbGwzc3FnM3M5NWl2c0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlNWV1aG1pNG5tamVuZzZua2wzNG8yMmZxOEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlYXF0ZWgzcmp1ZzlybWFxamZuMzJuY2VnNEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgyNjh2MXZpNDN1ZzBlaTJibGZuYzhnMXBzMEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlZjg1bWp1cDhpaDMwaXZvam05YjFxYnJsMkByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgwMHNnYWtsMW5xaG85aHZtamtiazc4OW43MEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhmbHRpbzMxMDZvZ3J0Z2x1ajV0ZThydmZtZ0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg3NTZrY2xjZDZhaHRoaTRzcWJwNjczc2g1b0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhmY2Y4aTNwNW5panU0azJhNmY2ZnZhZWhwMEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhiYzRoZTZjbHUwZ3BsamYxM2dnYWhkN3Y3aUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhhdWtsYjM4cHZjajR1aG42amVxazVmb3Bya0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg4Z2I4ZmdxdmRjaWo2ajloMnU5MGhhdGs5ZUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkODdjdmtqYjg2aGw3aGl0ZTQ1cnBwOWQ4dUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkNnBrdWNhMTJranI2bW11bDJibGlwYWM5c0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkMnNyY2lzY21tam43ajVlN2htMmxobzF2Z0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhhM29nb251cDNjaXQxa2ExNTJ0Y2F1bjBiY0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg3NjhmdHM0aG9taGtzaGx0NzlvcWVmNmkyZUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhjOWdrOGRlMzVxam9za2V1Z3RtYWhpZGZoa0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&color=%23E67C73&color=%23B39DDB&color=%23E4C441&color=%23D50000&color=%23795548&color=%23E4C441&color=%23009688&color=%23F09300&color=%23D81B60&color=%23F4511E&color=%23EF6C00&color=%23E67C73&color=%234285F4&color=%237CB342&color=%23C0CA33&color=%23EF6C00&color=%23D50000&color=%237CB342&color=%23E4C441&color=%23C0CA33&color=%23B39DDB"
-  const iframeSrc = `https://calendar.google.com/calendar/embed?src=${approvedCalendarId}&ctz=America%2FLos_Angeles`;
+  const checkForConflicts = async () => {
+    try {
+      const start = startDateTime.toISOString();
+      const end = endDateTime.toISOString();
 
+      const response = await axios.post(`${API_URL}/api/checkConflicts`, {
+        startDateTime: start,
+        endDateTime: end,
+        rooms: selectedRooms,
+      });
+
+      setConflicts(response.data || []);
+    } catch (error) {
+      console.error("Error checking conflicts", error);
+      alert("Could not check for conflicts. Please try again.");
+    }
+  };
+
+
+  // const approvedCalendarId = "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com"
+  // const separatedIframeSrc = "https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FLos_Angeles&bgcolor=%23ffffff&src=Y18xODhkaWxtdmJvcGltZ2lyaGZqbWNwZG8xanNoaUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgzNWczMW8yOTV1aWg0aXY0MHFncGw5bXNrdUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhiNnViZG84c2VhaWxkazRmMmxlMjNvNDl1a0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg0OGlqMnNhYnBxaXMwbGwzc3FnM3M5NWl2c0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlNWV1aG1pNG5tamVuZzZua2wzNG8yMmZxOEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlYXF0ZWgzcmp1ZzlybWFxamZuMzJuY2VnNEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgyNjh2MXZpNDN1ZzBlaTJibGZuYzhnMXBzMEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhlZjg1bWp1cDhpaDMwaXZvam05YjFxYnJsMkByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODgwMHNnYWtsMW5xaG85aHZtamtiazc4OW43MEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhmbHRpbzMxMDZvZ3J0Z2x1ajV0ZThydmZtZ0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg3NTZrY2xjZDZhaHRoaTRzcWJwNjczc2g1b0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhmY2Y4aTNwNW5panU0azJhNmY2ZnZhZWhwMEByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhiYzRoZTZjbHUwZ3BsamYxM2dnYWhkN3Y3aUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhhdWtsYjM4cHZjajR1aG42amVxazVmb3Bya0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg4Z2I4ZmdxdmRjaWo2ajloMnU5MGhhdGs5ZUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkODdjdmtqYjg2aGw3aGl0ZTQ1cnBwOWQ4dUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkNnBrdWNhMTJranI2bW11bDJibGlwYWM5c0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhkMnNyY2lzY21tam43ajVlN2htMmxobzF2Z0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhhM29nb251cDNjaXQxa2ExNTJ0Y2F1bjBiY0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODg3NjhmdHM0aG9taGtzaGx0NzlvcWVmNmkyZUByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&src=Y18xODhjOWdrOGRlMzVxam9za2V1Z3RtYWhpZGZoa0ByZXNvdXJjZS5jYWxlbmRhci5nb29nbGUuY29t&color=%23E67C73&color=%23B39DDB&color=%23E4C441&color=%23D50000&color=%23795548&color=%23E4C441&color=%23009688&color=%23F09300&color=%23D81B60&color=%23F4511E&color=%23EF6C00&color=%23E67C73&color=%234285F4&color=%237CB342&color=%23C0CA33&color=%23EF6C00&color=%23D50000&color=%237CB342&color=%23E4C441&color=%23C0CA33&color=%23B39DDB"
+  // const iframeSrc = `https://calendar.google.com/calendar/embed?src=${approvedCalendarId}&ctz=America%2FLos_Angeles`;
+
+  const SummaryModal = () => {
+    return (
+    <Modal size='lg' isOpen={isSummaryVisible} toggle={() => setIsSummaryVisible(!isSummaryVisible)}>
+        <ModalHeader toggle={() => setIsSummaryVisible(false)}>Event Summary</ModalHeader>
+        <ModalBody>
+          <h5>Event Details</h5>
+          <Table>
+            <tbody>
+              <tr>
+                <td>Event Name:</td>
+                <td>{formData.eventName}</td>
+              </tr>
+              <tr>
+                <td>Location:</td>
+                <td>{formData.location}</td>
+              </tr>
+              <tr>
+                <td>Description:</td>
+                <td>{formData.description}</td>
+              </tr>
+              <tr>
+                <td>Start Time:</td>
+                <td>{startDateTime.toLocaleString()}</td>
+              </tr>
+              <tr>
+                <td>End Time:</td>
+                <td>{endDateTime.toLocaleString()}</td>
+              </tr>
+              <tr>
+                <td>Rooms:</td>
+                <td>{selectedRooms.join(", ") || "None Selected"}</td>
+              </tr>
+              <tr>
+                <td>Repeating:</td>
+                <td>{isRepeating ? parseRRule(rRule) : "N/A"}</td>
+              </tr>
+            </tbody>
+          </Table>
+
+          {/* Display Conflicts */}
+          {conflicts.length > 0 ? (
+            <>
+              <h5 className="text-danger">Conflicts Found</h5>
+              <ul>
+                {conflicts.map((conflict, index) => (
+                  <li key={index}>{conflict}</li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <h5 className="text-success">No Conflicts Found</h5>
+          )}
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleSubmit} disabled={conflicts.length > 0}>
+            Submit
+          </Button>
+          <Button color="secondary" onClick={() => setIsSummaryVisible(false)}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>)
+  }
 
   return (
     <div className="container">
@@ -294,25 +386,23 @@ function RoomRes() {
 
           {/* Submit */}
           <div>
-            {user ? <button type="submit" className="btn btn-primary my-3">Add Event</button> : <a href="/login" className='btn btn-disabled'>Please Login</a>}
+            {/* {user ? <Button onClick={(e) => handleSummary(e)} className="my-3" color='primary'>Add Event</Button> : <a href="/login" className='btn btn-disabled'>Please Login</a>} */}
           </div>
+          <Button onClick={(e) => handleSummary(e)} className="my-3" color='primary'>Add Event</Button>
 
         </div>
 
 
       </form>
 
-      <div class="responsive-iframe-container">
+      <SummaryModal />
+
+      {/* <div class="responsive-iframe-container">
         <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
       </div>
       <br />
       <button onClick={() => setSwitchCalendar(!switchCalendar)} className='btn btn-outline-secondary'>{switchCalendar ? 'View Individual Calendars' : 'View All'}</button>
-      <br />
-
-      {/* <br />
-      <RoomButton />
-      <br />
-      <SearchRoom /> */}
+      <br /> */}
     </div>
   );
 }

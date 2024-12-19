@@ -56,6 +56,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
     }));
   };
 
+  // Submit Changes
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -91,6 +92,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
 
     // Update the rooms list (depending on if the event is pending or not)
     if (pending) {
+      // If the event is pending, add the new set of rooms to extendedProperties.private.rooms
       updatedEvent.extendedProperties.private.rooms = JSON.stringify(roomListAsAttendees);
     } else {
       // Determine if the time or room list has been changed
@@ -99,18 +101,13 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
         hasRoomsChanged(event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || [], selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
 
       if (timeOrRoomChanged) {
+        // If the event was approved and the rooms/time have been modified, save the attendee information but move the rooms to extendedProperties.rooms (like a normal pending event)
         updatedEvent.attendees = (event.attendees || []).filter((attendee) => !attendee.resource) // Keep non-resource attendees
-        updatedEvent.extendedProperties.private.rooms = JSON.stringify(roomListAsAttendees);
+        updatedEvent.extendedProperties.private.rooms = JSON.stringify(roomListAsAttendees); // Mirrors a typical pending event by storing room information under extendedProperies
       } else {
-        updatedEvent.attendees = [
-          ...(event.attendees || []).filter((attendee) => !attendee.resource), // Keep non-resource attendees
-          ...roomListAsAttendees.map((room) => ({
-            ...room,
-            responseStatus: "accepted",
-          })),
-        ];
+        // Else if only non-room/date/time information was changed, attendees should stay the same
+        updatedEvent.attendees = event.attendees
       }
-
     }
 
     try {

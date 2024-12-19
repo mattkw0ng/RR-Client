@@ -93,7 +93,7 @@ const AdminPage = () => {
 
             {/* TimeLine */}
             {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
-            <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId}/>
+            <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId} />
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={toggle}>
@@ -116,7 +116,10 @@ const AdminPage = () => {
           <iframe title="pendingEvents" src="https://calendar.google.com/calendar/embed?src=c_0430068aa84472bdb1aa16b35d4061cd867e4888a8ace5fa3d830bb67587dfad%40group.calendar.google.com&ctz=America%2FLos_Angeles" style={{ border: 0 }} width="100%" height="500" frameborder="0" ></iframe>
         </Col>
         <Col>
-          <h2>Quick Approve Events</h2>
+          <div className='d-flex justify-content-between'>
+            <h2 className='d-inline'>Quick Approve Events</h2> <Button size='sm' color='primary' outline className='d-inline'>Approve All</Button>
+          </div>
+
           <ListGroup>
             {/* Non-Conflicting Events Section */}
 
@@ -155,7 +158,7 @@ const AdminPage = () => {
                   {event.recurrence ?
                     <RecurringEventList list={event.instances} />
                     :
-                    event.conflicts.map((conflict) => 
+                    event.conflicts.map((conflict) =>
                       <div id={conflict.roomId}>
                         <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
                         {/* <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p> */}
