@@ -5,7 +5,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DateTime from '../form/DateTime';
 import API_URL from '../../config';
-import { roomsGrouped, roomListSimple, congregationOptions } from '../../data/rooms';
+import ROOMS, { roomsGrouped, roomListSimple, congregationOptions } from '../../data/rooms';
 import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
@@ -161,7 +161,7 @@ function RoomRes() {
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
 
-      const response = await axios.get(`${API_URL}/api/checkConflicts?startDateTime=${start}&endDateTime=${end}&rooms=${selectedRooms}`, { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/checkConflicts?startDateTime=${start}&endDateTime=${end}&rooms=${JSON.stringify(selectedRooms.map((room_name) => ROOMS[room_name].calendarID))}`, { withCredentials: true });
       console.log(`checking for conflicts: ${response.data}`);
       setConflicts(response.data || []);
     } catch (error) {
