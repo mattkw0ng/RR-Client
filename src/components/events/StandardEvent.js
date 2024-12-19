@@ -2,8 +2,9 @@ import React from "react";
 import { Badge, ListGroupItem } from 'reactstrap';
 import RecurringEventList from "./RecurringEventList";
 import { format, isSameDay, parseISO } from 'date-fns';
+import { getRoomNameByCalendarID } from "../../util/util";
 
-const StandardEvent = ({ event, button, badge }) => {
+const StandardEvent = ({ event, button, badge, pending=true }) => {
   // Display Recurrence Rule as a Sentence
   function parseRecurrenceRule(rrule) {
     const daysMap = {
@@ -96,7 +97,9 @@ const StandardEvent = ({ event, button, badge }) => {
 
         <p>
           {/* Room */}
-          {event.extendedProperties?.private.rooms?.map((element) => element.displayName)}
+          {pending ? event.extendedProperties?.private.rooms?.map((room) => getRoomNameByCalendarID(room.email)) :
+            event.attendees.filter((attendee) => attendee.resource === true).map((room) => getRoomNameByCalendarID(room.email))
+          }
           <br />
           {/* Description */}
           Description: {event.description}

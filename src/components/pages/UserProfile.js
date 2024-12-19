@@ -146,6 +146,7 @@ const UserProfile = () => {
                                     event={event}
                                     button={<div className='d-flex gap-2'><EditorModal event={event} pending={false}/> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
                                     badge={approvedBadge}
+                                    pending={false}
                                 />)
                             ))}
                         </ListGroup>
