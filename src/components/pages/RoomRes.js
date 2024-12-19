@@ -10,7 +10,7 @@ import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
 import RecurrenceForm from '../form/RecurrenceForm';
-import { getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
+import { formatDisplayTime, getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
 
 
 // Room Reservation Page
@@ -218,11 +218,14 @@ function RoomRes() {
           {conflicts.length > 0 ? (
             <>
               <h5 className="text-danger">Conflicts Found</h5>
-              <ul>
                 {conflicts.map((conflict, index) => (
-                  <li key={index}>{`${getRoomNameByCalendarID(conflict.roomId)} is busy`}</li>
+                  <p key={index}>
+                    {`${getRoomNameByCalendarID(conflict.roomId)} is busy`}
+                    {conflict.times.map((timeRange) => (
+                      <span className='conflicting-time'>{`${formatDisplayTime(timeRange.start)} - ${formatDisplayTime(timeRange.end)}`}</span>
+                    ))}
+                  </p>
                 ))}
-              </ul>
             </>
           ) : (
             <h5 className="text-success">No Conflicts Found</h5>
