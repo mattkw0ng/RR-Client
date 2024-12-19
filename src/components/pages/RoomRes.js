@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Collapse, Input, Label, FormGroup, Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,6 +16,7 @@ import { formatDisplayTime, getRoomNameByCalendarID, parseRRule, roundToNearestH
 // Room Reservation Page
 function RoomRes() {
   const preLoadLocation = useLocation();
+  const navigate = useNavigate();
   const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};
 
   const [rRule, setRRULE] = useState();
@@ -122,6 +123,7 @@ function RoomRes() {
 
       });
       alert('Event added successfully');
+      navigate('/profile')
     } catch (error) {
       console.error('Error adding event', error);
       alert('Error adding event', error);
