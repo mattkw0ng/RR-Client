@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AdminPage from './components/pages/AdminPage';
+// import AdminPage from './components/pages/AdminPage';
 import RoomRes from './components/pages/RoomRes'; // Assuming you have a home page
 import Login from './components/Login';
 import UserProfile from './components/pages/UserProfile';
 import NavBar from './components/NavBar';
 import RoomSearch from './components/pages/RoomSearch';
+import AdminPortal from './components/pages/AdminPortal';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('authToken');
@@ -31,7 +32,7 @@ const App = () => {
         />
         <Route path="search" element={<RoomSearch />} />
         <Route path="/" element={<RoomRes />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={<AdminPortal />} />
       </Routes>
     </Router>
   );
