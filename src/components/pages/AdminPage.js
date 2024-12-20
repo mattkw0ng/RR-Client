@@ -50,10 +50,21 @@ const AdminPage = () => {
       .then(response => {
         alert('Event approved successfully:', response.data);
         fetchPendingEvents();
-        // Optionally, you could trigger a re-render or refresh the list of pending events
       })
       .catch(error => {
         console.error('Error approving event:', error.response ? error.response.data : error.message);
+      });
+  };
+
+  const handleAcceptChanges = async (eventId) => {
+    console.log("Accepting Changes", eventId);
+    axios.post(API_URL + '/api/acceptProposedChanges', { eventId }, { withCredentials: true })
+      .then(response => {
+        alert('Event accepted successfully:', response.data);
+        fetchPendingEvents();
+      })
+      .catch(error => {
+        console.error('Error accepting changes:', error.response ? error.response.data : error.message);
       });
   };
 
@@ -181,13 +192,10 @@ const AdminPage = () => {
           {/* Non-Conflicting Events Section */}
 
           {proposedChangesEvents.map(event => (
-            (<StandardEvent key={event.id} event={event} button={<Button onClick={() => handleApproveEvent(event.id)} size="sm">Accept</Button>} />)
+            (<StandardEvent key={event.id} event={event} button={<Button onClick={() => handleAcceptChanges(event.id)} size="sm">Accept</Button>} />)
           ))}
         </ListGroup>
       </div>
-
-
-
     </Container>
   );
 };
