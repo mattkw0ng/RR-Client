@@ -33,6 +33,7 @@ const AdminPage = () => {
     try {
       const response = await axios.get(API_URL + '/api/proposedChangesEvents', { withCredentials: true });
       setProposedChangesEvents(response.data);
+      console.log(JSON.stringify(response.data));
     } catch (error) {
       console.error('Error fetching proposedChanges events: ', error);
     }
