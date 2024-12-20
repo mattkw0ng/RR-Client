@@ -8,10 +8,8 @@ import SelectInput from "../form/SelectInput";
 import RoomSelector from "./RoomSelector";
 import { getRoomNameByCalendarID } from "../../util/util";
 import API_URL from "../../config";
-import { useNavigate } from "react-router-dom";
 
-const EditEventForm = ({ event, onSubmit, pending }) => {
-  const navigate = useNavigate
+const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
   const [formState, setFormState] = useState({
     summary: event.summary || "",
     description: event.description || "",
@@ -125,7 +123,7 @@ const EditEventForm = ({ event, onSubmit, pending }) => {
 
       console.log("Event update response:", response.data);
       alert(response.data.message);
-      navigate('/profile')
+      onSubmit(setModal);
     } catch (error) {
       console.error("Error updating event:", error);
       alert("Failed to update event. Please try again.");

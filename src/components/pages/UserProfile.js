@@ -50,6 +50,12 @@ const UserProfile = () => {
     const approvedBadge = <Badge pill className='ms-2' color={'primary'} style={{ fontSize: '0.6em' }}>approved</Badge>
     const pendingBadge = <Badge pill className='ms-2' color={'secondary'} style={{ fontSize: '0.6em' }} >pending</Badge>
 
+    const onSubmitFunction = (closeModal) => {
+        closeModal(false);
+        setEvents(null);
+        getUserEvents();
+    }
+
     const EditorModal = ({ event, pending }) => {
 
         const [modal, setModal] = useState(false);
@@ -65,7 +71,7 @@ const UserProfile = () => {
                     <ModalHeader toggle={toggle}><span className='text-secondary'> {event.summary} </span></ModalHeader>
                     <ModalBody className='px-3'>
 
-                        <EditEventForm event={event} pending={pending} />
+                        <EditEventForm event={event} pending={pending} onSubmit={onSubmitFunction} setModal={setModal}/>
                     </ModalBody>
 
                 </Modal>
