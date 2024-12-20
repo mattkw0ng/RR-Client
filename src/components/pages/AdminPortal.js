@@ -3,7 +3,7 @@ import AdminPage from "./AdminPage";
 import "./AdminPortal.css";
 import Home from "../admin/Home";
 
-const Approvals = () => <div className="content"><h2>Approvals</h2><p>Manage pending approvals here.</p></div>;
+// const Approvals = () => <div className="content"><h2>Approvals</h2><p>Manage pending approvals here.</p></div>;
 // const SearchEvents = () => <div className="content"><h2>Search Events</h2><p>Search for events using filters.</p></div>;
 // const ReserveRoom = () => <div className="content"><h2>Reserve Room</h2><p>Reserve a room for an event here.</p></div>;
 
