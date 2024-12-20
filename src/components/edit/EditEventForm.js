@@ -102,8 +102,10 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
 
       if (timeOrRoomChanged) {
         // If the event was approved and the rooms/time have been modified, save the attendee information but move the rooms to extendedProperties.rooms (like a normal pending event)
-        updatedEvent.attendees = (event.attendees || []).filter((attendee) => !attendee.resource) // Keep non-resource attendees
+        updatedEvent.attendees = (event.attendees || []).filter((attendee) => attendee.resource !== true) // Keep non-resource attendees
         updatedEvent.extendedProperties.private.rooms = JSON.stringify(roomListAsAttendees); // Mirrors a typical pending event by storing room information under extendedProperies
+        console.log("updated event's attendees", updatedEvent.attendees);
+        console.log("updated event's extended properties", updatedEvent.extendedProperties);
       } else {
         // Else if only non-room/date/time information was changed, attendees should stay the same
         updatedEvent.attendees = event.attendees
@@ -111,10 +113,10 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
     }
 
     try {
-      console.log({
-        event: updatedEvent,
-        timeOrRoomChanged,
-      })
+      // console.log({
+      //   event: updatedEvent,
+      //   timeOrRoomChanged,
+      // })
 
       const response = await axios.post(API_URL + "/api/editEvent", {
         event: updatedEvent,
