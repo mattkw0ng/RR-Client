@@ -32,7 +32,7 @@ const AdminPage = () => {
 
   const fetchProposedChangesEvents = async () => {
     try {
-      const response = await axios.get(API_URL + '/api/proposedChangesEvents', { withCredentials: true });
+      const response = await axios.get(API_URL + `/api/proposedChangesEvents?isUser=${false}`, { withCredentials: true });
       setProposedChangesEvents(response.data);
       console.log(response.data);
     } catch (error) {
@@ -69,21 +69,30 @@ const AdminPage = () => {
       });
   };
 
-  const handleSubmitChanges = async (originalRoomId, selectedRoom, editedEvent) => {
+  const handleSubmitChanges = async (originalRoomId, selectedRoom, editedEvent, originalEvent) => {
     console.log("Submitting Changes", originalRoomId, editedEvent, selectedRoom);
     if (selectedRoom !== "") {
       // if the room has been changed, delete the original room id and put new one
       const peopleAttendees = editedEvent.attendees.filter((attendee) => attendee.resource !== true);
       const swapRooms = editedEvent.extendedProperties.private.rooms.filter((attendee) => attendee.email !== originalRoomId);
-      
+
       editedEvent.attendees = peopleAttendees;
-      editedEvent.extendedProperties.private.rooms = JSON.stringify([
-        ...swapRooms,
-        {
-          "email": ROOMS[selectedRoom].calendarID,
-          "resource": true
-        }
-      ]) // add rooms to extended properties and add the other selected room
+      const finalEdits = {
+        rooms: JSON.stringify([
+          ...swapRooms,
+          {
+            "email": ROOMS[selectedRoom].calendarID,
+            "resource": true
+          }
+        ]),
+        originalStart : originalEvent.start.dateTime,
+        originalEnd : originalEvent.end.dateTime,
+        originalRooms : JSON.stringify(originalEvent.extendedProperties.private.rooms)
+      } // add rooms to extended properties and add the other selected room
+      editedEvent.extendedProperties.private = {
+        ...editedEvent.extendedProperties.private,
+        ...finalEdits
+      }
     }
 
     console.log("Swapped rooms", editedEvent);
@@ -132,9 +141,9 @@ const AdminPage = () => {
         <Modal isOpen={modal} toggle={toggle} size='xl'>
           <ModalHeader toggle={toggle}><span className='text-danger'> {pendingEvent.summary} </span></ModalHeader>
 
-            {/* TimeLine */}
-            {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
-            <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId} handleSubmitChanges={handleSubmitChanges} toggle={toggle} />
+          {/* TimeLine */}
+          {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
+          <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId} handleSubmitChanges={handleSubmitChanges} toggle={toggle} />
         </Modal>
       </div>
     );
