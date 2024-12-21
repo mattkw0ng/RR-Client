@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, ListGroup, ListGroupItem, Button, Badge, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Container, ListGroup, ListGroupItem, Button, Badge, Modal, ModalHeader, } from 'reactstrap';
 import API_URL from '../../config';
 import { ADMINEVENTS } from '../../data/example';
 
 import StandardEvent from '../events/StandardEvent';
 import ConflictEditor from '../edit/ConflictEditor';
+import ROOMS from '../../data/rooms';
 
 const AdminPage = () => {
   const [pendingEvents, setPendingEvents] = useState(ADMINEVENTS);
@@ -68,6 +69,30 @@ const AdminPage = () => {
       });
   };
 
+  const handleSubmitChanges = async (originalRoomId, selectedRoom, editedEvent) => {
+    console.log("Submitting Changes", originalRoomId, editedEvent, selectedRoom);
+    if (selectedRoom !== "") {
+      // if the room has been changed, delete the original room id and put new one
+      const peopleAttendees = editedEvent.attendees.filter((attendee) => attendee.resource !== true);
+      const swapRooms = editedEvent.attendees.filter((attendee) => attendee.resource === true && attendee.email !== originalRoomId);
+      
+      editedEvent.attendees = peopleAttendees;
+      editedEvent.extendedProperties.private.rooms = JSON.stringify([
+        ...swapRooms,
+        {
+          "email": ROOMS[selectedRoom].calendarID,
+          "resource": true
+        }
+      ]) // add rooms to extended properties and add the other selected room
+    }
+
+    axios.post(API_URL + '/api/editEvent', {
+      event: editedEvent,
+      timeOrRoomChanged: true,
+      adminEdit: true
+    })
+  }
+
   const quickApproveAll = async () => {
     console.log("Quick Approving All");
   }
@@ -104,20 +129,10 @@ const AdminPage = () => {
         </Button>
         <Modal isOpen={modal} toggle={toggle} size='xl'>
           <ModalHeader toggle={toggle}><span className='text-danger'> {pendingEvent.summary} </span></ModalHeader>
-          <ModalBody className='px-3'>
 
             {/* TimeLine */}
             {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
-            <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId} />
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={toggle}>
-              Do Something
-            </Button>{' '}
-            <Button color="secondary" onClick={toggle}>
-              Cancel
-            </Button>
-          </ModalFooter>
+            <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId} handleSubmitChanges={handleSubmitChanges} toggle={toggle} />
         </Modal>
       </div>
     );

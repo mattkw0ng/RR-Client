@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from 'axios';
 import API_URL from "../../config";
 // import ConflictTimeline from "./ConflictTimeline";
 import { AVAILABLE_ROOMS, ROOMEVENTS } from "../../data/example";
 import { ROOMS } from "../../data/rooms";
-import {formatDisplayTime} from "../../util/util";
+import { formatDisplayTime } from "../../util/util";
 import RoomSelector from "./RoomSelector";
 import SideBySideEvents from "./SideBySideEvents";
 import RoomTimeline from "./RoomTimeline";
+import { Button, ModalBody, ModalFooter } from "reactstrap";
 
 
 /**
  * 
  * @param {Object} pendingEvent the pending event that is in conflict with some other event 
  */
-const ConflictEditor = ({ approvedEvents, pendingEvent, conflictId, roomId }) => {
+const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges, toggle }) => {
   const [roomEvents, setRoomEvents] = useState(ROOMEVENTS); //all other events taking place in room(s)
   const [availableRooms, setAvailableRooms] = useState(AVAILABLE_ROOMS);
 
@@ -68,29 +69,41 @@ const ConflictEditor = ({ approvedEvents, pendingEvent, conflictId, roomId }) =>
   }, [pendingEvent, roomId])
 
   return (
-    <div>
-      <div className="d-flex gap-2">
-        <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} />
-        {selectedRoom ?
-          // If a room has been selected, display it in a new side-by-side viewer & add the pending event to the list of pending events attatched to new room
-          <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[pendingEventCopy ,...availableRooms[selectedRoom].pendingEvents]} conflictId={conflictId} />
-          : null
-        }
-      </div>
+    <Fragment>
+      <ModalBody className='px-3'>
+        <div>
+          <div className="d-flex gap-2">
+            <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} />
+            {selectedRoom ?
+              // If a room has been selected, display it in a new side-by-side viewer & add the pending event to the list of pending events attatched to new room
+              <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[pendingEventCopy, ...availableRooms[selectedRoom].pendingEvents]} conflictId={conflictId} />
+              : null
+            }
+          </div>
 
-      <RoomTimeline timeRange={pendingEventCopy} setTimeRange={setpendingEventCopy} timeHasBeenChanged={timeHasBeenChanged} setTimeHasBeenChanged={setTimeHasBeenChanged} />
+          <RoomTimeline timeRange={pendingEventCopy} setTimeRange={setpendingEventCopy} timeHasBeenChanged={timeHasBeenChanged} setTimeHasBeenChanged={setTimeHasBeenChanged} />
 
-      {/* Display Room name and Time + updated Room names and Times (if changed) */}
-      <div>
-        <p><span className="text-danger">{getRoomNameByCalendarID(roomId)}</span> {selectedRoom ? <span className="text-primary"> &gt; {selectedRoom}</span> : null}</p>
-        <p className="d-inline">{formatDisplayTime(pendingEvent.start.dateTime)} - {formatDisplayTime(pendingEvent.end.dateTime)}
-          {timeHasBeenChanged ? <span> &gt; {pendingEventCopy}</span> : null}
-        </p>
-      </div>
+          {/* Display Room name and Time + updated Room names and Times (if changed) */}
+          <div>
+            <p><span className="text-danger">{getRoomNameByCalendarID(roomId)}</span> {selectedRoom ? <span className="text-primary"> &gt; {selectedRoom}</span> : null}</p>
+            <p className="d-inline">{formatDisplayTime(pendingEvent.start.dateTime)} - {formatDisplayTime(pendingEvent.end.dateTime)}
+              {timeHasBeenChanged ? <span> &gt; {pendingEventCopy}</span> : null}
+            </p>
+          </div>
 
-      {/* <ConflictTimeline events={roomEvents} availableRooms={exampleRooms} selectedRoom={selectedRoom}/> */}
-      <RoomSelector roomList={Object.keys(availableRooms)} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
-    </div>
+          {/* <ConflictTimeline events={roomEvents} availableRooms={exampleRooms} selectedRoom={selectedRoom}/> */}
+          <RoomSelector roomList={Object.keys(availableRooms)} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoom} />
+        </div>
+      </ModalBody>
+      <ModalFooter>
+        <Button color="primary" onClick={handleSubmitChanges(roomId, selectedRoom, pendingEventCopy)}>
+          Submit Changes
+        </Button>{' '}
+        <Button color="secondary" onClick={toggle}>
+          Cancel
+        </Button>
+      </ModalFooter>
+    </Fragment>
   )
 }
 
