@@ -74,7 +74,7 @@ const AdminPage = () => {
     if (selectedRoom !== "") {
       // if the room has been changed, delete the original room id and put new one
       const peopleAttendees = editedEvent.attendees.filter((attendee) => attendee.resource !== true);
-      const swapRooms = editedEvent.attendees.filter((attendee) => attendee.resource === true && attendee.email !== originalRoomId);
+      const swapRooms = editedEvent.extendedProperties.private.rooms.filter((attendee) => attendee.email !== originalRoomId);
       
       editedEvent.attendees = peopleAttendees;
       editedEvent.extendedProperties.private.rooms = JSON.stringify([
@@ -85,6 +85,8 @@ const AdminPage = () => {
         }
       ]) // add rooms to extended properties and add the other selected room
     }
+
+    console.log("Swapped rooms", editedEvent);
 
     axios.post(API_URL + '/api/editEvent', {
       event: editedEvent,
