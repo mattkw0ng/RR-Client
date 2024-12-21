@@ -96,7 +96,7 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
         </div>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary" onClick={handleSubmitChanges(roomId, selectedRoom, pendingEventCopy)}>
+        <Button color="primary" onClick={(e) => handleSubmitChanges(roomId, selectedRoom, pendingEventCopy)}>
           Submit Changes
         </Button>{' '}
         <Button color="secondary" onClick={toggle}>
