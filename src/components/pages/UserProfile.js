@@ -71,7 +71,7 @@ const UserProfile = () => {
                     <ModalHeader toggle={toggle}><span className='text-secondary'> {event.summary} </span></ModalHeader>
                     <ModalBody className='px-3'>
 
-                        <EditEventForm event={event} pending={pending} onSubmit={onSubmitFunction} setModal={setModal}/>
+                        <EditEventForm event={event} pending={pending} onSubmit={onSubmitFunction} setModal={setModal} />
                     </ModalBody>
 
                 </Modal>
@@ -129,7 +129,7 @@ const UserProfile = () => {
                                                 <RecurringEventList list={event.instances} />
                                                 :
                                                 <div className='d-flex gap-2'>
-                                                    <EditorModal event={event} pending={true}/> 
+                                                    <EditorModal event={event} pending={true} />
                                                     <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button>
                                                 </div>
                                             }
@@ -150,7 +150,7 @@ const UserProfile = () => {
                                 (<StandardEvent
                                     key={event.id}
                                     event={event}
-                                    button={<div className='d-flex gap-2'><EditorModal event={event} pending={false}/> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
+                                    button={<div className='d-flex gap-2'><EditorModal event={event} pending={false} /> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
                                     badge={approvedBadge}
                                     pending={false}
                                 />)
