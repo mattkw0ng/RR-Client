@@ -44,22 +44,25 @@ function RoomRes() {
   const [isSummaryVisible, setIsSummaryVisible] = useState(false); // Controls the summary modal
   const [conflicts, setConflicts] = useState([]); // Stores any detected conflicts
 
+  useEffect(() => {
+    axios
+        .get(API_URL + '/api/auth/user', { withCredentials: true })
+        .then((response) => {
+          if (response.data.user) {
+            setUser(response.data.user);
+            setShowLoginPrompt(false)
+          } else {
+            console.error('Not authenticated');
+          }
+        })
+        .catch((err) => console.error(err));
+  }, []);
 
   useEffect(() => {
-
-    axios
-      .get(API_URL + '/api/auth/user', { withCredentials: true })
-      .then((response) => {
-        if (response.data.user) {
-          setUser(response.data.user);
-        } else {
-          console.error('Not authenticated');
-        }
-      })
-      .catch((err) => console.error(err));
-
     if (!user) {
       setShowLoginPrompt(true);
+    } else {
+      setShowLoginPrompt(false);
     }
   }, [user]);
 
