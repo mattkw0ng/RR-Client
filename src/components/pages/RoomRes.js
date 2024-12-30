@@ -11,6 +11,7 @@ import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
 import RecurrenceForm from '../form/RecurrenceForm';
 import { formatDisplayTime, getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
+import LoginModal from '../lightbox/LoginModal';
 
 
 // Room Reservation Page
@@ -254,21 +255,6 @@ function RoomRes() {
       </Modal>)
   }
 
-  const LoginModal = () => {
-    return (
-      <Modal isOpen={showLoginPrompt}>
-        <ModalHeader>Login Required</ModalHeader>
-        <ModalBody>
-          <p>You need to log in to complete this reservation.</p>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="primary" onClick={handleLoginRedirect}>
-            Log In
-          </Button>
-        </ModalFooter>
-      </Modal>
-    )
-  }
   return (
     <div className="container">
 
@@ -422,7 +408,7 @@ function RoomRes() {
       </form>
 
       <SummaryModal />
-      <LoginModal />
+      <LoginModal showLoginPrompt={showLoginPrompt} handleLoginRedirect={handleLoginRedirect} />
 
       {/* <div class="responsive-iframe-container">
         <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>

@@ -7,6 +7,7 @@ import TimeRangeSlider from "../form/TimeRangeSlider";
 import API_URL from "../../config";
 import axios from 'axios';
 import RoomSelection from "../RoomSelection";
+import LoginModal from "../lightbox/LoginModal";
 
 /**
  * @description '/search' page
@@ -16,6 +17,9 @@ import RoomSelection from "../RoomSelection";
 
 function RoomSearch({ handleSearch }) {
   const navigate = useNavigate();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [user, setUser] = useState(null);
+
   
   const [roomName, setRoomName] = useState("");   // Search Query
   const [verifiedAvailability, setVerifiedAvailability] = useState(false)
@@ -78,6 +82,28 @@ function RoomSearch({ handleSearch }) {
   }
 
   useEffect(() => {
+    axios
+        .get(API_URL + '/api/auth/user', { withCredentials: true })
+        .then((response) => {
+          if (response.data.user) {
+            setUser(response.data.user);
+            setShowLoginPrompt(false)
+          } else {
+            console.error('Not authenticated');
+          }
+        })
+        .catch((err) => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setShowLoginPrompt(true);
+    } else {
+      setShowLoginPrompt(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
     setVerifiedAvailability(false);
   }, [timeRange, date])
 
@@ -124,6 +150,10 @@ function RoomSearch({ handleSearch }) {
       console.error('Error adding event', error);
     }
 
+  };
+
+  const handleLoginRedirect = () => {
+    navigate("/login", { state: { returnPath: "/", formData: {} } }); // Preserve form data
   };
 
   return (
@@ -197,6 +227,8 @@ function RoomSearch({ handleSearch }) {
           <RoomSelection availableRooms={availableRooms} filteredRooms={filteredRooms} selectedRooms={selectedRooms} setSelectedRooms={setSelectedRooms} handleCheckout={handleProceedToReservation} verified={verifiedAvailability}/>
         </div>
       </div>
+
+      <LoginModal showLoginPrompt={showLoginPrompt} handleLoginRedirect={handleLoginRedirect} />
     </Fragment>
   );
 }
