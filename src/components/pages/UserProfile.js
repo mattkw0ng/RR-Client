@@ -4,14 +4,15 @@ import axios from 'axios';
 import { Container, ListGroup, Button, Badge, Modal, ModalHeader, ModalBody, ListGroupItem } from 'reactstrap';
 import RecurringEventList from '../events/RecurringEventList';
 
-import { EVENTS, USER } from '../../data/example';
+import { USER } from '../../data/example';
 import StandardEvent from '../events/StandardEvent';
 import EditEventForm from '../edit/EditEventForm';
+import ModifiedEvent from '../events/ModifiedEvent';
 
 const UserProfile = () => {
 
     const [user, setUser] = useState(USER);
-    const [events, setEvents] = useState(EVENTS);
+    const [events, setEvents] = useState();
 
     const getUser = async () => {
         axios.get(API_URL + '/api/auth/user', { withCredentials: true })
@@ -49,6 +50,7 @@ const UserProfile = () => {
 
     const approvedBadge = <Badge pill className='ms-2' color={'primary'} style={{ fontSize: '0.6em' }}>approved</Badge>
     const pendingBadge = <Badge pill className='ms-2' color={'secondary'} style={{ fontSize: '0.6em' }} >pending</Badge>
+    const needsActionBadge = <Badge pill className='ms-2' color={'danger'} style={{ fontSize: '0.6em' }} >needs action</Badge>
 
     const onSubmitFunction = (closeModal) => {
         closeModal(false);
@@ -87,6 +89,19 @@ const UserProfile = () => {
         }
     }
 
+    const handleAcceptChanges = (e, event) => {
+        e.preventDefault();
+        console.log("Accepting Changes", event.id);
+        axios.post(API_URL + '/api/acceptProposedChanges', { eventId: event.id }, { withCredentials: true })
+            .then(response => {
+                alert('Event accepted successfully:', response.data);
+                getUserEvents();
+            })
+            .catch(error => {
+                console.error('Error accepting changes:', error.response ? error.response.data : error.message);
+            });
+    }
+
     return (
         <Container className='my-4'>
             <div className='d-flex justify-content-between'>
@@ -101,6 +116,19 @@ const UserProfile = () => {
                 <hr />
                 {events ? (
                     <div className='user-events'>
+                        {/* Proposed Events */}
+                        <ListGroup>
+                            {events['proposed']?.map(event => (
+                                (<ModifiedEvent
+                                    key={event.id}
+                                    event={event}
+                                    button={<Button color='danger' size='sm' onClick={(e) => handleAcceptChanges(e, event)}>Accept Changes</Button>}
+                                    badge={needsActionBadge}
+                                    pending={false}
+                                />)
+                            ))}
+                        </ListGroup>
+
                         {/* Pending Events First */}
                         <ListGroup>
                             {events['pending'].map(event => (
@@ -117,7 +145,7 @@ const UserProfile = () => {
                                             {/* Details */}
                                             <p>
                                                 {/* Room */}
-                                                {JSON.parse(event.extendedProperties.private.rooms).map((room) => <p key={room.email}>{room.displayName}</p>)}
+                                                {event.extendedProperties.private.rooms.map((room) => <p key={room.email}>{room.displayName}</p>)}
                                                 <br />
                                                 {/* Description */}
                                                 Description: {event.description}

@@ -74,6 +74,7 @@ const AdminPage = () => {
     if (selectedRoom !== "") {
       // if the room has been changed, delete the original room id and put new one
       const peopleAttendees = editedEvent.attendees.filter((attendee) => attendee.resource !== true);
+      // filter out the original room and then insert the selected room into the rooms list
       const swapRooms = editedEvent.extendedProperties.private.rooms.filter((attendee) => attendee.email !== originalRoomId);
 
       editedEvent.attendees = peopleAttendees;
@@ -85,9 +86,9 @@ const AdminPage = () => {
             "resource": true
           }
         ]),
-        originalStart : originalEvent.start.dateTime,
-        originalEnd : originalEvent.end.dateTime,
-        originalRooms : JSON.stringify(originalEvent.extendedProperties.private.rooms)
+        originalStart: originalEvent.start.dateTime,
+        originalEnd: originalEvent.end.dateTime,
+        originalRooms: JSON.stringify(originalEvent.extendedProperties.private.rooms)
       } // add rooms to extended properties and add the other selected room
       editedEvent.extendedProperties.private = {
         ...editedEvent.extendedProperties.private,
@@ -152,9 +153,12 @@ const AdminPage = () => {
   return (
     <Container className='my-4'>
       <div>
-        <div className='d-flex justify-content-between'>
-          <h4 className='d-inline'>Quick Approve Events</h4> <Button size='sm' color='primary' outline className='d-inline' onClick={() => quickApproveAll()}>Approve All</Button>
-        </div>
+        {
+          pendingEvents.quickApprove.length > 0 &&
+          <div className='d-flex justify-content-between'>
+            <h4 className='d-inline'>Quick Approve Events</h4> <Button size='sm' color='primary' outline className='d-inline' onClick={() => quickApproveAll()}>Approve All</Button>
+          </div>
+        }
         <ListGroup>
           {/* Non-Conflicting Events Section */}
 
@@ -165,7 +169,7 @@ const AdminPage = () => {
       </div>
 
       <div>
-        <h4>Conflicts</h4>
+        {pendingEvents.conflicts.length > 0 && <h4>Conflicts</h4>}
         <ListGroup>
           {pendingEvents.conflicts.map(event => (
             // Conflict Events
@@ -211,9 +215,12 @@ const AdminPage = () => {
       </div>
 
       <div>
-        <div className='d-flex justify-content-between'>
-          <h4 className='d-inline'>Proposed Changes</h4>
-        </div>
+        {
+          proposedChangesEvents.length > 0 &&
+          <div className='d-flex justify-content-between'>
+            <h4 className='d-inline'>Proposed Changes</h4>
+          </div>
+        }
         <ListGroup>
           {/* Non-Conflicting Events Section */}
 
