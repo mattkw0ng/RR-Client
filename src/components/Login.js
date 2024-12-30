@@ -17,7 +17,7 @@ const Login = ({ setUser }) => {
     }
 
     // Redirect to Google OAuth
-    window.location.href = `${API_URL}/api/auth/google`;
+    window.location.href = `${API_URL}/api/auth/google?returnPath=${encodeURIComponent(returnPath)}`;
   };
 
   useEffect(() => {
