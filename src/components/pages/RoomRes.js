@@ -18,6 +18,7 @@ function RoomRes() {
   const preLoadLocation = useLocation();
   const navigate = useNavigate();
   const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   const [rRule, setRRULE] = useState();
   const [formData, setFormData] = useState({
@@ -56,7 +57,15 @@ function RoomRes() {
         }
       })
       .catch((err) => console.error(err));
-  }, []);
+
+    if (!user) {
+      setShowLoginPrompt(true);
+    }
+  }, [user]);
+
+  const handleLoginRedirect = () => {
+    navigate("/login", { state: { returnPath: "/", formData } }); // Preserve form data
+  };
 
   const handleStartDateTimeChange = (date) => {
     setStartDateTime(date);
@@ -220,12 +229,12 @@ function RoomRes() {
           {conflicts.length > 0 ? (
             <>
               <h5 className="text-danger">Conflicts Found</h5>
-                {conflicts.map((conflict, index) => (
-                  <p key={index}>
-                    {`${getRoomNameByCalendarID(conflict.roomId)} is busy from: `}
-                    {conflict.times.map((timeRange) => (`${formatDisplayTime(timeRange.start)} - ${formatDisplayTime(timeRange.end)}`)).join(', ')}
-                  </p>
-                ))}
+              {conflicts.map((conflict, index) => (
+                <p key={index}>
+                  {`${getRoomNameByCalendarID(conflict.roomId)} is busy from: `}
+                  {conflict.times.map((timeRange) => (`${formatDisplayTime(timeRange.start)} - ${formatDisplayTime(timeRange.end)}`)).join(', ')}
+                </p>
+              ))}
             </>
           ) : (
             <h5 className="text-success">No Conflicts Found</h5>
@@ -242,6 +251,21 @@ function RoomRes() {
       </Modal>)
   }
 
+  const LoginModal = () => {
+    return (
+      <Modal isOpen={showLoginPrompt}>
+        <ModalHeader>Login Required</ModalHeader>
+        <ModalBody>
+          <p>You need to log in to complete this reservation.</p>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleLoginRedirect}>
+            Log In
+          </Button>
+        </ModalFooter>
+      </Modal>
+    )
+  }
   return (
     <div className="container">
 
@@ -395,6 +419,7 @@ function RoomRes() {
       </form>
 
       <SummaryModal />
+      <LoginModal />
 
       {/* <div class="responsive-iframe-container">
         <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
