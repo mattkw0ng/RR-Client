@@ -31,17 +31,18 @@ const NavBar = () => {
       <Navbar>
         <NavbarBrand href="/">RoomReservation</NavbarBrand>
         <Nav>
-
           <NavItem>
             <NavLink href="/">
+              Search Rooms
+            </NavLink>
+          </NavItem>
+
+          <NavItem>
+            <NavLink href="/room-reservation-form">
               Reserve Room
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink href="/search">
-              Search
-            </NavLink>
-          </NavItem>
+
           <NavItem>
             <NavLink href="/admin">Admin</NavLink>
           </NavItem>
