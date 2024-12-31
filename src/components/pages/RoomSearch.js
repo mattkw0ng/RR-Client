@@ -15,7 +15,7 @@ import LoginModal from "../lightbox/LoginModal";
  * @returns A room filtering/searching form with a list of the resulting available rooms. Components: @see RoomSearchBar and @see RoomSelection components
  */
 
-function RoomSearch({ handleSearch }) {
+function RoomSearch({ handleSearch, auth }) {
   const navigate = useNavigate();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [user, setUser] = useState(null);
@@ -48,7 +48,7 @@ function RoomSearch({ handleSearch }) {
     };
     const preLoadRooms = selectedRooms
     console.log("Moving to RoomReservation",selectedRooms,preLoadData)
-    navigate("/", { state: { preLoadRooms, preLoadData  } });
+    navigate("/room-reservation-form", { state: { preLoadRooms, preLoadData  } });
   };
 
   const availableCapacities = [325, 150, 15, 30, 20, 40, 25];
@@ -96,12 +96,12 @@ function RoomSearch({ handleSearch }) {
   }, []);
 
   useEffect(() => {
-    if (!user) {
+    if (!auth && !user) {
       setShowLoginPrompt(true);
     } else {
       setShowLoginPrompt(false);
     }
-  }, [user]);
+  }, [auth, user]);
 
   useEffect(() => {
     setVerifiedAvailability(false);
