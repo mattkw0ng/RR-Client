@@ -6,7 +6,7 @@ export default function LoginModal({ showLoginPrompt, handleLoginRedirect, messa
     <Modal isOpen={showLoginPrompt}>
       <ModalHeader>Login Required</ModalHeader>
       <ModalBody>
-        <p>{message}.</p>
+        <p>{message}</p>
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={handleLoginRedirect}>

@@ -15,7 +15,7 @@ import LoginModal from '../lightbox/LoginModal';
 
 
 // Room Reservation Page
-function RoomRes() {
+function RoomRes({auth}) {
   const preLoadLocation = useLocation();
   const navigate = useNavigate();
   const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};

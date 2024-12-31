@@ -30,8 +30,8 @@ const App = () => {
             path="/profile"
             element={<UserProfile />}
         />
-        <Route path="/" element={<RoomSearch />} />
-        <Route path="/room-reservation-form" element={<RoomRes />} />
+        <Route path="/" element={<RoomSearch auth={auth}/>} />
+        <Route path="/room-reservation-form" element={<RoomRes auth={auth}/>} />
         <Route path="/admin" element={<AdminPortal />} />
       </Routes>
     </Router>

@@ -1,0 +1,23 @@
+/* Center the login container vertically and horizontally */
+.login-container {
+  background-color: #f8f9fa;
+  height: calc(100vh - 56px);
+}
+
+/* Login card styling */
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  border-width: 0px;
+  background-color: #fff;
+}
+
+/* Google login button */
+.google-login-button:hover {
+  filter: brightness(0.95); /* Darken the image */
+}
+
+.google-login-button:active {
+  filter: brightness(0.9); /* Darken the image */
+}
