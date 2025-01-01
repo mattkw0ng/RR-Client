@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminPage from "./AdminPage";
 import "./AdminPortal.css";
 import Home from "../admin/Home";
+import axios from "axios";
+import API_URL from "../../config";
+import { Badge } from "reactstrap";
 
 // const Approvals = () => <div className="content"><h2>Approvals</h2><p>Manage pending approvals here.</p></div>;
 // const SearchEvents = () => <div className="content"><h2>Search Events</h2><p>Search for events using filters.</p></div>;
@@ -9,6 +12,22 @@ import Home from "../admin/Home";
 
 const AdminPortal = () => {
   const [selectedPage, setSelectedPage] = useState("Home");
+  const [numPendingEvents, setNumPendingEvents] = useState(0);
+
+  const fetchNumPendingEvents = async () => {
+    try {
+      const response = await axios.get(API_URL + '/api/numPendingEvents', { withCredentials: true });
+      console.log("Number of pending events: ", response.data);
+      setNumPendingEvents(response.data);
+
+    } catch (e) {
+      console.error("Error fetching numPendingEvents", e.message);
+    }
+  }
+
+  useEffect(() => {
+    fetchNumPendingEvents();
+  }, [])
 
   const renderPage = () => {
     switch (selectedPage) {
@@ -34,7 +53,7 @@ const AdminPortal = () => {
             Home
           </li>
           <li onClick={() => setSelectedPage("Approvals")} className={`nav-item ${selectedPage === "Approvals" ? 'selected' : ''}`}>
-            Approvals
+            Approvals <Badge size="sm" color="danger" >{numPendingEvents}</Badge>
           </li>
           {/* <li onClick={() => setSelectedPage("SearchEvents")} className={`nav-item ${selectedPage === "SearchEvents" ? 'selected' : ''}`}>
             Search Events

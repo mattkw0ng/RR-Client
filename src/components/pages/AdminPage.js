@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, ListGroup, ListGroupItem, Button, Badge, Modal, ModalHeader, } from 'reactstrap';
 import API_URL from '../../config';
-import { ADMINEVENTS } from '../../data/example';
 
 import StandardEvent from '../events/StandardEvent';
 import ConflictEditor from '../edit/ConflictEditor';
 import ROOMS from '../../data/rooms';
 
 const AdminPage = () => {
-  const [pendingEvents, setPendingEvents] = useState(ADMINEVENTS);
+  const [pendingEvents, setPendingEvents] = useState({'quickApprove':[], 'conflicts':[]});
   const [proposedChangesEvents, setProposedChangesEvents] = useState([]);
+  const [isNotEmpty, setIsNotEmpty] = useState(false);
 
   const fetchPendingEvents = async () => {
     try {
@@ -25,6 +25,7 @@ const AdminPage = () => {
         elem.extendedProperties.private.rooms = JSON.parse(elem.extendedProperties.private.rooms);
       }
       setPendingEvents(response.data);
+      setIsNotEmpty(response.data.quickApprove.length !== 0 || response.data.conflicts.length !== 0);
     } catch (error) {
       console.error('Error fetching pending events:', error);
     }
@@ -152,6 +153,7 @@ const AdminPage = () => {
 
   return (
     <Container className='my-4'>
+      {isNotEmpty || proposedChangesEvents.length !== 0 ? null : <p>No incoming reservation requests found.</p>} 
       <div>
         {
           pendingEvents.quickApprove.length > 0 &&
