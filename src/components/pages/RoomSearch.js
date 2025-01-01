@@ -17,8 +17,7 @@ import LoginModal from "../lightbox/LoginModal";
 
 function RoomSearch({ handleSearch, auth }) {
   const navigate = useNavigate();
-  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
-  const [user, setUser] = useState(null);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(!auth);
 
   
   const [roomName, setRoomName] = useState("");   // Search Query
@@ -86,22 +85,16 @@ function RoomSearch({ handleSearch, auth }) {
         .get(API_URL + '/api/auth/user', { withCredentials: true })
         .then((response) => {
           if (response.data.user) {
-            setUser(response.data.user);
             setShowLoginPrompt(false)
           } else {
+            setShowLoginPrompt(true);
             console.error('Not authenticated');
           }
         })
         .catch((err) => console.error(err));
   }, []);
 
-  useEffect(() => {
-    if (!user) {
-      setShowLoginPrompt(true);
-    } else {
-      setShowLoginPrompt(false);
-    }
-  }, [user]);
+
 
   useEffect(() => {
     setVerifiedAvailability(false);
