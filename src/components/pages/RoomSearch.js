@@ -96,10 +96,10 @@ function RoomSearch({ handleSearch, auth }) {
   }, []);
 
   useEffect(() => {
-    if (!auth && !user) {
-      setShowLoginPrompt(true);
-    } else {
+    if (auth || user) {
       setShowLoginPrompt(false);
+    } else {
+      setShowLoginPrompt(true);
     }
   }, [auth, user]);
 
