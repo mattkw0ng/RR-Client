@@ -45,7 +45,7 @@ const AdminPortal = () => {
   };
 
   return (
-    <div className="admin-portal">
+    <div className="admin-portal vh100-calc">
       <div className="sidebar bg-light shadow">
         <h3>Admin Portal</h3>
         <ul className="nav flex-column">

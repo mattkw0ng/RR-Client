@@ -226,3 +226,7 @@ nav.navbar {
 .gradient-red {
   background: linear-gradient(to right, #ff7e5f, #feb47b);
 }
+
+.vh100-calc {
+  height: calc(100vh - 56px);
+}
