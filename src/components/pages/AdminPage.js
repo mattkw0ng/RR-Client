@@ -8,7 +8,7 @@ import ConflictEditor from '../edit/ConflictEditor';
 import ROOMS from '../../data/rooms';
 
 const AdminPage = () => {
-  const [pendingEvents, setPendingEvents] = useState({'quickApprove':[], 'conflicts':[]});
+  const [pendingEvents, setPendingEvents] = useState({ 'quickApprove': [], 'conflicts': [] });
   const [proposedChangesEvents, setProposedChangesEvents] = useState([]);
   const [isNotEmpty, setIsNotEmpty] = useState(false);
 
@@ -108,6 +108,14 @@ const AdminPage = () => {
 
   const quickApproveAll = async () => {
     console.log("Quick Approving All");
+    const eventIdList = pendingEvents?.quickApprove.map((e) => e.id);
+    axios.post(API_URL + '/quickApprove', { eventIdList }, { withCredentials: true }).then(response => {
+      alert('Event approved successfully:', response.data);
+      fetchPendingEvents();
+    })
+      .catch(error => {
+        console.error('Error approving event:', error.response ? error.response.data : error.message);
+      });
   }
 
   const RecurringEventList = ({ list }) => {
@@ -153,7 +161,7 @@ const AdminPage = () => {
 
   return (
     <Container className='my-4'>
-      {isNotEmpty || proposedChangesEvents.length !== 0 ? null : <p>No incoming reservation requests found.</p>} 
+      {isNotEmpty || proposedChangesEvents.length !== 0 ? null : <p>No incoming reservation requests found.</p>}
       <div>
         {
           pendingEvents.quickApprove.length > 0 &&
