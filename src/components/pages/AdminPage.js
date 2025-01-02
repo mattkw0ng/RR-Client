@@ -109,7 +109,7 @@ const AdminPage = () => {
   const quickApproveAll = async () => {
     console.log("Quick Approving All");
     const eventIdList = pendingEvents?.quickApprove.map((e) => e.id);
-    axios.post(API_URL + '/quickApprove', { eventIdList }, { withCredentials: true }).then(response => {
+    axios.post(API_URL + '/api/quickApprove', { eventIdList }, { withCredentials: true }).then(response => {
       alert('Event approved successfully:', response.data);
       fetchPendingEvents();
     })
