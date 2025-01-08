@@ -15,7 +15,7 @@ import LoginModal from '../lightbox/LoginModal';
 
 
 // Room Reservation Page
-function RoomRes({auth}) {
+function RoomRes({auth, isAdmin=false}) {
   const preLoadLocation = useLocation();
   const navigate = useNavigate();
   const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};
@@ -133,7 +133,7 @@ function RoomRes({auth}) {
         rooms: selectedRooms, // Pass selected room to server
         userEmail: user.emails[0].value,
         rRule,
-
+        isAdmin,
       });
       alert('Event added successfully');
       navigate('/profile')

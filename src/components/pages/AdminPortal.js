@@ -5,6 +5,7 @@ import Home from "../admin/Home";
 import axios from "axios";
 import API_URL from "../../config";
 import { Badge } from "reactstrap";
+import RoomRes from "./RoomRes";
 
 // const Approvals = () => <div className="content"><h2>Approvals</h2><p>Manage pending approvals here.</p></div>;
 // const SearchEvents = () => <div className="content"><h2>Search Events</h2><p>Search for events using filters.</p></div>;
@@ -37,8 +38,8 @@ const AdminPortal = () => {
         return <AdminPage />;
       // case "SearchEvents":
       //   return <SearchEvents />;
-      // case "ReserveRoom":
-      //   return <ReserveRoom />;
+      case "ReserveRoom":
+        return <RoomRes isAdmin={true} />;
       default:
         return <Home />;
     }
@@ -57,10 +58,10 @@ const AdminPortal = () => {
           </li>
           {/* <li onClick={() => setSelectedPage("SearchEvents")} className={`nav-item ${selectedPage === "SearchEvents" ? 'selected' : ''}`}>
             Search Events
-          </li>
+          </li> */}
           <li onClick={() => setSelectedPage("ReserveRoom")} className={`nav-item ${selectedPage === "ReserveRoom" ? 'selected' : ''}`}>
             Reserve Room
-          </li> */}
+          </li> 
         </ul>
       </div>
       <div className="page-content">{renderPage()}</div>
