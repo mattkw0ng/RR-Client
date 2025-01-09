@@ -1,3 +1,3 @@
-const API_URL = "https://api.sjcactest.com";
+const API_URL = "https://api.rooms.sjcac.org";
 
 export default API_URL;
