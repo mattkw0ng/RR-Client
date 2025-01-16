@@ -26,8 +26,9 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
+        console.log(user);
         getUserEvents();
-    }, []);
+    }, [user]);
 
     if (!user) {
         return <div className='p-5'>Loading...</div>;
@@ -94,7 +95,7 @@ const UserProfile = () => {
                 <a href={API_URL + "/api/logout"} className='btn btn-sm'>Logout</a>
             </div>
 
-            <p>{user.emails[0].value}</p>
+            <p>{user.profile.emails[0].value}</p>
 
             <div>
                 <h5>My Reservations</h5>
