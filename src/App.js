@@ -25,7 +25,7 @@ const App = () => {
   }, []);
 
   return (
-    <AuthProvider>
+    <AuthProvider children={
       <Router>
         <NavBar />
         <Routes>
@@ -43,6 +43,7 @@ const App = () => {
           } />
         </Routes>
       </Router>
+    }>
     </AuthProvider>
   );
 };

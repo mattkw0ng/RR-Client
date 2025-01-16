@@ -14,6 +14,7 @@ export const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/auth/user`, { withCredentials: true });;
+        console.log("AuthContext response", response.data)
         setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
