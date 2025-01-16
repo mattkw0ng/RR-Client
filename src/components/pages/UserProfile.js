@@ -26,6 +26,7 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
+        console.log("User Details:");
         console.log(user);
         getUserEvents();
     }, [user]);

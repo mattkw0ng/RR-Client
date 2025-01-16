@@ -96,6 +96,7 @@ function RoomRes({ isAdmin = false }) {
       const end = endDateTime.toISOString();
 
       console.log(selectedRooms);
+      console.log(user);
 
       const { eventName, location, description, congregation, groupName, groupLeader, numPeople } = formData;
 
