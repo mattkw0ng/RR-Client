@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import API_URL from "../config";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -12,15 +13,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/auth/user`, {
-          credentials: "include", // Include cookies for authentication
-        });
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        }
+        const response = await axios.get(`${API_URL}/api/auth/user`, { withCredentials: true });;
+        setUser(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
+        setUser(null)
       }
     };
 
