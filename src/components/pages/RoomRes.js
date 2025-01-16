@@ -46,6 +46,17 @@ function RoomRes({ isAdmin = false }) {
   const [isSummaryVisible, setIsSummaryVisible] = useState(false); // Controls the summary modal
   const [conflicts, setConflicts] = useState([]); // Stores any detected conflicts
 
+  useEffect(() => {
+    if (!user) return; // Guard clause to prevent premature access
+    console.log("User loaded:", user);
+  }, [user]);
+
+  if (!user) {
+    return <div className='p-5'>Loading...</div>;
+  } else {
+    console.log("User is loaded:", user);
+  }
+
   const handleLoginRedirect = () => {
     navigate("/login", { state: { returnPath: "/", formData } }); // Preserve form data
   };
