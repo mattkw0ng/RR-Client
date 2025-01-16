@@ -90,6 +90,7 @@ const UserProfile = () => {
     }
 
     return (
+        !user ? <div className='p-5'>Loading...</div> :
         <Container className='my-4'>
             <div className='d-flex justify-content-between'>
                 <h2 className='mb-0'>Welcome, {user.displayName}</h2>
