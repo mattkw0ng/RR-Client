@@ -5,7 +5,7 @@ import "./Login.css"; // Import custom styles
 import { useAuth } from "../context/AuthContext";
 
 
-const Login = ({ }) => {
+const Login = () => {
     const { setUser } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
