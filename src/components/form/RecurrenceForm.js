@@ -23,6 +23,7 @@ function RecurrenceForm({ setRRULE }) {
     setEndDate('');
   };
   const handleEndDateChange = (e) => {
+    console.log(e.target.value);
     setEndDate(e.target.value)
     setEndAfterOccurrences(null);
   };
