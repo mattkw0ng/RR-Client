@@ -26,13 +26,20 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
-        console.log("User Details:");
-        console.log(user);
-        getUserEvents();
+        if (!user) return; // Guard clause to prevent premature access
+
+        console.log("User loaded:", user);
+        // Perform actions with user
     }, [user]);
+
+    useEffect(() => {
+        getUserEvents();
+    }, []);
 
     if (!user) {
         return <div className='p-5'>Loading...</div>;
+    } else {
+        console.log("User is loaded:", user);
     }
 
     const approvedBadge = <Badge pill className='ms-2' color={'primary'} style={{ fontSize: '0.6em' }}>approved</Badge>
@@ -91,93 +98,93 @@ const UserProfile = () => {
 
     return (
         !user ? <div className='p-5'>Loading...</div> :
-        <Container className='my-4'>
-            <div className='d-flex justify-content-between'>
-                <h2 className='mb-0'>Welcome, {user.displayName}</h2>
-                <a href={API_URL + "/api/logout"} className='btn btn-sm'>Logout</a>
-            </div>
+            <Container className='my-4'>
+                <div className='d-flex justify-content-between'>
+                    <h2 className='mb-0'>Welcome, {user.displayName}</h2>
+                    <a href={API_URL + "/api/logout"} className='btn btn-sm'>Logout</a>
+                </div>
 
-            <p>{user.profile.emails[0].value}</p>
+                <p>{user.profile.emails[0].value}</p>
 
-            <div>
-                <h5>My Reservations</h5>
-                <hr />
-                {events ? (
-                    <div className='user-events'>
-                        {/* Proposed Events */}
-                        <ListGroup>
-                            {events['proposed']?.map(event => (
-                                (<ModifiedEvent
-                                    key={event.id}
-                                    event={event}
-                                    button={<Button color='danger' size='sm' onClick={(e) => handleAcceptChanges(e, event)}>Accept Changes</Button>}
-                                    badge={needsActionBadge}
-                                    pending={false}
-                                />)
-                            ))}
-                        </ListGroup>
+                <div>
+                    <h5>My Reservations</h5>
+                    <hr />
+                    {events ? (
+                        <div className='user-events'>
+                            {/* Proposed Events */}
+                            <ListGroup>
+                                {events['proposed']?.map(event => (
+                                    (<ModifiedEvent
+                                        key={event.id}
+                                        event={event}
+                                        button={<Button color='danger' size='sm' onClick={(e) => handleAcceptChanges(e, event)}>Accept Changes</Button>}
+                                        badge={needsActionBadge}
+                                        pending={false}
+                                    />)
+                                ))}
+                            </ListGroup>
 
-                        {/* Pending Events First */}
-                        <ListGroup>
-                            {events['pending'].map(event => (
-                                <div>
-                                    <ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
-                                        <div>
-                                            {/* Title */}
-                                            <h5 className="mb-1 text-secondary">
-                                                {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
+                            {/* Pending Events First */}
+                            <ListGroup>
+                                {events['pending'].map(event => (
+                                    <div>
+                                        <ListGroupItem key={event.id} className="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                {/* Title */}
+                                                <h5 className="mb-1 text-secondary">
+                                                    {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
 
-                                                {pendingBadge}
-                                            </h5>
+                                                    {pendingBadge}
+                                                </h5>
 
-                                            {/* Details */}
-                                            <p>
-                                                {/* Room */}
-                                                {event.extendedProperties.private.rooms && event.extendedProperties.private.rooms.map((room) => <p key={room.email}>{room.displayName}</p>)}
-                                                <br />
-                                                {/* Description */}
-                                                Description: {event.description}
-                                                <br />
-                                                Congregation: {event.extendedProperties.private.congregation}
-                                            </p>
+                                                {/* Details */}
+                                                <p>
+                                                    {/* Room */}
+                                                    {event.extendedProperties.private.rooms && event.extendedProperties.private.rooms.map((room) => <p key={room.email}>{room.displayName}</p>)}
+                                                    <br />
+                                                    {/* Description */}
+                                                    Description: {event.description}
+                                                    <br />
+                                                    Congregation: {event.extendedProperties.private.congregation}
+                                                </p>
 
-                                            {event.recurrence ?
-                                                <RecurringEventList list={event.instances} />
-                                                :
-                                                <div className='d-flex gap-2'>
-                                                    <EditorModal event={event} pending={true} />
-                                                    <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button>
-                                                </div>
-                                            }
+                                                {event.recurrence ?
+                                                    <RecurringEventList list={event.instances} />
+                                                    :
+                                                    <div className='d-flex gap-2'>
+                                                        <EditorModal event={event} pending={true} />
+                                                        <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button>
+                                                    </div>
+                                                }
 
-                                        </div>
-                                    </ListGroupItem>
-                                </div>
+                                            </div>
+                                        </ListGroupItem>
+                                    </div>
 
 
-                            ))}
-                        </ListGroup>
+                                ))}
+                            </ListGroup>
 
-                        <hr />
+                            <hr />
 
-                        {/* Approved Events */}
-                        <ListGroup>
-                            {events['approved'].map(event => (
-                                (<StandardEvent
-                                    key={event.id}
-                                    event={event}
-                                    button={<div className='d-flex gap-2'><EditorModal event={event} pending={false} /> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
-                                    badge={approvedBadge}
-                                    pending={false}
-                                />)
-                            ))}
-                        </ListGroup>
-                    </div>
-                ) : (
-                    <p>No upcoming events found.</p>
-                )}
-            </div>
-        </Container>
+                            {/* Approved Events */}
+                            <ListGroup>
+                                {events['approved'].map(event => (
+                                    (<StandardEvent
+                                        key={event.id}
+                                        event={event}
+                                        button={<div className='d-flex gap-2'><EditorModal event={event} pending={false} /> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
+                                        badge={approvedBadge}
+                                        pending={false}
+                                    />)
+                                ))}
+                            </ListGroup>
+                        </div>
+                    ) : (
+                        <p>No upcoming events found.</p>
+                    )}
+                </div>
+            </Container>
     );
 };
 
