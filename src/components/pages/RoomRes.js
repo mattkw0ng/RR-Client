@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import { Collapse, Input, Label, FormGroup, Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,11 +16,10 @@ import LoginModal from '../lightbox/LoginModal';
 
 
 // Room Reservation Page
-function RoomRes({auth, isAdmin=false}) {
+function RoomRes({ isAdmin = false }) {
   const preLoadLocation = useLocation();
   const navigate = useNavigate();
   const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};
-  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
   const [rRule, setRRULE] = useState();
   const [formData, setFormData] = useState({
@@ -38,34 +38,13 @@ function RoomRes({auth, isAdmin=false}) {
   const [minEndDateTime, setMinEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Minimum end time 1 hour after start
   const [selectedRooms, setSelectedRooms] = useState(preLoadRooms ? preLoadRooms : []); // Default room selection
 
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
+  const { user } = useAuth();
   const [availableRooms, setAvailableRooms] = useState(roomListSimple);
   // const [switchCalendar, setSwitchCalendar] = useState(true);
   const [isRepeating, setIsRepeating] = useState(false);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false); // Controls the summary modal
   const [conflicts, setConflicts] = useState([]); // Stores any detected conflicts
-
-  useEffect(() => {
-    axios
-        .get(API_URL + '/api/auth/user', { withCredentials: true })
-        .then((response) => {
-          if (response.data.user) {
-            setUser(response.data.user);
-            setShowLoginPrompt(false)
-          } else {
-            console.error('Not authenticated');
-          }
-        })
-        .catch((err) => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    if (!user) {
-      setShowLoginPrompt(true);
-    } else {
-      setShowLoginPrompt(false);
-    }
-  }, [user]);
 
   const handleLoginRedirect = () => {
     navigate("/login", { state: { returnPath: "/", formData } }); // Preserve form data
@@ -408,7 +387,7 @@ function RoomRes({auth, isAdmin=false}) {
       </form>
 
       <SummaryModal />
-      <LoginModal showLoginPrompt={showLoginPrompt} handleLoginRedirect={handleLoginRedirect} />
+      <LoginModal showLoginPrompt={!user} handleLoginRedirect={handleLoginRedirect} />
 
       {/* <div class="responsive-iframe-container">
         <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>

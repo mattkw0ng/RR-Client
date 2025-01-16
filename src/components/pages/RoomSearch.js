@@ -8,6 +8,7 @@ import API_URL from "../../config";
 import axios from 'axios';
 import RoomSelection from "../RoomSelection";
 import LoginModal from "../lightbox/LoginModal";
+import { useAuth } from "../../context/AuthContext";
 
 /**
  * @description '/search' page
@@ -15,10 +16,9 @@ import LoginModal from "../lightbox/LoginModal";
  * @returns A room filtering/searching form with a list of the resulting available rooms. Components: @see RoomSearchBar and @see RoomSelection components
  */
 
-function RoomSearch({ handleSearch, auth }) {
+function RoomSearch() {
   const navigate = useNavigate();
-  const [showLoginPrompt, setShowLoginPrompt] = useState(!auth);
-
+  const { user } = useAuth()
   
   const [roomName, setRoomName] = useState("");   // Search Query
   const [verifiedAvailability, setVerifiedAvailability] = useState(false)
@@ -79,22 +79,6 @@ function RoomSearch({ handleSearch, auth }) {
   const handleDateChange = (date) => {
     setDate(date);
   }
-
-  useEffect(() => {
-    axios
-        .get(API_URL + '/api/auth/user', { withCredentials: true })
-        .then((response) => {
-          if (response.data.user) {
-            setShowLoginPrompt(false)
-          } else {
-            setShowLoginPrompt(true);
-            console.error('Not authenticated');
-          }
-        })
-        .catch((err) => console.error(err));
-  }, []);
-
-
 
   useEffect(() => {
     setVerifiedAvailability(false);
@@ -221,7 +205,7 @@ function RoomSearch({ handleSearch, auth }) {
         </div>
       </div>
 
-      <LoginModal showLoginPrompt={showLoginPrompt} handleLoginRedirect={handleLoginRedirect} />
+      <LoginModal showLoginPrompt={!user} handleLoginRedirect={handleLoginRedirect} />
     </Fragment>
   );
 }

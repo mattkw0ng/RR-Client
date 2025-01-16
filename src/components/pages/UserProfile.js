@@ -3,29 +3,15 @@ import API_URL from '../../config';
 import axios from 'axios';
 import { Container, ListGroup, Button, Badge, Modal, ModalHeader, ModalBody, ListGroupItem } from 'reactstrap';
 import RecurringEventList from '../events/RecurringEventList';
+import { useAuth } from '../../context/AuthContext';
 
-import { USER } from '../../data/example';
 import StandardEvent from '../events/StandardEvent';
 import EditEventForm from '../edit/EditEventForm';
 import ModifiedEvent from '../events/ModifiedEvent';
 
 const UserProfile = () => {
-
-    const [user, setUser] = useState(USER);
+    const { user } = useAuth();
     const [events, setEvents] = useState();
-
-    const getUser = async () => {
-        axios.get(API_URL + '/api/auth/user', { withCredentials: true })
-            .then((response) => {
-                if (response.data.user) {
-                    console.log("Successfully loaded User's Profile")
-                    setUser(response.data.user);
-                } else {
-                    console.error('Not authenticated');
-                }
-            })
-            .catch((err) => console.error(err));
-    }
 
     const getUserEvents = async () => {
         axios.get(API_URL + '/api/userEvents', { withCredentials: true })
@@ -40,7 +26,6 @@ const UserProfile = () => {
     }
 
     useEffect(() => {
-        getUser();
         getUserEvents();
     }, []);
 
@@ -145,7 +130,7 @@ const UserProfile = () => {
                                             {/* Details */}
                                             <p>
                                                 {/* Room */}
-                                                {event.extendedProperties.private.rooms.map((room) => <p key={room.email}>{room.displayName}</p>)}
+                                                {event.extendedProperties.private.rooms && event.extendedProperties.private.rooms.map((room) => <p key={room.email}>{room.displayName}</p>)}
                                                 <br />
                                                 {/* Description */}
                                                 Description: {event.description}

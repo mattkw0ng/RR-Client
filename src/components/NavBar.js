@@ -9,16 +9,18 @@ import {
 } from 'reactstrap';
 import API_URL from '../config';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const NavBar = () => {
-  const [user, setUser] = useState(null);
+  const [stateUser, setStateUser] = useState(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     axios
-      .get(API_URL + '/api/auth/user', { withCredentials: true })
+      .get(API_URL + '/api/auth/stateUser', { withCredentials: true })
       .then((response) => {
-        if (response.data.user) {
-          setUser(response.data.user);
+        if (response.data.stateUser) {
+          setStateUser(response.data.stateUser);
         } else {
           console.error('Not authenticated');
         }
@@ -42,18 +44,20 @@ const NavBar = () => {
               Reserve Room
             </NavLink>
           </NavItem>
-
-          <NavItem>
-            <NavLink href="/admin">Admin</NavLink>
-          </NavItem>
+          {
+            (user && ['admin', 'superadmin'].includes(user.role)) &&
+            <NavItem>
+              <NavLink href="/admin">Admin</NavLink>
+            </NavItem>
+          }
           <NavItem>
             <NavLink href="/profile">
               Profile
             </NavLink>
           </NavItem>
           <NavbarText>
-            {user ? (
-              <span className='text-white' >Welcome, {user.displayName}!</span>
+            {stateUser ? (
+              <span className='text-white' >Welcome, {stateUser.displayName}!</span>
             ) : (
               <span>
                 <a className='text-white' href={API_URL + "/api/auth/google"}>Login</a>

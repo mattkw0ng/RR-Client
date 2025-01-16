@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import API_URL from "../config";
 import "./Login.css"; // Import custom styles
+import { useAuth } from "../context/AuthContext";
 
 
-const Login = ({ setUser }) => {
+const Login = ({ }) => {
+    const { setUser } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -29,6 +31,7 @@ const Login = ({ setUser }) => {
                 const response = await fetch(`${API_URL}/api/auth/user`, { credentials: "include" });
                 if (response.ok) {
                     const user = await response.json();
+                    console.log("Successfully Logged in User: ", user)
                     setUser(user);
 
                     // Retrieve preserved state if available
