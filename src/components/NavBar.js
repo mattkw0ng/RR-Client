@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Navbar,
   NavbarBrand,
@@ -8,25 +8,10 @@ import {
   NavbarText,
 } from 'reactstrap';
 import API_URL from '../config';
-import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
 const NavBar = () => {
-  const [stateUser, setStateUser] = useState(null);
   const { user } = useAuth();
-
-  useEffect(() => {
-    axios
-      .get(API_URL + '/api/auth/stateUser', { withCredentials: true })
-      .then((response) => {
-        if (response.data.stateUser) {
-          setStateUser(response.data.stateUser);
-        } else {
-          console.error('Not authenticated');
-        }
-      })
-      .catch((err) => console.error(err));
-  }, []);
 
   return (
     <div>
@@ -56,8 +41,8 @@ const NavBar = () => {
             </NavLink>
           </NavItem>
           <NavbarText>
-            {stateUser ? (
-              <span className='text-white' >Welcome, {stateUser.displayName}!</span>
+            {user ? (
+              <span className='text-white' >Welcome, {user.displayName}!</span>
             ) : (
               <span>
                 <a className='text-white' href={API_URL + "/api/auth/google"}>Login</a>
