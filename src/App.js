@@ -36,13 +36,12 @@ const App = () => {
           />
           <Route path="/" element={<RoomSearch auth={auth} />} />
           <Route path="/room-reservation-form" element={<RoomRes auth={auth} />} />
-          <Route path="/admin" element={
-            <ProtectedRoute requiredRoles={['admin', 'superadmin']}>
-              <AdminPortal />
-            </ProtectedRoute>
-          } />
+          <Route element={<ProtectedRoute requiredRoles={['admin', 'superadmin']} />}>
+            <Route path='/admin' element={<AdminPortal />} />
+          </Route>
         </Routes>
       </Router>
+
     }>
     </AuthProvider>
   );

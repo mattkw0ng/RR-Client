@@ -6,12 +6,8 @@ const ProtectedRoute = ({ requiredRoles }) => {
   const { user, loading } = useAuth();
 
   if (loading) {
-    console.log("Loading");
     return null;
-  } else {
-    console.log("finished loading, here is user: ", user);
   }
-
   if (!user) {
     // If the user is not logged in, redirect to login
     return <Navigate to="/login" replace />;
