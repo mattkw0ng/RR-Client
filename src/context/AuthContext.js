@@ -15,8 +15,9 @@ export const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/auth/user`, { withCredentials: true });;
-        console.log("AuthContext response", response.data.user)
+        // console.log("AuthContext response", response.data.user)
         setUser(response.data.data, () => {
+          console.log('Loading finished (from callback)');
           setLoading(false);
         });
       } catch (error) {
@@ -27,6 +28,13 @@ export const AuthProvider = ({ children }) => {
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    console.log("user data updated: ", user);
+  }, [user]);
+  useEffect(() => {
+    console.log("loading status updated: ", loading);
+  }, [loading]);
 
   return (
     <AuthContext.Provider value={{ user, setUser, loading }}>

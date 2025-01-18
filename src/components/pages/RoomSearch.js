@@ -205,7 +205,7 @@ function RoomSearch() {
         </div>
       </div>
 
-      <LoginModal showLoginPrompt={!loading && !user} handleLoginRedirect={handleLoginRedirect} />
+      <LoginModal showLoginPrompt={loading && !user} handleLoginRedirect={handleLoginRedirect} />
     </Fragment>
   );
 }
