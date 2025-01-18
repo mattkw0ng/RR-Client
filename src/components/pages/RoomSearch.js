@@ -18,7 +18,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function RoomSearch() {
   const navigate = useNavigate();
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   
   const [roomName, setRoomName] = useState("");   // Search Query
   const [verifiedAvailability, setVerifiedAvailability] = useState(false)
@@ -205,7 +205,7 @@ function RoomSearch() {
         </div>
       </div>
 
-      <LoginModal showLoginPrompt={!user} handleLoginRedirect={handleLoginRedirect} />
+      <LoginModal showLoginPrompt={!loading && !user} handleLoginRedirect={handleLoginRedirect} />
     </Fragment>
   );
 }
