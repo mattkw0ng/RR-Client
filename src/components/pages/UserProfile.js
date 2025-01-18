@@ -10,7 +10,7 @@ import EditEventForm from '../edit/EditEventForm';
 import ModifiedEvent from '../events/ModifiedEvent';
 
 const UserProfile = () => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
     const [events, setEvents] = useState();
 
     const getUserEvents = async () => {
@@ -34,7 +34,7 @@ const UserProfile = () => {
         getUserEvents();
     }, []);
 
-    if (!user) {
+    if (loading) {
         return <div className='p-5'>Loading...</div>;
     } else {
         console.log("User is loaded:", user);

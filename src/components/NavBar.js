@@ -11,7 +11,11 @@ import API_URL from '../config';
 import { useAuth } from '../context/AuthContext';
 
 const NavBar = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <div>
