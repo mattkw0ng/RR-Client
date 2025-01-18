@@ -16,13 +16,10 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await axios.get(`${API_URL}/api/auth/user`, { withCredentials: true });;
         // console.log("AuthContext response", response.data.user)
-        setUser(response.data.data, () => {
-          console.log('Loading finished (from callback)');
-          setLoading(false);
-        });
+        setUser(response.data.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setUser(null)
+        setUser(false)
       }
     };
 
@@ -30,8 +27,12 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (user !== null) {
+      setLoading(false);
+    }
     console.log("user data updated: ", user);
   }, [user]);
+  
   useEffect(() => {
     console.log("loading status updated: ", loading);
   }, [loading]);
