@@ -8,6 +8,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Fetch user data on initial load
   useEffect(() => {
@@ -15,10 +16,12 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await axios.get(`${API_URL}/api/auth/user`, { withCredentials: true });;
         console.log("AuthContext response", response.data.user)
-        setUser(response.data.user);
+        setUser(response.data.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
         setUser(null)
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -26,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, loading }}>
       {children}
     </AuthContext.Provider>
   );
