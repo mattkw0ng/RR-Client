@@ -39,7 +39,7 @@ function RoomRes({ isAdmin = false }) {
   const [selectedRooms, setSelectedRooms] = useState(preLoadRooms ? preLoadRooms : []); // Default room selection
 
   // const [user, setUser] = useState(null);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [availableRooms, setAvailableRooms] = useState(roomListSimple);
   // const [switchCalendar, setSwitchCalendar] = useState(true);
   const [isRepeating, setIsRepeating] = useState(false);
@@ -51,7 +51,7 @@ function RoomRes({ isAdmin = false }) {
     console.log("User loaded:", user);
   }, [user]);
 
-  if (!user) {
+  if (loading) {
     return <div className='p-5'>Loading...</div>;
   } else {
     console.log("User is loaded:", user);
