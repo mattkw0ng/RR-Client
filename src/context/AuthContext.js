@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/auth/user`, { withCredentials: true });;
-        // console.log("AuthContext response", response.data.user)
-        setUser(response.data.data);
+        console.log("AuthContext response", response.data.user)
+        setUser(response.data.user);
       } catch (error) {
         console.error("Error fetching user data:", error);
         setUser(false)
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     }
     console.log("user data updated: ", user);
   }, [user]);
-  
+
   useEffect(() => {
     console.log("loading status updated: ", loading);
   }, [loading]);
