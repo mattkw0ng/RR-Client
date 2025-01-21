@@ -399,7 +399,7 @@ function RoomRes({ isAdmin = false }) {
       </form>
 
       <SummaryModal />
-      <LoginModal showLoginPrompt={!user} handleLoginRedirect={handleLoginRedirect} />
+      <LoginModal showLoginPrompt={loading || !user} handleLoginRedirect={handleLoginRedirect} />
 
       {/* <div class="responsive-iframe-container">
         <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
