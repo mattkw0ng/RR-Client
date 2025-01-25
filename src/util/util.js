@@ -1,4 +1,5 @@
 import ROOMS from "../data/rooms";
+import { format, isSameDay, parseISO } from 'date-fns';
 
 // Convert slider value (0–47) to time in "hh:mm AM/PM" format
 export const formatTime = (value) => {
@@ -22,6 +23,20 @@ export const areTimeRangesOverlapping = (range1, range2) => {
 
   // Check if ranges overlap
   return start1 < end2 && start2 < end1;
+}
+
+// Display Event Dates Neatly
+export function formatEventDates(startDate, endDate) {
+  const start = parseISO(startDate);
+  const end = parseISO(endDate);
+
+  // Format for single time range if both dates are on the same day
+  if (isSameDay(start, end)) {
+    return `${format(start, 'eee, MMM do h:mmaaa')}-${format(end, 'h:mmaaa')}`;
+  }
+
+  // Format separately if the dates are on different days
+  return `${format(start, 'eee, MMM do h:mmaaa')} - ${format(end, 'eee, MMM do h:mmaaa')}`;
 }
 
 export function getRoomNameByCalendarID(calendarID) {

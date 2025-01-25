@@ -53,8 +53,6 @@ function RoomRes({ isAdmin = false }) {
 
   if (loading) {
     return <div className='p-5'>Loading...</div>;
-  } else {
-    console.log("User is loaded:", user);
   }
 
   const handleLoginRedirect = () => {
@@ -103,6 +101,15 @@ function RoomRes({ isAdmin = false }) {
 
   const handleSubmit = async () => {
     try {
+      let conflictMessage = ''
+      if (conflicts.length > 0) {
+        conflictMessage = prompt(`
+            Warning: This event conflicts with other event(s) in the calendar. 
+            You may proceed with the reservation, but understand that it has a higher risk of being denied/modified. 
+            If you would like to provide a note or message to the office staff please do so here:
+          `);
+      }
+
       const start = startDateTime.toISOString();
       const end = endDateTime.toISOString();
 
@@ -125,6 +132,7 @@ function RoomRes({ isAdmin = false }) {
         userEmail: user.emails[0].value,
         rRule,
         isAdmin,
+        conflictMessage,
       });
       alert('Event added successfully');
       navigate('/profile')
@@ -236,7 +244,7 @@ function RoomRes({ isAdmin = false }) {
           )}
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleSubmit} disabled={conflicts.length > 0}>
+          <Button color="primary" onClick={handleSubmit}>
             Submit
           </Button>
           <Button color="secondary" onClick={() => setIsSummaryVisible(false)}>
