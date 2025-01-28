@@ -95,6 +95,9 @@ const UserProfile = () => {
     }
 
     const DisplayEvents = (displayEvents, isPending) => {
+        useEffect(() => {
+            console.log("Rendering:", displayEvents);
+        }, [displayEvents])
 
         return (
             <ListGroup>
