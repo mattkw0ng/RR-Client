@@ -92,7 +92,7 @@ const UserProfile = () => {
             });
     }
 
-    const DisplayEvents = (displayEvents, isPending) => {
+    const DisplayEvents = ({displayEvents, isPending}) => {
         console.log("Rendering:", displayEvents);
         useEffect(() => {
             console.log("UseEffect Rendering:", displayEvents);
