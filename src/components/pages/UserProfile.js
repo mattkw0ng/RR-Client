@@ -36,8 +36,6 @@ const UserProfile = () => {
 
     if (loading) {
         return <div className='p-5'>Loading...</div>;
-    } else {
-        console.log("User is loaded:", user);
     }
 
     const approvedBadge = <Badge pill className='ms-2' color={'primary'} style={{ fontSize: '0.6em' }}>approved</Badge>
@@ -95,6 +93,7 @@ const UserProfile = () => {
     }
 
     const DisplayEvents = (displayEvents, isPending) => {
+        console.log("Rendering:", displayEvents);
         useEffect(() => {
             console.log("Rendering:", displayEvents);
         }, [displayEvents])
