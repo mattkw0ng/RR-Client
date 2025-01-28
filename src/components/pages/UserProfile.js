@@ -95,7 +95,7 @@ const UserProfile = () => {
     const DisplayEvents = (displayEvents, isPending) => {
         console.log("Rendering:", displayEvents);
         useEffect(() => {
-            console.log("Rendering:", displayEvents);
+            console.log("UseEffect Rendering:", displayEvents);
         }, [displayEvents])
 
         return (
@@ -128,7 +128,7 @@ const UserProfile = () => {
                     <div className='user-events'>
                         {/* Proposed Events */}
                         <ListGroup>
-                            {events.proposed?.map(event => (
+                            {events['proposed']?.map(event => (
                                 (<ModifiedEvent
                                     key={event.id}
                                     event={event}
@@ -140,12 +140,12 @@ const UserProfile = () => {
                         </ListGroup>
 
                         {/* Pending Events First */}
-                        <DisplayEvents displayEvents={events.pending} isPending={true} />
+                        <DisplayEvents displayEvents={events['pending']} isPending={true} />
 
                         <hr />
 
                         {/* Approved Events */}
-                        <DisplayEvents displayEvents={events.approved} isPending={false} />
+                        <DisplayEvents displayEvents={events['approved']} isPending={false} />
                     </div>
                 ) : (
                     <p>No upcoming events found.</p>
