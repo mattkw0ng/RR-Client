@@ -98,7 +98,7 @@ const UserProfile = () => {
 
         return (
             <ListGroup>
-                {displayEvents.map(event => (
+                {displayEvents?.map(event => (
                     <StandardEvent
                         key={event.id}
                         event={event}
@@ -126,7 +126,7 @@ const UserProfile = () => {
                     <div className='user-events'>
                         {/* Proposed Events */}
                         <ListGroup>
-                            {events['proposed']?.map(event => (
+                            {events.proposed?.map(event => (
                                 (<ModifiedEvent
                                     key={event.id}
                                     event={event}
@@ -138,12 +138,12 @@ const UserProfile = () => {
                         </ListGroup>
 
                         {/* Pending Events First */}
-                        <DisplayEvents displayEvents={events['pending']} isPending={true} />
+                        <DisplayEvents displayEvents={events.pending} isPending={true} />
 
                         <hr />
 
                         {/* Approved Events */}
-                        <DisplayEvents displayEvents={events['approved']} isPending={false} />
+                        <DisplayEvents displayEvents={events.approved} isPending={false} />
                     </div>
                 ) : (
                     <p>No upcoming events found.</p>

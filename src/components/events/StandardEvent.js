@@ -29,9 +29,9 @@ const StandardEvent = ({ event, button, badge, pending=true }) => {
           }
           <br />
           {/* Description */}
-          Description: {event.description}
+          Description: {event.description || 'No Description Given'}
           <br />
-          Congregation: {event.extendedProperties?.private.congregation}
+          Congregation: {event.extendedProperties?.private.congregation || 'None'}
         </p>
         {/* Show all instances of recurring event (times and conflict information) */}
 
