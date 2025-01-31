@@ -76,6 +76,14 @@ const UserProfile = () => {
         const confirmation = window.confirm(`Cancel ${event.summary}?`);
         if (confirmation) {
             console.log("Deleting event");
+            axios.delete(API_URL + '/api/rejectEvent', { eventId: event.id }, {withCredentials: true})
+                .then(response => {
+                    alert('Event Cancelled Successfully: ', response.data);
+                    getUserEvents();
+                })
+                .catch(error => {
+                    console.error('Error Cancelling Event', error.response ? error.response.data : error.message);
+                })
         }
     }
 
