@@ -230,3 +230,7 @@ nav.navbar {
 .vh100-calc {
   height: calc(100vh - 56px);
 }
+
+.navbar-class {
+  font-family: 'Montserrat', sans-serif;
+}

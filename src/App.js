@@ -10,6 +10,7 @@ import NavBar from './components/NavBar';
 import RoomSearch from './components/pages/RoomSearch';
 import AdminPortal from './components/pages/AdminPortal';
 import ProtectedRoute from './context/ProtectedRoute';
+import HomePage from './components/pages/HomePage';
 
 const isAuthenticated = () => {
   const token = localStorage.getItem('authToken');
@@ -34,8 +35,9 @@ const App = () => {
             path="/profile"
             element={<UserProfile />}
           />
-          <Route path="/" element={<RoomSearch auth={auth} />} />
+          <Route path="/search-rooms" element={<RoomSearch auth={auth} />} />
           <Route path="/room-reservation-form" element={<RoomRes auth={auth} />} />
+          <Route path="/" element={<HomePage />} />
           <Route element={<ProtectedRoute requiredRoles={['admin', 'superadmin']} />}>
             <Route path='/admin' element={<AdminPortal />} />
           </Route>

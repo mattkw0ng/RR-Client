@@ -13,14 +13,14 @@ import { useAuth } from '../context/AuthContext';
 const NavBar = () => {
   const { user, loading } = useAuth();
 
-  if (loading) {
-    return null;
-  }
+  // if (loading) {
+  //   return null;
+  // }
 
   return (
-    <div>
+    <div className='navbar-class'>
       <Navbar>
-        <NavbarBrand href="/">RoomReservation</NavbarBrand>
+        <NavbarBrand href="/" className='navbar-brand'>SJCAC Rooms</NavbarBrand>
         <Nav>
           <NavItem>
             <NavLink href="/">
@@ -33,11 +33,12 @@ const NavBar = () => {
               Reserve Room
             </NavLink>
           </NavItem>
-          {
+          { !loading ?
             (user && ['admin', 'superadmin'].includes(user.role)) &&
             <NavItem>
               <NavLink href="/admin">Admin</NavLink>
             </NavItem>
+            : null
           }
           <NavItem>
             <NavLink href="/profile">
@@ -45,7 +46,7 @@ const NavBar = () => {
             </NavLink>
           </NavItem>
           <NavbarText>
-            {user ? (
+            {!loading && user ? (
               <span className='text-white' >Welcome, {user.displayName}!</span>
             ) : (
               <span>

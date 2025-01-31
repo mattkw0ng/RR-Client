@@ -137,12 +137,11 @@ function RoomSearch() {
     <Fragment>
       {/* Filters */}
       <div className="d-flex"> 
-        <div className="form-filter-container d-flex bg-light vh100-calc shadow">
+        <div className="form-filter-container d-flex bg-light shadow">
           <form onSubmit={handleSubmit} id="form-filter" className="px-5 py-3">
             {/* Room Name Search */}
             <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName} filteredRooms={filteredRooms} setFilteredRooms={setFilteredRooms} />
             <hr />
-            <br />
             {/* Date and Time Selection */}
             <div className="mb-3">
               <label className="form-label">Select Date</label>
