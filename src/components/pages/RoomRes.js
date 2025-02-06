@@ -29,6 +29,7 @@ function RoomRes({ isAdmin = false }) {
     congregation: "",
     groupName: "",
     groupLeader: "",
+    email: "",
     numPeople: preLoadData.capacity,
   });
 
@@ -116,7 +117,7 @@ function RoomRes({ isAdmin = false }) {
       console.log(selectedRooms);
       console.log(user);
 
-      const { eventName, location, description, congregation, groupName, groupLeader, numPeople } = formData;
+      const { eventName, location, description, congregation, groupName, groupLeader, numPeople, email } = formData;
 
       await axios.post(API_URL + '/api/addEventWithRooms', {
         eventName,
@@ -133,6 +134,7 @@ function RoomRes({ isAdmin = false }) {
         rRule,
         isAdmin,
         conflictMessage,
+        otherEmail: email,
       });
       alert('Event added successfully');
       navigate('/profile')
@@ -267,6 +269,18 @@ function RoomRes({ isAdmin = false }) {
           <div className='col-md-6'>
             {/* Summary */}
             <TextInput label={"Event Name"} name={'eventName'} handleFormChange={handleFormChange} formData={formData} />
+
+            {isAdmin ? <div className="mb-3">
+              <label className="form-label">{"Event Owner's Email (optional)"}</label>
+              <input
+                name='email'
+                type='email'
+                className="form-control"
+                value={formData['email']}
+                onChange={(e) => handleFormChange(e)}
+              ></input>
+            </div>
+            : null}
 
             {/* Location */}
             <TextInput label={"Location"} name={'location'} handleFormChange={handleFormChange} formData={formData} />

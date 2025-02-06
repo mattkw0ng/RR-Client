@@ -28,8 +28,8 @@ function DateTime({ startDateTime, endDateTime, handleStartDateTimeChange, handl
           dateFormat="MMMM d, yyyy h:mm aa"
           className="form-control"
           minDate={minEndDateTime}
-          minTime={new Date(minEndDateTime).setHours(0, 0, 0, 0)}
-          maxTime={new Date(minEndDateTime).setHours(23, 59, 59, 999)}
+          minTime={new Date(new Date(minEndDateTime).setHours(0, 0, 0, 0))}
+          maxTime={new Date(new Date(minEndDateTime).setHours(23, 59, 59, 999))}
         />
       </div>
     </div>

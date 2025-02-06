@@ -98,6 +98,7 @@ export function parseRRule(rRule) {
   const freq = frequencyMap[ruleParts.FREQ] || "custom recurrence";
   const interval = ruleParts.INTERVAL ? `every ${ruleParts.INTERVAL} ${freq}` : `every ${freq}`;
   const count = ruleParts.COUNT ? ` for ${ruleParts.COUNT} occurrences` : "";
+  console.log("ParseRRule ruleparts.until: ", ruleParts.UNTIL);
   const until = ruleParts.UNTIL
     ? ` until ${new Date(ruleParts.UNTIL).toLocaleDateString()}`
     : "";
