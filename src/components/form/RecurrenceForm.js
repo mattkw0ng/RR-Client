@@ -128,7 +128,8 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
             />
             <span className="input-group-text">
               {/* Format the frequency from monthly => Month(s) | weekly => Week(s) | daily => Day(s) */}
-              {`${frequency ? frequency === "daily" ? "Day" : frequency.charAt(0).toUpperCase() + frequency.slice(1, -2) : "Day"}${(interval > 1) ? 's' : ''}`}
+              **working on it
+              {/* {`${frequency ? frequency === "daily" ? "Day" : frequency.charAt(0).toUpperCase() + frequency.slice(1, -2) : "Day"}${(interval > 1) ? 's' : ''}`} */}
             </span>
           </div>
         </div>
