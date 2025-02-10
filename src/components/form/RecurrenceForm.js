@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { getWeekdayIfSame, parseRRule } from '../../util/util';
 
 function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
-  const [frequency, setFrequency] = useState('');
+  const [frequency, setFrequency] = useState(null);
   const [interval, setInterval] = useState(1);
   const [bySetPos, setBySetPos] = useState([1]);
   const [daysOfWeek, setDaysOfWeek] = useState([]);
