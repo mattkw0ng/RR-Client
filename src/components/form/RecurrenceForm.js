@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { getWeekdayIfSame, parseRRule } from '../../util/util';
 
 function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
-  const [frequency, setFrequency] = useState(null);
+  const [frequency, setFrequency] = useState('');
   const [interval, setInterval] = useState(1);
   const [bySetPos, setBySetPos] = useState([1]);
   const [daysOfWeek, setDaysOfWeek] = useState([]);
@@ -128,8 +128,7 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
             />
             <span className="input-group-text">
               {/* Format the frequency from monthly => Month(s) | weekly => Week(s) | daily => Day(s) */}
-              **working on it
-              {/* {`${frequency ? frequency === "daily" ? "Day" : frequency.charAt(0).toUpperCase() + frequency.slice(1, -2) : "Day"}${(interval > 1) ? 's' : ''}`} */}
+              {`${frequency ? frequency === "daily" ? "Day" : frequency.charAt(0).toUpperCase() + frequency.slice(1, -2) : "Day"}${(interval > 1) ? 's' : ''}`}
             </span>
           </div>
         </div>
