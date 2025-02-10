@@ -48,6 +48,11 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
 
   // **DYNAMIC EXAMPLES**
   useEffect(() => {
+    const weekDayMap = {
+      MO: 'Monday', TU: 'Tuesday', WE: 'Wednesday', TH: 'Thursday',
+      FR: 'Friday', SA: 'Saturday', SU: 'Sunday'
+    };
+
     if (!frequency) {
       setExampleText('Select an option to see an example.');
       return;
@@ -59,12 +64,12 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
         break;
       case 'weekly':
         setExampleText(
-          `Example: "Every ${interval > 1 ? `${interval} weeks` : "week"} on ${daysOfWeek.length > 0 ? daysOfWeek.map(d => weekdayNames[d]).join(', ') : "selected days"}"`
+          `Example: "Every ${interval > 1 ? `${interval} weeks` : "week"} on ${daysOfWeek.length > 0 ? daysOfWeek.map(d => weekDayMap[d]).join(', ') : "selected days"}"`
         );
         break;
       case 'monthly':
         setExampleText(`Example: "Every ${interval > 1 ? interval + ' months' : 'month'} on the ${bySetPos.length > 0 ? bySetPos.map((i) => ["1st", "2nd", "3rd", "4th", "last"][i - 1]).join(" and ")
-          : 'Nth'} ${daysOfWeek.length > 0 ? daysOfWeek.map(d => weekdayNames[d]).join(', ') : "selected days"}"`
+          : 'Nth'} ${daysOfWeek.length > 0 ? daysOfWeek.map(d => weekDayMap[d]).join(', ') : "selected days"}"`
         );
         break;
       default:
@@ -89,7 +94,7 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
       rrule += `;UNTIL=${untilDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
     }
     setRRULE(rrule);
-  }, [frequency, interval, daysOfWeek, endAfterOccurrences, endDate, setRRULE]);
+  }, [frequency, interval, daysOfWeek, endAfterOccurrences, endDate, setRRULE, bySetPos]);
 
   return (
     <div className="container my-4 bg-light p-3 rounded">
