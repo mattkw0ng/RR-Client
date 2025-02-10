@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { getWeekdayIfSame, parseRRule } from '../../util/util';
 
-function RecurrenceForm({ setRRULE }) {
+function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
   const [frequency, setFrequency] = useState('');
   const [interval, setInterval] = useState(1);
+  const [bySetPos, setBySetPos] = useState([1]);
   const [daysOfWeek, setDaysOfWeek] = useState([]);
   const [endAfterOccurrences, setEndAfterOccurrences] = useState(null);
   const [endDate, setEndDate] = useState('');
+  const [exampleText, setExampleText] = useState('Select an option to see an example.');
 
   const weekdays = ['MO', 'TU', 'WE', 'TH', 'FR', 'SA', 'SU'];
+  const weekdayNames = {
+    MO: 'Monday', TU: 'Tuesday', WE: 'Wednesday', TH: 'Thursday',
+    FR: 'Friday', SA: 'Saturday', SU: 'Sunday'
+  };
 
   // Handlers
-  const handleFrequencyChange = (e) => setFrequency(e.target.value);
+  const handleFrequencyChange = (e) => {
+    setFrequency(e.target.value);
+  };
   const handleIntervalChange = (e) => setInterval(e.target.value);
   const handleDayToggle = (day) => {
     setDaysOfWeek((prev) =>
@@ -23,57 +32,71 @@ function RecurrenceForm({ setRRULE }) {
     setEndDate('');
   };
   const handleEndDateChange = (e) => {
-    console.log(e.target.value);
-    setEndDate(e.target.value)
+    setEndDate(e.target.value);
     setEndAfterOccurrences(null);
   };
 
-  
-  // const generateRecurrenceRule = () => {
-  //   let rrule = `FREQ=${frequency.toUpperCase()}`;
+  const handleBySetPos = (value) => {
+    setBySetPos((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    );
+  }
 
-  //   if (interval > 1) rrule += `;INTERVAL=${interval}`;
+  useEffect(() => {
+    setDaysOfWeek([getWeekdayIfSame(startDateTime, endDateTime)]);
+  }, [startDateTime, endDateTime]);
 
-  //   if (frequency === 'weekly' && daysOfWeek.length > 0) {
-  //     rrule += `;BYDAY=${daysOfWeek.join(',')}`;
-  //   }
+  // **DYNAMIC EXAMPLES**
+  useEffect(() => {
+    if (!frequency) {
+      setExampleText('Select an option to see an example.');
+      return;
+    }
 
-  //   if (endAfterOccurrences) {
-  //     rrule += `;COUNT=${endAfterOccurrences}`;
-  //   } else if (endDate) {
-  //     rrule += `;UNTIL=${new Date(endDate).toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
-  //   }
-
-  //   return rrule;
-  // };
+    switch (frequency) {
+      case 'daily':
+        setExampleText(`Example: "Every ${interval > 1 ? `${interval} days` : "day"}"`);
+        break;
+      case 'weekly':
+        setExampleText(
+          `Example: "Every ${interval > 1 ? `${interval} weeks` : "week"} on ${daysOfWeek.length > 0 ? daysOfWeek.map(d => weekdayNames[d]).join(', ') : "selected days"}"`
+        );
+        break;
+      case 'monthly':
+        setExampleText(`Example: "Every ${interval > 1 ? interval + ' months' : 'month'} on the ${bySetPos.length > 0 ? bySetPos.map((i) => ["1st", "2nd", "3rd", "4th", "last"][i - 1]).join(" and ")
+          : 'Nth'} ${daysOfWeek.length > 0 ? daysOfWeek.map(d => weekdayNames[d]).join(', ') : "selected days"}"`
+        );
+        break;
+      default:
+        setExampleText("Select a valid recurrence option.");
+    }
+  }, [frequency, interval, daysOfWeek, bySetPos]);
 
   useEffect(() => {
     // Generate RRULE
     let rrule = `FREQ=${frequency.toUpperCase()}`;
-
     if (interval > 1) rrule += `;INTERVAL=${interval}`;
-
-    if (frequency === 'weekly' && daysOfWeek.length > 0) {
-      rrule += `;BYDAY=${daysOfWeek.join(',')}`;
+    if (frequency === 'weekly' && daysOfWeek.length > 0) rrule += `;BYDAY=${daysOfWeek.join(',')}`;
+    if (frequency === 'monthly' && daysOfWeek.length > 0) {
+      rrule += `;BYSETPOS=${bySetPos.join(',')}`
+      rrule += `;BYDAY=${daysOfWeek.join(',')}`
     }
-
     if (endAfterOccurrences) {
       rrule += `;COUNT=${endAfterOccurrences}`;
     } else if (endDate) {
-      rrule += `;UNTIL=${new Date(endDate).toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
+      const untilDate = new Date(endDate);
+      untilDate.setUTCHours(23, 59, 59, 999)
+      rrule += `;UNTIL=${untilDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
     }
-
     setRRULE(rrule);
-  }, [frequency, interval, daysOfWeek, endAfterOccurrences, endDate, setRRULE])
+  }, [frequency, interval, daysOfWeek, endAfterOccurrences, endDate, setRRULE]);
 
   return (
-    <div className="container my-4">
-      <h5 className="mb-3">Set Recurrence Options</h5>
-
-      <div className='d-flex justify-content-start'>
+    <div className="container my-4 bg-light p-3 rounded">
+      <div className="d-flex justify-content-start">
         {/* Frequency Selection */}
         <div className="form-group mb-3">
-          <label htmlFor="frequencySelect">Frequency</label>
+          <label htmlFor="frequencySelect">How often will the event repeat?</label>
           <select
             id="frequencySelect"
             className="form-select"
@@ -81,13 +104,13 @@ function RecurrenceForm({ setRRULE }) {
             onChange={handleFrequencyChange}
           >
             <option value="">Select...</option>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
+            <option value="daily">Daily (e.g., "Every day")</option>
+            <option value="weekly">{`Weekly (e.g. "Every ${daysOfWeek.length > 0 ? daysOfWeek.map(d => weekdayNames[d]).join(', ') : "Sunday"}")`}</option>
+            <option value="monthly">{`Monthly (e.g., "Every 1st ${daysOfWeek.length > 0 ? daysOfWeek.map(d => weekdayNames[d]).join(', ') : "Sunday"} of the month")`}</option>
           </select>
         </div>
 
-        {/* Interval */}
+        {/* Interval Selection */}
         <div className="form-group mb-3 mx-5">
           <label>Repeat every</label>
           <div className="input-group">
@@ -99,17 +122,38 @@ function RecurrenceForm({ setRRULE }) {
               onChange={handleIntervalChange}
             />
             <span className="input-group-text">
-              {frequency && ` ${frequency.charAt(0).toUpperCase() + frequency.slice(1)}`}
+              {/* Format the frequency from monthly => Month(s) | weekly => Week(s) | daily => Day(s) */}
+              {`${frequency ? frequency === "daily" ? "Day" : frequency.charAt(0).toUpperCase() + frequency.slice(1, -2) : "Day"}${(interval > 1) ? 's' : ''}`}
             </span>
           </div>
         </div>
-
       </div>
 
-      {/* Weekly Options */}
-      {frequency === 'weekly' && (
+      {frequency === 'monthly' && (
         <div className="form-group mb-3">
-          <label>Repeat on</label>
+          <label>{`Repeat Every:`}</label>
+          <div className="d-flex flex-wrap">
+            {['1st', '2nd', '3rd', '4th', 'last'].map((label, index) => (<div className="form-check me-2" key={'nth' + index}>
+              <input
+                className="form-check-input"
+                type="checkbox"
+                checked={bySetPos.includes(index + 1)}
+                onChange={() => handleBySetPos(index + 1)}
+                id={label}
+              />
+              <label className="form-check-label" htmlFor={label}>
+                {label}
+              </label>
+            </div>))}
+          </div>
+        </div>
+      )}
+
+      {/* Weekly Options */}
+      {(frequency === 'weekly' || frequency === 'monthly') && (
+        <div className="form-group mb-3">
+          <label>{frequency === 'monthly' ? 'Weekday:' : 'Repeat Every:'}</label>
+
           <div className="d-flex flex-wrap">
             {weekdays.map((day) => (
               <div className="form-check me-2" key={day}>
@@ -121,7 +165,7 @@ function RecurrenceForm({ setRRULE }) {
                   id={`day-${day}`}
                 />
                 <label className="form-check-label" htmlFor={`day-${day}`}>
-                  {day}
+                  {weekdayNames[day]}
                 </label>
               </div>
             ))}
@@ -129,26 +173,32 @@ function RecurrenceForm({ setRRULE }) {
         </div>
       )}
 
+      <small className="text-muted">{exampleText}</small>
+
+      <hr />
       {/* End Options */}
       <div className="form-group mb-3">
-        <h5>End</h5>
-        <div className='d-flex justify-content-start'>
+        <p>When will the event end?</p>
+        <div className="d-flex justify-content-start">
           <div>
-            <label>After __ occurrences</label>
-            <input
-              type="number"
-              className="form-control mb-2"
-              value={endAfterOccurrences || ''}
-              min="1"
-              onChange={handleEndAfterOccurrencesChange}
-              placeholder="number of occurrences"
-            />
+            <label>Stop after</label>
+            <div className="input-group">
+              <input
+                type="number"
+                className="form-control"
+                value={endAfterOccurrences || ''}
+                min="1"
+                onChange={handleEndAfterOccurrencesChange}
+                placeholder="e.g. 10"
+              />
+              <span className="input-group-text">occurrences</span>
+            </div>
           </div>
 
           <h5 className="text-center my-4 mx-5">or</h5>
 
           <div>
-            <label>On date</label>
+            <label>Stop on</label>
             <input
               type="date"
               className="form-control"
@@ -158,6 +208,7 @@ function RecurrenceForm({ setRRULE }) {
           </div>
         </div>
       </div>
+      <small>{parseRRule(rRule)}</small>
     </div>
   );
 }

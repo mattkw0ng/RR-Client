@@ -320,7 +320,7 @@ function RoomRes({ isAdmin = false }) {
 
             {/* Advanced Options */}
             <Collapse isOpen={isRepeating}>
-              <RecurrenceForm setRRULE={setRRULE} />
+              <RecurrenceForm rRule={rRule} setRRULE={setRRULE} startDateTime={startDateTime} endDateTime={endDateTime} />
             </Collapse>
 
           </div>
@@ -421,7 +421,7 @@ function RoomRes({ isAdmin = false }) {
       </form>
 
       <SummaryModal />
-      <LoginModal showLoginPrompt={loading || !user} handleLoginRedirect={handleLoginRedirect} />
+      {/* <LoginModal showLoginPrompt={loading || !user} handleLoginRedirect={handleLoginRedirect} /> */}
 
       {/* <div class="responsive-iframe-container">
         <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>

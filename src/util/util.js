@@ -63,10 +63,24 @@ export function roundToNearestHalfHour(date = new Date()) {
   return date;
 };
 
+export function getWeekdayIfSame(startDate, endDate) {
+  const weekdays = ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'];
+
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  // Check if both dates have the same weekday
+  if (start.toDateString() === end.toDateString()) {
+    return weekdays[start.getDay()]; // Return the weekday code
+  }
+
+  return null; // Return null if the event spans multiple days
+}
+
 
 export function parseRRule(rRule) {
   if (!rRule) return "No recurrence set.";
-
+  console.log("Parsing rRule: ", rRule)
   // Split the rRule into key-value pairs
   const ruleParts = rRule
     .replace("RRULE:", "")
@@ -99,8 +113,12 @@ export function parseRRule(rRule) {
   const interval = ruleParts.INTERVAL ? `every ${ruleParts.INTERVAL} ${freq}` : `every ${freq}`;
   const count = ruleParts.COUNT ? ` for ${ruleParts.COUNT} occurrences` : "";
   console.log("ParseRRule ruleparts.until: ", ruleParts.UNTIL);
+  const rruleDateString = ruleParts.UNTIL;
+  const formattedDate = new Date(
+    `${rruleDateString.slice(0, 4)}-${rruleDateString.slice(4, 6)}-${rruleDateString.slice(6, 8)}T${rruleDateString.slice(9, 11)}:${rruleDateString.slice(11, 13)}:${rruleDateString.slice(13, 15)}Z`
+  );
   const until = ruleParts.UNTIL
-    ? ` until ${new Date(ruleParts.UNTIL).toLocaleDateString()}`
+    ? ` until ${formattedDate.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`
     : "";
 
   // Parse BYDAY if present
