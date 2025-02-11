@@ -17,7 +17,7 @@ export default function Home() {
     }
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchApprovedEvents()
   }, [])
 
@@ -32,11 +32,13 @@ export default function Home() {
             <ListGroupItem key={event.id}>
               <h4>{event.summary}</h4>
               <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
-              {
-                event.attendees?.filter((a) => a.resource === true).map((attendee) => (
-                  <p>{getRoomNameByCalendarID(attendee.email)}</p>
-                ))
-              }
+              <small className="text-italic">
+                {
+                  event.attendees?.filter((a) => a.resource === true)
+                    .map((attendee) => (getRoomNameByCalendarID(attendee.email)))
+                    .join(", ")
+                }
+              </small>
               <p>{event.description}</p>
             </ListGroupItem>
           ))}
