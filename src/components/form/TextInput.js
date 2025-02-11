@@ -1,10 +1,12 @@
 import React from "react";
 
-function TextInput({ label, name, handleFormChange, formData, type='text'}) {
+function TextInput({ label, labelSmallText, name, handleFormChange, formData, type='text'}) {
 
   return (
     <div className="mb-3">
-      <label className="form-label">{label}</label>
+      <label className="form-label">{label}
+        <small className='text-italic'>{labelSmallText}</small>
+      </label>
       <input
         name={name}
         type={type}

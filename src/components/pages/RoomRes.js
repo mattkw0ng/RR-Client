@@ -137,7 +137,7 @@ function RoomRes({ isAdmin = false }) {
         otherEmail: email,
       });
       alert('Event added successfully');
-      navigate('/profile')
+      navigate(isAdmin ? '/admin/reserve' : '/profile')
     } catch (error) {
       console.error('Error adding event', error);
       alert('Error adding event', error);
@@ -258,8 +258,10 @@ function RoomRes({ isAdmin = false }) {
 
   return (
     <div className="container">
-
-      <h1 className="my-4">Room Reservation Request Form</h1>
+      <div className='my-4'>
+        <h1 className="mb-0">{isAdmin ? "Admin Room Reservation Form" : "Room Reservation Request Form"}</h1>
+        <small className='text-italic'>{isAdmin ? "Reservations are added directly to the Approved Calendar" : "Reservations may take a few days to be approved"}</small>
+      </div>
 
       {/* Room Request Form */}
       <form onSubmit={handleSubmit}>
@@ -271,7 +273,9 @@ function RoomRes({ isAdmin = false }) {
             <TextInput label={"Event Name"} name={'eventName'} handleFormChange={handleFormChange} formData={formData} />
 
             {isAdmin ? <div className="mb-3">
-              <label className="form-label">{"Event Owner's Email (optional)"}</label>
+              <label className="form-label">Email
+                <small className='text-italic'> (optional for sending notifications)</small>
+              </label>
               <input
                 name='email'
                 type='email'
@@ -280,7 +284,7 @@ function RoomRes({ isAdmin = false }) {
                 onChange={(e) => handleFormChange(e)}
               ></input>
             </div>
-            : null}
+              : null}
 
             {/* Location */}
             <TextInput label={"Location"} name={'location'} handleFormChange={handleFormChange} formData={formData} />
@@ -300,7 +304,7 @@ function RoomRes({ isAdmin = false }) {
             <TextInput label={"Group Name"} name={'groupName'} handleFormChange={handleFormChange} formData={formData} />
 
             {/* Group Leader's Name */}
-            <TextInput label={"Group Leader's Name (if different from requester's name)"} name={'groupLeader'} handleFormChange={handleFormChange} formData={formData} />
+            <TextInput label={"Group Leader's Name"} labelSmallText={" (if different from requester's name)"} name={'groupLeader'} handleFormChange={handleFormChange} formData={formData} />
 
             {/* Start Date/Time */}
             <DateTime startDateTime={startDateTime} endDateTime={endDateTime} minEndDateTime={minEndDateTime} handleStartDateTimeChange={handleStartDateTimeChange} handleEndDateTimeChange={handleEndDateTimeChange} />
@@ -422,13 +426,6 @@ function RoomRes({ isAdmin = false }) {
 
       <SummaryModal />
       <LoginModal showLoginPrompt={loading || !user} handleLoginRedirect={handleLoginRedirect} />
-
-      {/* <div class="responsive-iframe-container">
-        <iframe src={switchCalendar ? iframeSrc : separatedIframeSrc} title="ApprovedCalendar" style={{ border: 0 }} width="800" height="600" frameborder="0" ></iframe>
-      </div>
-      <br />
-      <button onClick={() => setSwitchCalendar(!switchCalendar)} className='btn btn-outline-secondary'>{switchCalendar ? 'View Individual Calendars' : 'View All'}</button>
-      <br /> */}
     </div>
   );
 }

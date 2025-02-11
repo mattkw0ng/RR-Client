@@ -24,19 +24,9 @@ body {
 }
 
 .sidebar li {
-  padding: 10px;
   margin-bottom: 10px;
   cursor: pointer;
   border-radius: 4px;
-}
-
-.sidebar li:hover {
-  background-color: #e9ecef;
-}
-
-.sidebar li.selected {
-  background-color: #652B2B;
-  color: white;
 }
 
 .page-content {
@@ -48,4 +38,28 @@ body {
 .content {
   max-width: 800px;
   margin: auto;
+}
+
+.sidebar .nav-link {
+  padding: 10px;
+  cursor: pointer;
+  color: black !important;
+}
+
+.sidebar .nav-item.active {
+  background-color: #652B2B; /* Bootstrap primary color */
+  color: white !important;
+  border-radius: 5px;
+}
+
+.sidebar .nav-item.active .nav-link {
+  color: white !important;
+}
+
+.sidebar .nav-item:hover{
+  background-color: #e9ecef;
+}
+
+.sidebar .nav-item.active:hover {
+  background-color: #652B2B;
 }

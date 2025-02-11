@@ -178,7 +178,7 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
         </div>
       )}
 
-      <small className="text-muted">{exampleText}</small>
+      <small className="text-muted text-italic">{exampleText}</small>
 
       <hr />
       {/* End Options */}
@@ -213,7 +213,7 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
           </div>
         </div>
       </div>
-      <small>{parseRRule(rRule)}</small>
+      <small className='text-italic'>{parseRRule(rRule)}</small>
     </div>
   );
 }
