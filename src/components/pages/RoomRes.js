@@ -242,8 +242,9 @@ function RoomRes({ isAdmin = false }) {
               ))}
             </>
           ) : (
-            <h5 className="text-success">No Conflicts Found</h5>
+            <h5 className="text-primary">No Conflicts Found</h5>
           )}
+          {isRepeating && <small className='text-italic text-danger'>** Note: Conflict detection for recurring events is currently under development and may not be accurate.</small>}
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleSubmit}>
