@@ -137,7 +137,11 @@ function RoomRes({ isAdmin = false }) {
         otherEmail: email,
       });
       alert('Event added successfully');
-      navigate(isAdmin ? '/admin/reserve' : '/profile')
+      if (isAdmin) {
+        window.location.href = '/admin/reserve';
+      } else {
+        navigate('profile')
+      }
     } catch (error) {
       console.error('Error adding event', error);
       alert('Error adding event', error);
