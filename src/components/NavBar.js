@@ -23,7 +23,7 @@ const NavBar = () => {
         <NavbarBrand href="/" className='navbar-brand'>SJCAC Rooms</NavbarBrand>
         <Nav>
           <NavItem>
-            <NavLink href="/">
+            <NavLink href="/search-rooms">
               Search Rooms
             </NavLink>
           </NavItem>
