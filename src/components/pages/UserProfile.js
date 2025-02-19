@@ -8,6 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 import StandardEvent from '../events/StandardEvent';
 import EditEventForm from '../edit/EditEventForm';
 import ModifiedEvent from '../events/ModifiedEvent';
+import TabNavigation from '../events/TabNavigation';
 
 const UserProfile = () => {
     const { user, loading } = useAuth();
@@ -76,7 +77,7 @@ const UserProfile = () => {
         const confirmation = window.confirm(`Cancel ${event.summary}?`);
         if (confirmation) {
             console.log("Deleting event");
-            axios.delete(API_URL + '/api/rejectEvent', { eventId: event.id }, {withCredentials: true})
+            axios.delete(API_URL + '/api/rejectEvent', { eventId: event.id }, { withCredentials: true })
                 .then(response => {
                     alert('Event Cancelled Successfully: ', response.data);
                     getUserEvents();
@@ -100,7 +101,7 @@ const UserProfile = () => {
             });
     }
 
-    const DisplayEvents = ({displayEvents, isPending}) => {
+    const DisplayEvents = ({ displayEvents, isPending }) => {
         console.log("Rendering:", displayEvents);
         useEffect(() => {
             console.log("UseEffect Rendering:", displayEvents);
@@ -120,21 +121,41 @@ const UserProfile = () => {
             </ListGroup>)
     }
 
+    const DisplayEventsList = events ? {
+        'proposed': (<ListGroup>
+            {events['proposed']?.map(event => (
+                (<ModifiedEvent
+                    key={event.id}
+                    event={event}
+                    button={<Button color='danger' size='sm' onClick={(e) => handleAcceptChanges(e, event)}>Accept Changes</Button>}
+                    badge={needsActionBadge}
+                    pending={false}
+                />)
+            ))}
+        </ListGroup>),
+        'pending': (<DisplayEvents displayEvents={events['pending']} isPending={true} />),
+        'approved': (<DisplayEvents displayEvents={events['approved']} isPending={false} />),
+        'history': (<DisplayEvents displayEvents={events['history']} isPending={false} />),
+    } : null;
+
     return (
         <Container className='my-4'>
             <div className='d-flex justify-content-between'>
                 <h2 className='mb-0'>Welcome, {user.displayName}</h2>
                 <a href={API_URL + "/api/logout"} className='btn btn-sm'>Logout</a>
             </div>
-
             <p>{user?.emails?.[0]?.value || "No email provided"}</p>
+            <hr />
+            <TabNavigation eventsData={DisplayEventsList} />
 
-            <div>
+
+
+
+            {/* <div>
                 <h5>My Reservations</h5>
                 <hr />
                 {events ? (
                     <div className='user-events'>
-                        {/* Proposed Events */}
                         <ListGroup>
                             {events['proposed']?.map(event => (
                                 (<ModifiedEvent
@@ -147,18 +168,16 @@ const UserProfile = () => {
                             ))}
                         </ListGroup>
 
-                        {/* Pending Events First */}
                         <DisplayEvents displayEvents={events['pending']} isPending={true} />
 
                         <hr />
 
-                        {/* Approved Events */}
                         <DisplayEvents displayEvents={events['approved']} isPending={false} />
                     </div>
                 ) : (
                     <p>No upcoming events found.</p>
                 )}
-            </div>
+            </div> */}
         </Container>
     );
 };

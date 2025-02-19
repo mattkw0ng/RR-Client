@@ -1,0 +1,95 @@
+{
+    "event": {
+        "kind": "calendar#event",
+        "etag": "\"3460647543706000\"",
+        "id": "lcl6l27m02j6kci7liee1ric7g",
+        "status": "confirmed",
+        "htmlLink": "https://www.google.com/calendar/event?eid=bGNsNmwyN20wMmo2a2NpN2xpZWUxcmljN2cgY184ZjlhMjIxYmQxMjg4MmNjZGEyMWM1ZmI4MWVmZmJhZDc3ODg1NGNjOTQwYzg1NWIyNTA4NjQxNGJhYmIxMDc5QGc",
+        "created": "2024-10-30T21:29:15.000Z",
+        "updated": "2024-10-30T21:29:31.853Z",
+        "summary": "Matt's MultiRoom ",
+        "description": "aaa",
+        "location": "San Jose Christian Alliance Church, A-1-A103/104 : Youth Wing (30), A-1-A102 : Youth Wing (15)",
+        "creator": {
+            "email": "rooms@sjcac.org"
+        },
+        "organizer": {
+            "email": "c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079@group.calendar.google.com",
+            "displayName": "Approved",
+            "self": true
+        },
+        "start": {
+            "dateTime": "2024-10-31T07:00",
+            "timeZone": "America/Los_Angeles"
+        },
+        "end": {
+            "dateTime": "2024-10-30T20:00:00-07:00",
+            "timeZone": "America/Los_Angeles"
+        },
+        "iCalUID": "lcl6l27m02j6kci7liee1ric7g@google.com",
+        "sequence": 0,
+        "attendees": [
+            {
+                "email": "fudgenuggetgames@gmail.com",
+                "responseStatus": "needsAction"
+            }
+        ],
+        "reminders": {
+            "useDefault": true
+        },
+        "eventType": "default",
+        "extendedProperties": {
+            "private": {
+                "groupName": "",
+                "groupLeader": "",
+                "numPeople": "",
+                "congregation": "",
+                "rooms": [
+                    {
+                        "email": "c_188756kclcd6ahthi4sqbp673sh5o@resource.calendar.google.com",
+                        "resource": true
+                    },
+                    {
+                        "email": "c_18848ij2sabpqis0ll3sqg3s95ivs@resource.calendar.google.com",
+                        "resource": true
+                    },
+                    {
+                        "email": "c_188e5euhmi4nmjeng6nkl34o22fq8@resource.calendar.google.com",
+                        "resource": true
+                    },
+                    {
+                        "email": "c_188dilmvbopimgirhfjmcpdo1jshi@resource.calendar.google.com",
+                        "resource": true
+                    }
+                ]
+            }
+        }
+    },
+    "timeOrRoomChanged": true
+}
+
+profile: {
+id: '110983686778606632361',
+displayName: 'Matthew Kwong',
+name: { familyName: 'Kwong', givenName: 'Matthew' },
+emails: [ [Object] ],
+photos: [ [Object] ],
+provider: 'google',
+_raw: '{\n' +
+  '  "sub": "110983686778606632361",\n' +
+  '  "name": "Matthew Kwong",\n' +
+  '  "given_name": "Matthew",\n' +
+  '  "family_name": "Kwong",\n' +
+  '  "picture": "https://lh3.googleusercontent.com/a/ACg8ocKrIt7tZuZeC4PeCqHnboYJjvgHB52zbpEOmnnxUS7DTJjpp_E\\u003ds96-c",\n' +
+  '  "email": "mattkwong52@gmail.com",\n' +
+  '  "email_verified": true\n' +
+  '}',
+_json: {
+  sub: '110983686778606632361',
+  name: 'Matthew Kwong',
+  given_name: 'Matthew',
+  family_name: 'Kwong',
+  picture: 'https://lh3.googleusercontent.com/a/ACg8ocKrIt7tZuZeC4PeCqHnboYJjvgHB52zbpEOmnnxUS7DTJjpp_E=s96-c',
+  email: 'mattkwong52@gmail.com',
+  email_verified: true
+}
