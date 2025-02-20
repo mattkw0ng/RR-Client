@@ -140,7 +140,7 @@ function RoomRes({ isAdmin = false }) {
       if (isAdmin) {
         window.location.href = '/admin/reserve';
       } else {
-        navigate('profile')
+        window.location.href = '/profile';
       }
     } catch (error) {
       console.error('Error adding event', error);

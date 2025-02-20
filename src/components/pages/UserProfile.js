@@ -107,6 +107,10 @@ const UserProfile = () => {
             console.log("UseEffect Rendering:", displayEvents);
         }, [displayEvents])
 
+        if (displayEvents.length <= 0) {
+            return 'Nothing Here Yet!'
+        }
+
         return (
             <ListGroup>
                 {displayEvents?.map(event => (

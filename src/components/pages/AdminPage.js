@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, ListGroup, ListGroupItem, Button, Badge, Modal, ModalHeader, } from 'reactstrap';
+import LoadingOverlay from '../lightbox/LoadingOverlay';
 import API_URL from '../../config';
 
 import StandardEvent from '../events/StandardEvent';
@@ -11,6 +12,7 @@ const AdminPage = () => {
   const [pendingEvents, setPendingEvents] = useState({ 'quickApprove': [], 'conflicts': [] });
   const [proposedChangesEvents, setProposedChangesEvents] = useState([]);
   const [isNotEmpty, setIsNotEmpty] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchPendingEvents = async () => {
     try {
@@ -48,6 +50,8 @@ const AdminPage = () => {
 
   const handleApproveEvent = async (eventId) => {
     console.log("Approving", eventId);
+    setLoading(true);
+
     axios.post(API_URL + '/api/approveEvent', { eventId }, { withCredentials: true })
       .then(response => {
         alert('Event approved successfully:', response.data);
@@ -55,6 +59,8 @@ const AdminPage = () => {
       })
       .catch(error => {
         console.error('Error approving event:', error.response ? error.response.data : error.message);
+      }).finally(() => {
+        setLoading(false);
       });
   };
 
@@ -161,6 +167,7 @@ const AdminPage = () => {
 
   return (
     <Container className='my-4'>
+      <LoadingOverlay loading={loading} />
       {isNotEmpty || proposedChangesEvents.length !== 0 ? null : <p>No incoming reservation requests found.</p>}
       <div>
         {
