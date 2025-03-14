@@ -14,6 +14,19 @@ export const formatDisplayTime = (time) => {
   return new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
 }
 
+export const formatDisplayDateTime = (dateTime) => {
+  const dateObj = new Date(dateTime);
+  return dateObj.toLocaleString('en-US', {
+    weekday: 'short', // e.g., "Mon"
+    month: 'short',   // e.g., "Mar"
+    day: '2-digit',   // e.g., "22"
+    hour: '2-digit',  // e.g., "04"
+    minute: '2-digit', // e.g., "30"
+    hour12: true,     // Display AM/PM
+  }).replace(',', ''); // Remove unnecessary comma for cleaner formatting
+}
+
+
 export const areTimeRangesOverlapping = (range1, range2) => {
   // Convert dateTime strings to Date objects
   const start1 = new Date(range1.start.dateTime);

@@ -11,7 +11,7 @@ import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
 import RecurrenceForm from '../form/RecurrenceForm';
-import { formatDisplayTime, getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
+import { formatDisplayDateTime, getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
 import LoginModal from '../lightbox/LoginModal';
 
 
@@ -240,8 +240,8 @@ function RoomRes({ isAdmin = false }) {
               <h5 className="text-danger">Conflicts Found</h5>
               {conflicts.map((conflict, index) => (
                 <p key={index}>
-                  {`${getRoomNameByCalendarID(conflict.roomId)} is busy from: `}
-                  {conflict.times.map((timeRange) => (`${formatDisplayTime(timeRange.start)} - ${formatDisplayTime(timeRange.end)}`)).join(', ')}
+                  {`${getRoomNameByCalendarID(conflict.room)} is busy from: `}
+                  {conflict.times.map((timeRange) => (`${formatDisplayDateTime(timeRange.start)} - ${formatDisplayDateTime(timeRange.end)}`)).join(', ')}
                 </p>
               ))}
             </>
