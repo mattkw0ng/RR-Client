@@ -11,7 +11,7 @@ import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
 import RecurrenceForm from '../form/RecurrenceForm';
-import { formatDisplayDateTime, getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
+import { formatEventDates, getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
 import LoginModal from '../lightbox/LoginModal';
 
 
@@ -241,7 +241,7 @@ function RoomRes({ isAdmin = false }) {
               {conflicts.map((conflict, index) => (
                 <p key={index}>
                   {`${getRoomNameByCalendarID(conflict.room)} is busy from: `}
-                  {conflict.times.map((timeRange) => (`${formatDisplayDateTime(timeRange.start)} - ${formatDisplayDateTime(timeRange.end)}`)).join(', ')}
+                  {conflict.times.map((timeRange) => (`${formatEventDates(timeRange.start, timeRange.end)}`)).join(', ')}
                 </p>
               ))}
             </>
