@@ -19,7 +19,7 @@ export const RoomsProvider = ({ children }) => {
         setRooms(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setUser(false)
+        setRooms(false)
       }
     };
 
