@@ -18,7 +18,7 @@ import { useRooms } from '../../context/RoomsContext';
 
 // Room Reservation Page
 function RoomRes({ isAdmin = false }) {
-  const { roomsData } = useRooms();
+  const { rooms } = useRooms();
   const preLoadLocation = useLocation();
   const navigate = useNavigate();
   const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};
@@ -52,8 +52,8 @@ function RoomRes({ isAdmin = false }) {
   useEffect(() => {
     if (!user) return; // Guard clause to prevent premature access
     console.log("User loaded:", user);
-    console.log("RoomsData loaded:", roomsData);
-  }, [user, roomsData]);
+    console.log("RoomsData loaded:", rooms);
+  }, [user, rooms]);
 
   if (loading) {
     return <div className='p-5'>Loading...</div>;
