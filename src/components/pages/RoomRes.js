@@ -6,7 +6,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DateTime from '../form/DateTime';
 import API_URL from '../../config';
-import ROOMS, { congregationOptions } from '../../data/rooms';
+import ROOMS, { congregationOptions, roomListSimple } from '../../data/rooms';
 import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
@@ -52,7 +52,7 @@ function RoomRes({ isAdmin = false }) {
     console.log("RoomsData loaded:", rooms.roomListSimple, rooms.roomsGrouped, rooms.rooms);
   }, [rooms])
 
-  const [availableRooms, setAvailableRooms] = useState(rooms?.roomListSimple);
+  const [availableRooms, setAvailableRooms] = useState(roomListSimple);
   // const [switchCalendar, setSwitchCalendar] = useState(true);
   const [isRepeating, setIsRepeating] = useState(false);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false); // Controls the summary modal
