@@ -52,12 +52,8 @@ function RoomRes({ isAdmin = false }) {
   useEffect(() => {
     if (!user) return; // Guard clause to prevent premature access
     console.log("User loaded:", user);
-  }, [user]);
-
-  useEffect(() => {
-    if (!roomsData) return; // Guard clause to prevent premature access
-    console.log("Rooms Data loaded:", roomsData);
-  }, [roomsData]);
+    console.log("RoomsData loaded:", roomsData);
+  }, [user, roomsData]);
 
   if (loading) {
     return <div className='p-5'>Loading...</div>;
