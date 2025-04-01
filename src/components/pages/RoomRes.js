@@ -18,6 +18,7 @@ import { useRooms } from '../../context/RoomsContext';
 
 // Room Reservation Page
 function RoomRes({ isAdmin = false }) {
+  const { user, loading } = useAuth();
   const { rooms } = useRooms();
   const preLoadLocation = useLocation();
   const navigate = useNavigate();
@@ -41,19 +42,22 @@ function RoomRes({ isAdmin = false }) {
   const [minEndDateTime, setMinEndDateTime] = useState(new Date(new Date().getTime() + 60 * 60 * 1000)); // Minimum end time 1 hour after start
   const [selectedRooms, setSelectedRooms] = useState(preLoadRooms ? preLoadRooms : []); // Default room selection
 
-  // const [user, setUser] = useState(null);
-  const { user, loading } = useAuth();
+  useEffect(() => {
+    if (!user) return; // Guard clause to prevent premature access
+    console.log("User loaded:", user);
+  }, [user]);
+
+  useEffect(() => {
+    if (!rooms) return;
+    console.log("RoomsData loaded:", rooms);
+  }, [rooms])
+
   const [availableRooms, setAvailableRooms] = useState(rooms?.roomListSimple);
   // const [switchCalendar, setSwitchCalendar] = useState(true);
   const [isRepeating, setIsRepeating] = useState(false);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false); // Controls the summary modal
   const [conflicts, setConflicts] = useState([]); // Stores any detected conflicts
 
-  useEffect(() => {
-    if (!user) return; // Guard clause to prevent premature access
-    console.log("User loaded:", user);
-    console.log("RoomsData loaded:", rooms);
-  }, [user, rooms]);
 
   if (loading) {
     return <div className='p-5'>Loading...</div>;
@@ -378,11 +382,11 @@ function RoomRes({ isAdmin = false }) {
                           value={room}
                           checked={selectedRooms.includes(room)}
                           onChange={handleRoomChange}
-                          disabled={!availableRooms?.includes(room)}
+                          disabled={!availableRooms.includes(room)}
                         />
                         <label className={`form-check-label`} htmlFor={room}>
                           {room}{" "}
-                          {availableRooms?.includes(room) ? (
+                          {availableRooms.includes(room) ? (
                             <small className='text-primary'>available</small>
                           ) : (
                             <small className='text-danger '>unavailable</small>
