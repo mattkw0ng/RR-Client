@@ -6,7 +6,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DateTime from '../form/DateTime';
 import API_URL from '../../config';
-import ROOMS, { roomsGrouped, roomListSimple, congregationOptions } from '../../data/rooms';
+import ROOMS, { congregationOptions } from '../../data/rooms';
 import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
@@ -43,7 +43,7 @@ function RoomRes({ isAdmin = false }) {
 
   // const [user, setUser] = useState(null);
   const { user, loading } = useAuth();
-  const [availableRooms, setAvailableRooms] = useState(roomListSimple);
+  const [availableRooms, setAvailableRooms] = useState(rooms.roomListSimple);
   // const [switchCalendar, setSwitchCalendar] = useState(true);
   const [isRepeating, setIsRepeating] = useState(false);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false); // Controls the summary modal
@@ -341,7 +341,7 @@ function RoomRes({ isAdmin = false }) {
           {/* Room List (Right Column) */}
           <div className="col-md-6 px-5">
             <div className="room-selection">
-              {Object.entries(roomsGrouped).map(([building, roomsList], index) => (
+              {Object.entries(rooms.roomsGrouped).map(([building, roomsList], index) => (
                 <div key={building} className="mb-3">
                   {/* Room Group Header with Collapse for Mobile */}
                   <div className="d-md-none">
