@@ -13,10 +13,12 @@ import SelectInput from '../form/SelectInput';
 import RecurrenceForm from '../form/RecurrenceForm';
 import { formatEventDates, getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
 import LoginModal from '../lightbox/LoginModal';
+import { useRooms } from '../../context/RoomsContext';
 
 
 // Room Reservation Page
 function RoomRes({ isAdmin = false }) {
+  const { roomsData } = useRooms();
   const preLoadLocation = useLocation();
   const navigate = useNavigate();
   const { preLoadRooms = [], preLoadData = {} } = preLoadLocation.state || {};
@@ -51,6 +53,11 @@ function RoomRes({ isAdmin = false }) {
     if (!user) return; // Guard clause to prevent premature access
     console.log("User loaded:", user);
   }, [user]);
+
+  useEffect(() => {
+    if (!roomsData) return; // Guard clause to prevent premature access
+    console.log("Rooms Data loaded:", roomsData);
+  }, [roomsData]);
 
   if (loading) {
     return <div className='p-5'>Loading...</div>;
@@ -277,6 +284,18 @@ function RoomRes({ isAdmin = false }) {
             {/* Summary */}
             <TextInput label={"Event Name"} name={'eventName'} handleFormChange={handleFormChange} formData={formData} />
 
+            <div className='d-flex justify-content-between'>
+              {/* Congregation */}
+              <SelectInput label={"Congregation"} name={'congregation'} handleFormChange={handleFormChange} formData={formData} options={congregationOptions} />
+
+              {/* Number of People */}
+              <TextInput label={"Number of People"} name={'numPeople'} handleFormChange={handleFormChange} formData={formData} type={'number'} />
+            </div>
+
+            {/* Group Name */}
+            <TextInput label={"Group Name"} name={'groupName'} handleFormChange={handleFormChange} formData={formData} />
+
+
             {isAdmin ? <div className="mb-3">
               <label className="form-label">Email
                 <small className='text-italic'> (optional for sending notifications)</small>
@@ -296,17 +315,6 @@ function RoomRes({ isAdmin = false }) {
 
             {/* Description */}
             <TextArea label={"Description"} name={'description'} handleFormChange={handleFormChange} formData={formData} />
-
-            <div className='d-flex justify-content-between'>
-              {/* Congregation */}
-              <SelectInput label={"Congregation"} name={'congregation'} handleFormChange={handleFormChange} formData={formData} options={congregationOptions} />
-
-              {/* Number of People */}
-              <TextInput label={"Number of People"} name={'numPeople'} handleFormChange={handleFormChange} formData={formData} type={'number'} />
-            </div>
-
-            {/* Group Name */}
-            <TextInput label={"Group Name"} name={'groupName'} handleFormChange={handleFormChange} formData={formData} />
 
             {/* Group Leader's Name */}
             <TextInput label={"Group Leader's Name"} labelSmallText={" (if different from requester's name)"} name={'groupLeader'} handleFormChange={handleFormChange} formData={formData} />
