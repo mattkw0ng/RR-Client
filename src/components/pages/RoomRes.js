@@ -378,11 +378,11 @@ function RoomRes({ isAdmin = false }) {
                           value={room}
                           checked={selectedRooms.includes(room)}
                           onChange={handleRoomChange}
-                          disabled={!availableRooms.includes(room)}
+                          disabled={!availableRooms?.includes(room)}
                         />
                         <label className={`form-check-label`} htmlFor={room}>
                           {room}{" "}
-                          {availableRooms.includes(room) ? (
+                          {availableRooms?.includes(room) ? (
                             <small className='text-primary'>available</small>
                           ) : (
                             <small className='text-danger '>unavailable</small>
