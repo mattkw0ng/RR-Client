@@ -2,7 +2,12 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import API_URL from "../config";
 import axios from "axios";
 
-const RoomsContext = createContext();
+const defaultRoomsState = {
+  roomListSimple: [],
+  roomsGrouped: {},
+  rooms: []
+};
+const RoomsContext = createContext(defaultRoomsState);
 
 export const useRooms = () => useContext(RoomsContext);
 
