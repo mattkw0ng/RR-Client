@@ -4,7 +4,7 @@ import axios from "axios";
 
 const RoomsContext = createContext();
 
-export const useAuth = () => useContext(RoomsContext);
+export const useRooms = () => useContext(RoomsContext);
 
 export const RoomsProvider = ({ children }) => {
   const [rooms, setRooms] = useState(null);
