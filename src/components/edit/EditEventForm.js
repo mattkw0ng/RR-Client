@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import { congregationOptions, roomListSimple } from "../../data/rooms";
+import { congregationOptions } from "../../data/rooms";
 import axios from "axios";
 import ROOMS from "../../data/rooms";
 
@@ -8,8 +8,10 @@ import SelectInput from "../form/SelectInput";
 import RoomSelector from "./RoomSelector";
 import { getRoomNameByCalendarID } from "../../util/util";
 import API_URL from "../../config";
+import { useRooms } from "../../context/RoomsContext";
 
 const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
+  const { rooms } = useRooms();
   const [formState, setFormState] = useState({
     summary: event.summary || "",
     description: event.description || "",
@@ -32,19 +34,19 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
     const updatedRooms = new Set(
       updated
     );
-  
+
     // Check if the sets have different sizes or different elements
     if (originalRooms.size !== updatedRooms.size) {
       return true; // Size mismatch means the lists have changed
     }
-  
+
     // Check if every element in `originalRooms` exists in `updatedRooms`
     for (const room of originalRooms) {
       if (!updatedRooms.has(room)) {
         return true; // An element is missing in the updated list
       }
     }
-  
+
     return false; // The sets are identical
   };
 
@@ -157,7 +159,7 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
         </FormGroup>
         <FormGroup>
           <Label for="room">Room(s)</Label>
-          <RoomSelector id="room" roomList={roomListSimple} selectedRoom={selectedRooms} setSelectedRoom={setSelectedRooms} multiple={true} />
+          <RoomSelector id="room" roomList={rooms.roomListSimple} selectedRoom={selectedRooms} setSelectedRoom={setSelectedRooms} multiple={true} />
         </FormGroup>
         <FormGroup>
           <Label for="startDateTime">Start Time</Label>

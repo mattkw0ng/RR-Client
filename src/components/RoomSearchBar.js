@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { roomListSimple } from "../data/rooms";
+import { useRooms } from "../context/RoomsContext";
 
 /**
  * Search Bar for /search page
  * @param {roomNames, roomName, setRoomName, filteredRooms, setFilteredRooms} param
  * 
  */
-const RoomSearchBar = ({ roomNames , roomName, setRoomName, filteredRooms, setFilteredRooms}) => {
+const RoomSearchBar = ({ roomNames, roomName, setRoomName, filteredRooms, setFilteredRooms }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const { rooms } = useRooms();
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -21,7 +22,7 @@ const RoomSearchBar = ({ roomNames , roomName, setRoomName, filteredRooms, setFi
       setFilteredRooms(matchingRooms);
       setShowDropdown(true);
     } else {
-      setFilteredRooms(roomListSimple);
+      setFilteredRooms(rooms.roomListSimple);
       setShowDropdown(false);
     }
   };

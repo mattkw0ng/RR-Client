@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate } from 'react-router-dom';
-import { roomListSimple } from "../../data/rooms";
 import { formatTime } from "../../util/util";
 import RoomSearchBar from "../RoomSearchBar";
 import TimeRangeSlider from "../form/TimeRangeSlider";
@@ -9,6 +8,7 @@ import axios from 'axios';
 import RoomSelection from "../RoomSelection";
 import LoginModal from "../lightbox/LoginModal";
 import { useAuth } from "../../context/AuthContext";
+import { useRooms } from "../../context/RoomsContext";
 
 /**
  * @description '/search' page
@@ -19,6 +19,7 @@ import { useAuth } from "../../context/AuthContext";
 function RoomSearch() {
   const navigate = useNavigate();
   const { user, loading } = useAuth()
+  const { rooms } = useRooms();
   
   const [roomName, setRoomName] = useState("");   // Search Query
   const [verifiedAvailability, setVerifiedAvailability] = useState(false)
@@ -32,8 +33,8 @@ function RoomSearch() {
   // Slider value state [startTime, endTime]
   const [timeRange, setTimeRange] = useState([20, 24]); // Default time: 8:00 AM - 4:00 PM (slider values)
 
-  const [availableRooms, setAvailableRooms] = useState(roomListSimple);
-  const [filteredRooms, setFilteredRooms] = useState(roomListSimple);
+  const [availableRooms, setAvailableRooms] = useState(rooms.roomListSimple);
+  const [filteredRooms, setFilteredRooms] = useState(rooms.roomListSimple);
 
   // Handle Redirecting to next stem (Room Reservation Form Page)
   const handleProceedToReservation = () => {
@@ -140,7 +141,7 @@ function RoomSearch() {
         <div className="form-filter-container d-flex bg-light shadow">
           <form onSubmit={handleSubmit} id="form-filter" className="px-5 py-3">
             {/* Room Name Search */}
-            <RoomSearchBar roomNames={roomListSimple} roomName={roomName} setRoomName={setRoomName} filteredRooms={filteredRooms} setFilteredRooms={setFilteredRooms} />
+            <RoomSearchBar roomNames={rooms.roomListSimple} roomName={roomName} setRoomName={setRoomName} filteredRooms={filteredRooms} setFilteredRooms={setFilteredRooms} />
             <hr />
             {/* Date and Time Selection */}
             <div className="mb-3">
