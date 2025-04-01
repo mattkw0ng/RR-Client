@@ -47,12 +47,14 @@ function RoomRes({ isAdmin = false }) {
     console.log("User loaded:", user);
   }, [user]);
 
+  const [availableRooms, setAvailableRooms] = useState(roomListSimple);
+
   useEffect(() => {
     if (!rooms) return;
     console.log("RoomsData loaded:", rooms.roomListSimple, rooms.roomsGrouped, rooms.rooms);
+    setAvailableRooms(rooms.roomListSimple);
   }, [rooms])
 
-  const [availableRooms, setAvailableRooms] = useState(roomListSimple);
   // const [switchCalendar, setSwitchCalendar] = useState(true);
   const [isRepeating, setIsRepeating] = useState(false);
   const [isSummaryVisible, setIsSummaryVisible] = useState(false); // Controls the summary modal
