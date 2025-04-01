@@ -49,7 +49,7 @@ function RoomRes({ isAdmin = false }) {
 
   useEffect(() => {
     if (!rooms) return;
-    console.log("RoomsData loaded:", rooms);
+    console.log("RoomsData loaded:", rooms.roomListSimple, rooms.roomsGrouped, rooms.rooms);
   }, [rooms])
 
   const [availableRooms, setAvailableRooms] = useState(rooms?.roomListSimple);
