@@ -50,9 +50,10 @@ function RoomRes({ isAdmin = false }) {
   const [availableRooms, setAvailableRooms] = useState(roomListSimple);
 
   useEffect(() => {
-    if (!rooms) return;
-    console.log("RoomsData loaded:", rooms.roomListSimple, rooms.roomsGrouped, rooms.rooms);
-    setAvailableRooms(rooms.roomListSimple);
+    if (rooms && Object.keys(rooms).length > 0) {
+      console.log("RoomsData loaded:", rooms.roomListSimple, rooms.roomsGrouped, rooms.rooms);
+      setAvailableRooms(rooms.roomListSimple);
+    }
   }, [rooms])
 
   // const [switchCalendar, setSwitchCalendar] = useState(true);
