@@ -20,6 +20,9 @@ function RoomSearch() {
   const navigate = useNavigate();
   const { user, loading } = useAuth()
   const { rooms } = useRooms();
+  if (!rooms) {
+    return <p>Loading rooms...</p>;
+  }
   
   const [roomName, setRoomName] = useState("");   // Search Query
   const [verifiedAvailability, setVerifiedAvailability] = useState(false)
