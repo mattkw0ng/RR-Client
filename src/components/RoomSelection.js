@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { roomsGrouped } from '../data/rooms';
+// import { roomsGrouped } from '../data/rooms';
 import SelectedRoomsBar from './SelectedRoomsBar';
 import Lightbox from './lightbox/RoomLightbox';
 import { useRooms } from '../context/RoomsContext';
@@ -41,7 +41,7 @@ function RoomSelection({ availableRooms, filteredRooms, selectedRooms, setSelect
 
       {/* Display Room Cards */}
       {rooms && rooms.roomsGrouped ? Object.keys(rooms.roomsGrouped).map((building) => (
-        roomsGrouped[building].some(elem => filteredRooms.includes(elem)) ?
+        rooms.roomsGrouped[building].some(elem => filteredRooms.includes(elem)) ?
           <div key={building} className='building-group w-100'>
 
             {/* Building Group Name */}
@@ -54,7 +54,7 @@ function RoomSelection({ availableRooms, filteredRooms, selectedRooms, setSelect
 
             {/* Room Card List */}
             <div className="room-cards d-flex flex-row flex-wrap">
-              {roomsGrouped[building].map((room) => (
+              {rooms.roomsGrouped[building].map((room) => (
                 filteredRooms.includes(room) ?
                   <div
                     key={room}
