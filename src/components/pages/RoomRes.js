@@ -348,7 +348,7 @@ function RoomRes({ isAdmin = false }) {
           {/* Room List (Right Column) */}
           <div className="col-md-6 px-5">
             <div className="room-selection">
-              {Object.entries(rooms?.roomsGrouped).map(([building, roomsList], index) => (
+              {rooms && rooms.roomsGrouped ? Object.entries(rooms?.roomsGrouped).map(([building, roomsList], index) => (
                 <div key={building} className="mb-3">
                   {/* Room Group Header with Collapse for Mobile */}
                   <div className="d-md-none">
@@ -424,7 +424,7 @@ function RoomRes({ isAdmin = false }) {
                     ))}
                   </div>
                 </div>
-              ))}
+              )) : null}
             </div>
             <button onClick={checkAvailability} className="btn btn-secondary">Check Availability</button>
           </div>

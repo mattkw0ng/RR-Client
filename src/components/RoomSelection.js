@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { roomsGrouped } from '../data/rooms';
 import SelectedRoomsBar from './SelectedRoomsBar';
 import Lightbox from './lightbox/RoomLightbox';
+import { useRooms } from '../context/RoomsContext';
 
 /**
  * @description Provides the list of rooms as selectable cards. Used in : @see RoomSearch
@@ -14,7 +15,7 @@ import Lightbox from './lightbox/RoomLightbox';
  * @returns A view of all available/filtered rooms as selectable cards @see SelectedRoomsBar @see RoomLightbox
  */
 function RoomSelection({ availableRooms, filteredRooms, selectedRooms, setSelectedRooms, handleCheckout, verified }) {
-
+  const { rooms } = useRooms();
   const [isLightboxOpen, setLightboxOpen] = useState(false);
   const [displayRoom, setDisplayRoom] = useState("Sanctuary");
 
@@ -39,7 +40,7 @@ function RoomSelection({ availableRooms, filteredRooms, selectedRooms, setSelect
       <SelectedRoomsBar selectedRooms={selectedRooms} handleCheckout={handleCheckout} />
 
       {/* Display Room Cards */}
-      {Object.keys(roomsGrouped).map((building) => (
+      {rooms && rooms.roomsGrouped ? Object.keys(rooms.roomsGrouped).map((building) => (
         roomsGrouped[building].some(elem => filteredRooms.includes(elem)) ?
           <div key={building} className='building-group w-100'>
 
@@ -58,7 +59,7 @@ function RoomSelection({ availableRooms, filteredRooms, selectedRooms, setSelect
                   <div
                     key={room}
                     className={`room-card ${selectedRooms.includes(room) ? 'selected' : ''} ${availableRooms.includes(room) ? verified ? 'room-available' : 'room-pending' : 'room-unavailable'}`}
-                  onClick={() => handleCardClick(room)}
+                    onClick={() => handleCardClick(room)}
                   >
                     {/* Room Card */}
                     <h5 className='mb-0'>{room}</h5>
@@ -74,7 +75,7 @@ function RoomSelection({ availableRooms, filteredRooms, selectedRooms, setSelect
             </div>
           </div>
           : null
-      ))}
+      )) : null}
 
       <Lightbox
         room={displayRoom}
