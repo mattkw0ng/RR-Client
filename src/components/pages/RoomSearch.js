@@ -9,6 +9,7 @@ import RoomSelection from "../RoomSelection";
 import LoginModal from "../lightbox/LoginModal";
 import { useAuth } from "../../context/AuthContext";
 import { useRooms } from "../../context/RoomsContext";
+import { roomListSimple } from "../../data/rooms";
 
 /**
  * @description '/search' page
@@ -20,9 +21,6 @@ function RoomSearch() {
   const navigate = useNavigate();
   const { user, loading } = useAuth()
   const { rooms } = useRooms();
-  if (!rooms) {
-    return <p>Loading rooms...</p>;
-  }
   
   const [roomName, setRoomName] = useState("");   // Search Query
   const [verifiedAvailability, setVerifiedAvailability] = useState(false)
@@ -36,8 +34,15 @@ function RoomSearch() {
   // Slider value state [startTime, endTime]
   const [timeRange, setTimeRange] = useState([20, 24]); // Default time: 8:00 AM - 4:00 PM (slider values)
 
-  const [availableRooms, setAvailableRooms] = useState(rooms.roomListSimple);
-  const [filteredRooms, setFilteredRooms] = useState(rooms.roomListSimple);
+  const [availableRooms, setAvailableRooms] = useState(roomListSimple);
+  const [filteredRooms, setFilteredRooms] = useState(roomListSimple);
+
+  useEffect(() => {
+    if (rooms && Object.keys(rooms).length > 0) {
+      setAvailableRooms(rooms.roomListSimple);
+      setFilteredRooms(rooms.roomListSimple);
+    }
+  },[rooms])
 
   // Handle Redirecting to next stem (Room Reservation Form Page)
   const handleProceedToReservation = () => {
