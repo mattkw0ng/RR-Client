@@ -3,10 +3,10 @@ import { useRooms } from "../context/RoomsContext";
 
 /**
  * Search Bar for /search page
- * @param {roomNames, roomName, setRoomName, filteredRooms, setFilteredRooms} param
+ * @param { roomName, setRoomName, filteredRooms, setFilteredRooms} param
  * 
  */
-const RoomSearchBar = ({ roomNames, roomName, setRoomName, filteredRooms, setFilteredRooms }) => {
+const RoomSearchBar = ({ roomName, setRoomName, filteredRooms, setFilteredRooms }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const { rooms } = useRooms();
 
@@ -16,13 +16,13 @@ const RoomSearchBar = ({ roomNames, roomName, setRoomName, filteredRooms, setFil
     setRoomName(input);
 
     if (input.length > 0) {
-      const matchingRooms = roomNames.filter((room) =>
+      const matchingRooms = rooms?.roomListSimple.filter((room) =>
         room.toLowerCase().includes(input.toLowerCase())
       );
       setFilteredRooms(matchingRooms);
       setShowDropdown(true);
     } else {
-      setFilteredRooms(rooms.roomListSimple);
+      setFilteredRooms(rooms?.roomListSimple);
       setShowDropdown(false);
     }
   };

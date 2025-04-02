@@ -149,7 +149,7 @@ function RoomSearch() {
         <div className="form-filter-container d-flex bg-light shadow">
           <form onSubmit={handleSubmit} id="form-filter" className="px-5 py-3">
             {/* Room Name Search */}
-            <RoomSearchBar roomNames={rooms.roomListSimple} roomName={roomName} setRoomName={setRoomName} filteredRooms={filteredRooms} setFilteredRooms={setFilteredRooms} />
+            <RoomSearchBar roomName={roomName} setRoomName={setRoomName} filteredRooms={filteredRooms} setFilteredRooms={setFilteredRooms} />
             <hr />
             {/* Date and Time Selection */}
             <div className="mb-3">
