@@ -12,7 +12,7 @@ const RoomsContext = createContext(defaultRoomsState);
 export const useRooms = () => useContext(RoomsContext);
 
 export const RoomsProvider = ({ children }) => {
-  const [rooms, setRooms] = useState(defaultRoomsState);
+  const [rooms, setRooms] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch user data on initial load
