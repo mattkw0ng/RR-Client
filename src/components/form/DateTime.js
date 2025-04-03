@@ -15,6 +15,10 @@ function DateTime({ startDateTime, endDateTime, handleStartDateTimeChange, handl
           timeIntervals={30}
           dateFormat="MMMM d, yyyy h:mm aa"
           className="form-control"
+          filterTime={(time) => {
+            const hours = time.getHours();
+            return hours >= 8 && hours <= 21; // Allows only times from 8 AM to 9 PM
+          }}
         />
       </div>
       {/* End Date/Time */}
@@ -30,6 +34,10 @@ function DateTime({ startDateTime, endDateTime, handleStartDateTimeChange, handl
           minDate={minEndDateTime}
           minTime={new Date(new Date(minEndDateTime).setHours(0, 0, 0, 0))}
           maxTime={new Date(new Date(minEndDateTime).setHours(23, 59, 59, 999))}
+          filterTime={(time) => {
+            const hours = time.getHours();
+            return hours >= 8 && hours <= 21; // Allows only times from 8 AM to 9 PM
+          }}
         />
       </div>
     </div>
