@@ -7,6 +7,7 @@ import API_URL from "../../config";
 import { Badge } from "reactstrap";
 import RoomRes from "./RoomRes";
 import "./AdminPortal.css";
+import AddRoomForm from "../form/AddRoomForm";
 
 const AdminPortal = () => {
   const location = useLocation(); // Get current route
@@ -43,6 +44,9 @@ const AdminPortal = () => {
           <li className={`nav-item ${location.pathname === "/admin/reserve" ? "active" : ""}`}>
             <Link to="/admin/reserve" className="nav-link">Admin Reserve Form</Link>
           </li>
+          <li className={`nav-item ${location.pathname === "/admin/add-room" ? "active" : ""}`}>
+            <Link to="/admin/reserve" className="nav-link">Add Room Form</Link>
+          </li>
         </ul>
       </div>
 
@@ -53,6 +57,7 @@ const AdminPortal = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/approvals" element={<AdminPage />} />
           <Route path="/reserve" element={<RoomRes isAdmin={true} />} />
+          <Route path="/add-room" element={<AddRoomForm />} />
         </Routes>
       </div>
     </div>
