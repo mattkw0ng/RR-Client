@@ -28,19 +28,24 @@ export default function Home() {
       <div>
         <h4>Upcoming Events</h4>
         <ListGroup>
-          {approvedEvents.map(event => (
-            <ListGroupItem key={event.id}>
-              <h4>{event.summary}</h4>
-              <p className="mb-0">{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
-              <small className="text-italic">
-                {
-                  event.attendees?.filter((a) => a.resource === true)
-                    .map((attendee) => (getRoomNameByCalendarID(attendee.email)))
-                    .join(", ")
-                }
-              </small>
-              <p>{event.description}</p>
-            </ListGroupItem>
+          {approvedEvents.map(group => (
+            <div key={group.date}>
+              <p>{group.date}</p>
+              {group.events.map(event => (
+                <ListGroupItem key={event.id}>
+                  <h4>{event.summary}</h4>
+                  <p className="mb-0">{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()}</p>
+                  <small className="text-italic">
+                    {
+                      event.attendees?.filter((a) => a.resource === true)
+                        .map((attendee) => (getRoomNameByCalendarID(attendee.email)))
+                        .join(", ")
+                    }
+                  </small>
+                  <p>{event.description}</p>
+                </ListGroupItem>
+              ))}
+            </div>
           ))}
         </ListGroup>
       </div>
