@@ -36,6 +36,7 @@ export default function Home() {
         <ListGroup>
           {approvedEvents.map(group => (
             <div key={group.date}>
+              <hr />
               <p>{formatDate(group.date)}</p>
               {group.events.map(event => (
                 <ListGroupItem key={event.id}>

@@ -156,7 +156,7 @@ const AdminPage = () => {
         </Button>
         <Modal isOpen={modal} toggle={toggle} size='xl'>
           <ModalHeader toggle={toggle}><span className='text-danger'> {pendingEvent.summary} </span></ModalHeader>
-
+          { pendingEvent.extendedProperties.private.conflictMessage ? <p id='conflictMessage' className='conflict-message'>{pendingEvent.extendedProperties.private.conflictMessage}</p> : null}
           {/* TimeLine */}
           {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
           <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId} handleSubmitChanges={handleSubmitChanges} toggle={toggle} />
