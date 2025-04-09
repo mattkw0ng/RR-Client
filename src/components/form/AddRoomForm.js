@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import TextInput from './TextInput';
 import TextArea from './TextArea';
 
-export default function AddRoomForm({ }) {
+export default function AddRoomForm() {
   // const { rooms } = useRooms();
   const { formData, setFormData } = useState({
     room_name: "",
