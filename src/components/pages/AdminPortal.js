@@ -45,7 +45,7 @@ const AdminPortal = () => {
             <Link to="/admin/reserve" className="nav-link">Admin Reserve Form</Link>
           </li>
           <li className={`nav-item ${location.pathname === "/admin/add-room" ? "active" : ""}`}>
-            <Link to="/admin/reserve" className="nav-link">Add Room Form</Link>
+            <Link to="/admin/add-room" className="nav-link">Add Room Form</Link>
           </li>
         </ul>
       </div>
