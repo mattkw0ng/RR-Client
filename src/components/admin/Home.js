@@ -21,6 +21,12 @@ export default function Home() {
     fetchApprovedEvents()
   }, [])
 
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { day: '2-digit', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('en-GB', options);
+  }
+
   return (
     <Fragment>
       <iframe title="upcomingEvents" src="https://calendar.google.com/calendar/embed?src=c_8f9a221bd12882ccda21c5fb81effbad778854cc940c855b25086414babb1079%40group.calendar.google.com&ctz=America%2FLos_Angeles" style={{ border: 0 }} width="100%" height="650" frameborder="0" ></iframe>
@@ -30,7 +36,7 @@ export default function Home() {
         <ListGroup>
           {approvedEvents.map(group => (
             <div key={group.date}>
-              <p>{group.date}</p>
+              <p>{formatDate(group.date)}</p>
               {group.events.map(event => (
                 <ListGroupItem key={event.id}>
                   <h4>{event.summary}</h4>
