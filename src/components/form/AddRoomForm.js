@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { useRooms } from '../../context/RoomsContext';
 import TextInput from './TextInput';
 import TextArea from './TextArea';
@@ -25,6 +25,10 @@ export default function AddRoomForm() {
     e.preventDefault();
     console.log("Submitting form data: ", formData);
   }
+
+  useEffect(() => {
+    console.log("Logging Form Data bc it is not working for some reason:", formData, formData[room_name]);
+  }, [])
 
   return (
     <form onSubmit={handleSubmit}>
