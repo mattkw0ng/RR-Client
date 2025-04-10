@@ -5,7 +5,7 @@ import TextArea from './TextArea';
 
 export default function AddRoomForm() {
   // const { rooms } = useRooms();
-  const { formData, setFormData } = useState({
+  const [formData, setFormData]  = useState({
     room_name: "",
     calendar_id: "",
     capacity: "",
