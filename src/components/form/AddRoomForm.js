@@ -27,7 +27,7 @@ export default function AddRoomForm() {
   }
 
   useEffect(() => {
-    console.log("Logging Form Data bc it is not working for some reason:", formData, formData[room_name]);
+    console.log("Logging Form Data bc it is not working for some reason:", formData, formData['room_name']);
   }, [])
 
   return (
