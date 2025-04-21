@@ -31,7 +31,7 @@ export default function AddRoomForm() {
   }, [formData])
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='p-3'>
       <TextInput label={"Room Name"} name={'room_name'} handleFormChange={handleFormChange} formData={formData} />
       <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
       <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number'/>
