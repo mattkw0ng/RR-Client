@@ -5,7 +5,7 @@ import TextArea from './TextArea';
 
 export default function AddRoomForm() {
   // const { rooms } = useRooms();
-  const [formData, setFormData]  = useState({
+  const [formData, setFormData] = useState({
     room_name: "",
     calendar_id: "",
     capacity: "",
@@ -31,12 +31,18 @@ export default function AddRoomForm() {
   }, [formData])
 
   return (
-    <form onSubmit={handleSubmit} className='p-3'>
-      <TextInput label={"Room Name"} name={'room_name'} handleFormChange={handleFormChange} formData={formData} />
-      <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
-      <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number'/>
-      <TextArea label={"Resources (comma separated)"} name={'resources'} handleFormChange={handleFormChange} formData={formData} />
-      <TextInput label={"Building Location"} name={'building_location'} handleFormChange={handleFormChange} formData={formData} />
-    </form>
+    <div className='containter'>
+      <div className='my-4'>
+        <h1 className="mb-0">Add Room Form</h1>
+        <small className='text-italic'>** You must use Google to create the room first. Use the assigned calendarId to complete this form.</small>
+      </div>
+      <form onSubmit={handleSubmit} className='p-3'>
+        <TextInput label={"Room Name"} name={'room_name'} handleFormChange={handleFormChange} formData={formData} />
+        <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
+        <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
+        <TextArea label={"Resources (comma separated)"} name={'resources'} handleFormChange={handleFormChange} formData={formData} />
+        <TextInput label={"Building Location"} name={'building_location'} handleFormChange={handleFormChange} formData={formData} />
+      </form>
+    </div>
   );
 }
