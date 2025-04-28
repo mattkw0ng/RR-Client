@@ -23,8 +23,65 @@ export default function AddRoomForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let newErrors = {};
     console.log("Submitting form data: ", formData);
-  }
+
+    // Validate calendar_id
+    if (!formData.calendar_id.endsWith("@resource.calendar.google.com")) {
+      newErrors.calendar_id =
+        "Calendar ID must end with '@resource.calendar.google.com'";
+    }
+
+    // Validate capacity (must be a positive integer)
+    if (formData.capacity && (!/^\d+$/.test(formData.capacity) || parseInt(formData.capacity, 10) <= 0)) {
+      newErrors.capacity = "Capacity must be a positive number.";
+    }
+
+    // Validate resources (split by commas, must not be empty)
+    const resourcesArray = formData.resources
+      .split(",")
+      .map((res) => res.trim())
+      .filter((res) => res);
+    if (formData.resources && resourcesArray.length === 0) {
+      newErrors.resources = "Please provide at least one resource.";
+    }
+
+    // Validate new building input if selected
+    let finalBuilding = formData.building_location;
+    if (formData.building_location === "new" && formData.newBuilding.trim() === "") {
+      newErrors.newBuilding = "Please enter a new building name.";
+    } else if (formData.building_location === "new") {
+      finalBuilding = formData.newBuilding.trim();
+    }
+
+    // If there are errors, stop submission
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    // Prepare final data
+    const finalData = {
+      ...formData,
+      capacity: formData.capacity ? parseInt(formData.capacity, 10) : null,
+      resources: resourcesArray,
+      building_location: finalBuilding,
+    };
+
+    // Send data to parent component
+    onSubmit(finalData);
+
+    // Clear form
+    setFormData({
+      room_name: "",
+      calendar_id: "",
+      capacity: "",
+      resources: "",
+      building_location: existingBuildings.length > 0 ? existingBuildings[0] : "",
+      newBuilding: "",
+    });
+    setErrors({});
+  };
 
   useEffect(() => {
     console.log("Logging Form Data bc it is not working for some reason:", formData, formData['room_name']);
@@ -40,7 +97,7 @@ export default function AddRoomForm() {
         <TextInput label={"Room Name"} name={'room_name'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
-        <TextArea label={"Resources (comma separated)"} name={'resources'} handleFormChange={handleFormChange} formData={formData} />
+        <TextArea label={"Resources (comma separated)"} name={'resources'} help={'Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Building Location"} name={'building_location'} handleFormChange={handleFormChange} formData={formData} />
       </form>
     </div>

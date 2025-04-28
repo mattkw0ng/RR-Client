@@ -148,6 +148,18 @@ function RoomRes({ isAdmin = false }) {
       });
       alert('Event added successfully');
       if (isAdmin) {
+        // Reset Form Data and allow Admin to enter another reservation
+        setFormData({
+          eventName: "",
+          location: "San Jose Christian Alliance Church",
+          description: "",
+          congregation: "",
+          groupName: "",
+          groupLeader: "",
+          email: "",
+          numPeople: 0,
+        });
+
         window.location.href = '/admin/reserve';
       } else {
         window.location.href = '/profile';

@@ -24,13 +24,15 @@ export default function HomePage() {
         <div className='info-label'>
           DISCLAIMERS
         </div>
-        For "SJCAC approved" events only. For questions, contact rooms@sjcac.org.
+        {'For "SJCAC approved" events only (at San Jose and Willow Glen campuses).'}
         <br />
         SJCAC Church Administration reserves the right to approve or deny requests for room reservations.
         <br />
-        All reservation requests must be submitted at least one week prior to the event date. ***Allow 3 - 5 days for processing room requests.
+        All reservation requests must be submitted at least one week prior to the event date.
         <br />
         Please Include setup / clean up time in your request. Room bookings may be back to back.
+        <br />
+        For questions, contact rooms@sjcac.org
       </div>
       <div className='info-section'>
         <div className='info-label mb-3'>
