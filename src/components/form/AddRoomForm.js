@@ -21,6 +21,10 @@ export default function AddRoomForm() {
     }));
   }
 
+  const onSubmit = (data) => {
+    console.log(data);
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     let newErrors = {};
