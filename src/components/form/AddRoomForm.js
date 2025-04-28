@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import TextInput from './TextInput';
 import TextArea from './TextArea';
 
-export default function AddRoomForm() {
+export default function AddRoomForm({ existingBuildings }) {
   // const { rooms } = useRooms();
   const [formData, setFormData] = useState({
     room_name: "",
@@ -12,6 +12,7 @@ export default function AddRoomForm() {
     resources: "",
     building_location: "",
   });
+  const [errors, setErrors] = useState({});
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
