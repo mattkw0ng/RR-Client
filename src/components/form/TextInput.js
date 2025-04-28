@@ -5,7 +5,7 @@ function TextInput({ label, labelSmallText, name, handleFormChange, formData, ty
   return (
     <div className="mb-3">
       <label className="form-label">{label}
-        <small className='text-italic'>{labelSmallText}</small>
+        <small className='text-italic text-secondary'>{labelSmallText}</small>
       </label>
       <input
         name={name}

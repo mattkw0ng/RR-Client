@@ -100,10 +100,10 @@ export default function AddRoomForm({ existingBuildings }) {
         <small className='text-italic'>** You must use Google to create the room first. Use the assigned calendarId to complete this form.</small>
       </div>
       <form onSubmit={handleSubmit} className='p-3'>
-        <TextInput label={"Room Name"} name={'room_name'} handleFormChange={handleFormChange} formData={formData} />
+        <TextInput label={"Room Name"} name={'room_name'} labelSmallText={'This will be the display name used everywhere else on this site'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
-        <TextArea label={"Resources (comma separated)"} name={'resources'} help={'Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
+        <TextArea label={"Resources (comma separated)"} name={'resources'} help={'i.e. Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Building Location"} name={'building_location'} handleFormChange={handleFormChange} formData={formData} />
       </form>
     </div>
