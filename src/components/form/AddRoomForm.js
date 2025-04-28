@@ -23,6 +23,7 @@ export default function AddRoomForm({ existingBuildings }) {
   }
 
   const onSubmit = (data) => {
+    console.log(errors);
     console.log(data);
   }
 
