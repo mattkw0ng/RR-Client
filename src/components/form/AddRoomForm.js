@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
-// import { useRooms } from '../../context/RoomsContext';
+import { useRooms } from '../../context/RoomsContext';
 import TextInput from './TextInput';
 import TextArea from './TextArea';
 
-export default function AddRoomForm({ existingBuildings }) {
-  // const { rooms } = useRooms();
+export default function AddRoomForm() {
+  const { roomsGrouped } = useRooms();
+
+  const existingBuildings = roomsGrouped ? Object.keys(roomsGrouped) : [];
+  const [selectedBuilding, setSelectedBuilding] = useState();
+  const [customBuilding, setCustomBuilding] = useState('');
+  
+
   const [formData, setFormData] = useState({
     room_name: "",
     calendar_id: "",
     capacity: "",
     resources: "",
-    building_location: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -53,12 +58,10 @@ export default function AddRoomForm({ existingBuildings }) {
     }
 
     // Validate new building input if selected
-    let finalBuilding = formData.building_location;
-    if (formData.building_location === "new" && formData.newBuilding.trim() === "") {
-      newErrors.newBuilding = "Please enter a new building name.";
-    } else if (formData.building_location === "new") {
-      finalBuilding = formData.newBuilding.trim();
+    if (selectedBuilding === '') {
+      newErrors.newBuilding = "Please select a building"
     }
+    const finalBuilding = selectedBuilding !== 'Other' ? selectedBuilding : customBuilding;
 
     // If there are errors, stop submission
     if (Object.keys(newErrors).length > 0) {
@@ -83,8 +86,6 @@ export default function AddRoomForm({ existingBuildings }) {
       calendar_id: "",
       capacity: "",
       resources: "",
-      building_location: existingBuildings.length > 0 ? existingBuildings[0] : "",
-      newBuilding: "",
     });
     setErrors({});
   };
@@ -92,6 +93,47 @@ export default function AddRoomForm({ existingBuildings }) {
   useEffect(() => {
     console.log("Logging Form Data bc it is not working for some reason:", formData, formData['room_name']);
   }, [formData])
+
+  const BuildingSelector = ({ selectedBuilding, setSelectedBuilding, customBuilding, setCustomBuilding }) => {
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setSelectedBuilding(value);
+      if (value !== 'Other') {
+        setCustomBuilding('')
+      }
+    }
+
+    return (
+      <div className='form-group'>
+        <label htmlFor='buildingSelect'>Building Location</label>
+        <select className='form-select'
+          id='buildingSelect'
+          value={selectedBuilding}
+          onChange={handleChange}
+        >
+          <option value={""}>Select a building...</option>
+          {existingBuildings.map((building, idx) => (
+            <option key={"building"+idx} value={building}>{building}</option>
+          ))}
+          <option value="Other">Other</option>
+        </select>
+
+        {selectedBuilding === "Other" && (
+          <div>
+            <label htmlFor="customBuilding" className='form-label'>New Building Name</label>
+            <input type='text'
+              id='customBuilding'
+              className='form-control'
+              value={customBuilding}
+              onChange={(e) => setCustomBuilding(e.target.value)}
+              placeholder='Enter new buidling name'  
+            />
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className='containter'>
@@ -104,7 +146,7 @@ export default function AddRoomForm({ existingBuildings }) {
         <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
         <TextArea label={"Resources (comma separated)"} name={'resources'} help={'i.e. Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
-        <TextInput label={"Building Location"} name={'building_location'} handleFormChange={handleFormChange} formData={formData} />
+        <BuildingSelector selectedBuilding={selectedBuilding} setSelectedBuilding={setSelectedBuilding} customBuilding={customBuilding} setCustomBuilding={setCustomBuilding} />
       </form>
     </div>
   );
