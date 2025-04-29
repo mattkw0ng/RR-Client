@@ -97,6 +97,7 @@ export default function AddRoomForm() {
     const existingBuildings = Object.keys(roomsGrouped || {});
 
     const handleChange = (e) => {
+      console.log(existingBuildings, selectedBuilding, roomsGrouped);
       const value = e.target.value;
       setSelectedBuilding(value);
       if (value !== 'Other') {
