@@ -99,9 +99,6 @@ export default function AddRoomForm() {
     const handleChange = (e) => {
       const value = e.target.value;
       setSelectedBuilding(value);
-      if (value !== 'Other') {
-        setCustomBuilding('')
-      }
     }
 
     return (
