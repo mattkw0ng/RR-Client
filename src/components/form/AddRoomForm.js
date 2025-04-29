@@ -90,14 +90,13 @@ export default function AddRoomForm() {
   };
 
   useEffect(() => {
-    console.log("Logging Form Data bc it is not working for some reason:", formData, formData['room_name']);
-  }, [formData])
+    console.log("Logging roomsGrouped:", roomsGrouped);
+  }, [roomsGrouped])
 
   const BuildingSelector = ({ selectedBuilding, setSelectedBuilding, customBuilding, setCustomBuilding, roomsGrouped }) => {
     const existingBuildings = Object.keys(roomsGrouped || {});
 
     const handleChange = (e) => {
-      console.log(existingBuildings, selectedBuilding, roomsGrouped);
       const value = e.target.value;
       setSelectedBuilding(value);
       if (value !== 'Other') {
