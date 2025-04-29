@@ -4,7 +4,7 @@ import TextInput from './TextInput';
 import TextArea from './TextArea';
 
 export default function AddRoomForm() {
-  const { roomsGrouped } = useRooms();
+  const { rooms} = useRooms();
 
   const [selectedBuilding, setSelectedBuilding] = useState();
   const [customBuilding, setCustomBuilding] = useState('');
@@ -90,11 +90,11 @@ export default function AddRoomForm() {
   };
 
   useEffect(() => {
-    console.log("Logging roomsGrouped:", roomsGrouped);
-  }, [roomsGrouped])
+    console.log("Logging roomsGrouped:", rooms);
+  }, [rooms])
 
-  const BuildingSelector = ({ selectedBuilding, setSelectedBuilding, customBuilding, setCustomBuilding, roomsGrouped }) => {
-    const existingBuildings = Object.keys(roomsGrouped || {});
+  const BuildingSelector = ({ selectedBuilding, setSelectedBuilding, customBuilding, setCustomBuilding, rooms }) => {
+    const existingBuildings = Object.keys(rooms?.roomsGrouped || {});
 
     const handleChange = (e) => {
       const value = e.target.value;
@@ -146,7 +146,7 @@ export default function AddRoomForm() {
         <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
         <TextArea label={"Resources (comma separated)"} name={'resources'} help={'i.e. Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
-        <BuildingSelector selectedBuilding={selectedBuilding} setSelectedBuilding={setSelectedBuilding} customBuilding={customBuilding} setCustomBuilding={setCustomBuilding} roomsGrouped={roomsGrouped}/>
+        <BuildingSelector selectedBuilding={selectedBuilding} setSelectedBuilding={setSelectedBuilding} customBuilding={customBuilding} setCustomBuilding={setCustomBuilding} rooms={rooms}/>
       </form>
     </div>
   );
