@@ -6,7 +6,6 @@ import TextArea from './TextArea';
 export default function AddRoomForm() {
   const { roomsGrouped } = useRooms();
 
-  const existingBuildings = Object.keys(roomsGrouped || {});
   const [selectedBuilding, setSelectedBuilding] = useState();
   const [customBuilding, setCustomBuilding] = useState('');
   
@@ -94,8 +93,9 @@ export default function AddRoomForm() {
     console.log("Logging Form Data bc it is not working for some reason:", formData, formData['room_name']);
   }, [formData])
 
-  const BuildingSelector = ({ selectedBuilding, setSelectedBuilding, customBuilding, setCustomBuilding }) => {
-
+  const BuildingSelector = ({ selectedBuilding, setSelectedBuilding, customBuilding, setCustomBuilding, roomsGrouped }) => {
+    const existingBuildings = Object.keys(roomsGrouped || {});
+    
     const handleChange = (e) => {
       const value = e.target.value;
       setSelectedBuilding(value);
