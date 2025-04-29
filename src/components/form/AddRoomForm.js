@@ -6,7 +6,7 @@ import TextArea from './TextArea';
 export default function AddRoomForm() {
   const { roomsGrouped } = useRooms();
 
-  const existingBuildings = roomsGrouped ? Object.keys(roomsGrouped) : [];
+  const existingBuildings = Object.keys(roomsGrouped || {});
   const [selectedBuilding, setSelectedBuilding] = useState();
   const [customBuilding, setCustomBuilding] = useState('');
   
