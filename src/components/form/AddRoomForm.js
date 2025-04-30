@@ -93,13 +93,19 @@ export default function AddRoomForm() {
     console.log("Logging roomsGrouped:", rooms);
   }, [rooms])
 
-  const BuildingSelector = ({ selectedBuilding, setSelectedBuilding, customBuilding, setCustomBuilding, rooms }) => {
-    const existingBuildings = Object.keys(rooms?.roomsGrouped || {});
-
-    const handleChange = (e) => {
-      const value = e.target.value;
-      setSelectedBuilding(value);
+  const handleSetBuilding = (e) => {
+    setSelectedBuilding(e.target.value)
+    if (e.target.value !== 'Other') {
+      setCustomBuilding('')
     }
+  }
+
+  const handleCustomBuildingChange = (e) => {
+    setCustomBuilding(e.target.value);
+  }
+
+  const BuildingSelector = ({ selectedBuilding, handleSetBuilding, customBuilding, handleCustomBuildingChange, rooms }) => {
+    const existingBuildings = Object.keys(rooms?.roomsGrouped || {});
 
     return (
       <div className='form-group'>
@@ -107,7 +113,7 @@ export default function AddRoomForm() {
         <select className='form-select'
           id='buildingSelect'
           value={selectedBuilding}
-          onChange={handleChange}
+          onChange={handleSetBuilding}
         >
           <option value={""}>Select a building...</option>
           {existingBuildings.map((building, idx) => (
@@ -123,7 +129,7 @@ export default function AddRoomForm() {
               id='customBuilding'
               className='form-control'
               value={customBuilding}
-              onChange={(e) => setCustomBuilding(e.target.value)}
+              onChange={handleCustomBuildingChange}
               placeholder='Enter new buidling name'  
             />
           </div>
@@ -143,7 +149,7 @@ export default function AddRoomForm() {
         <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
         <TextArea label={"Resources (comma separated)"} name={'resources'} help={'i.e. Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
-        <BuildingSelector selectedBuilding={selectedBuilding} setSelectedBuilding={setSelectedBuilding} customBuilding={customBuilding} setCustomBuilding={setCustomBuilding} rooms={rooms}/>
+        <BuildingSelector selectedBuilding={selectedBuilding} handleSetBuilding={handleSetBuilding} customBuilding={customBuilding} handleCustomBuildingChange={handleCustomBuildingChange} rooms={rooms}/>
       </form>
     </div>
   );
