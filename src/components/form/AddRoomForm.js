@@ -26,9 +26,26 @@ export default function AddRoomForm() {
     }));
   }
 
-  const onSubmit = (data) => {
-    console.log(errors);
+  const onSubmit = async (data) => {
     console.log(data);
+    // Handle form submission logic here
+    await axios.post(API_URL + "/api/addRoom", data, { withCredentials: true })
+      .then((response) => {
+        console.log("Room added successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error adding room:", error);
+      });
+    setSelectedBuilding('');
+    setCustomBuilding('');
+    setFormData({
+      room_name: "",
+      calendar_id: "",
+      capacity: "",
+      resources: "",
+    });
+    setErrors({});
+    console.log("Form submitted successfully with data:", data);
   }
 
   const handleSubmit = (e) => {
@@ -76,17 +93,8 @@ export default function AddRoomForm() {
       building_location: finalBuilding,
     };
 
-    // Send data to parent component
+    // Submit data
     onSubmit(finalData);
-
-    // Clear form
-    setFormData({
-      room_name: "",
-      calendar_id: "",
-      capacity: "",
-      resources: "",
-    });
-    setErrors({});
   };
 
   useEffect(() => {
