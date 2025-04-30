@@ -112,6 +112,7 @@ export default function AddRoomForm() {
         <label htmlFor='buildingSelect'>Building Location</label>
         <select className='form-select'
           id='buildingSelect'
+          name='buildingSelect'
           value={selectedBuilding}
           onChange={handleSetBuilding}
         >
@@ -127,6 +128,7 @@ export default function AddRoomForm() {
             <label htmlFor="customBuilding" className='form-label'>New Building Name</label>
             <input type='text'
               id='customBuilding'
+              name='customBuilding'
               className='form-control'
               value={customBuilding}
               onChange={handleCustomBuildingChange}
