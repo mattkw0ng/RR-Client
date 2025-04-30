@@ -123,7 +123,7 @@ export default function AddRoomForm() {
           <option value="Other">Other</option>
         </select>
 
-        {selectedBuilding === "Other" && (
+        {(
           <div>
             <label htmlFor="customBuilding" className='form-label'>New Building Name</label>
             <input type='text'
