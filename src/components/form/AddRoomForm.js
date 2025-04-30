@@ -29,6 +29,7 @@ export default function AddRoomForm() {
   }
 
   const onSubmit = async (data) => {
+    console.log(errors);
     console.log(data);
     // Handle form submission logic here
     await axios.post(API_URL + "/api/addRoom", data, { withCredentials: true })
