@@ -1,6 +1,5 @@
 import React from 'react';
 import './Lightbox.css';
-import ROOMS from '../../data/rooms';
 
 
 /**
@@ -33,14 +32,14 @@ const Lightbox = ({ room, isOpen, onClose, selectedRooms, handleRoomToggle, room
           <iframe
             src={`https://calendar.google.com/calendar/embed?src=${roomsList?.rooms[room].calendarID}`}
             style={{ width: '100%', height: '400px', border: 'none' }}
-            title={`${ROOMS[room].name} Calendar`}
+            title={`${roomsList?.rooms[room].name} Calendar`}
           ></iframe>
         </div>
         
         {/* Room Details */}
         <div className="room-details">
-          <p><strong>Capacity:</strong> {ROOMS[room].capacity}</p>
-          <p><strong>Resources:</strong> {ROOMS[room].resources.join(', ')}</p>
+          <p><strong>Capacity:</strong> {roomsList?.rooms[room].capacity}</p>
+          <p><strong>Resources:</strong> {roomsList?.rooms[room].resources.join(', ')}</p>
           <button className={selectedRooms.includes(room) ? 'btn btn-secondary' : 'btn btn-primary'} onClick={(e)=>handleRoomToggle(e, room)}>{selectedRooms.includes(room) ? "Remove" : "Add"}</button>
         </div>
       </div>
