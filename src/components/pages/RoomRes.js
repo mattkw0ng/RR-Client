@@ -11,7 +11,7 @@ import TextInput from '../form/TextInput';
 import TextArea from '../form/TextArea';
 import SelectInput from '../form/SelectInput';
 import RecurrenceForm from '../form/RecurrenceForm';
-import { formatEventDates, getRoomNameByCalendarID, parseRRule, roundToNearestHalfHour } from '../../util/util';
+import { formatEventDates, parseRRule, roundToNearestHalfHour } from '../../util/util';
 import LoginModal from '../lightbox/LoginModal';
 import { useRooms } from '../../context/RoomsContext';
 
