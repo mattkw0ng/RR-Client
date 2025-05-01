@@ -10,7 +10,7 @@ import ROOMS from '../../data/rooms';
  * @param {functino} onClose close/hide lightbox 
  * @returns 
  */
-const Lightbox = ({ room, isOpen, onClose, selectedRooms, handleRoomToggle}) => {
+const Lightbox = ({ room, isOpen, onClose, selectedRooms, handleRoomToggle, roomsList}) => {
   
   if (!isOpen || !room) return null;
 
@@ -31,7 +31,7 @@ const Lightbox = ({ room, isOpen, onClose, selectedRooms, handleRoomToggle}) => 
         {/* Room Calendar Embed */}
         <div className="room-calendar">
           <iframe
-            src={`https://calendar.google.com/calendar/embed?src=${ROOMS[room].calendarID}`}
+            src={`https://calendar.google.com/calendar/embed?src=${roomsList[room].calendarID}`}
             style={{ width: '100%', height: '400px', border: 'none' }}
             title={`${ROOMS[room].name} Calendar`}
           ></iframe>
