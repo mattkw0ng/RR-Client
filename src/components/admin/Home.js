@@ -4,7 +4,7 @@ import { ListGroup, ListGroupItem, Modal, ModalHeader, ModalBody } from "reactst
 import API_URL from "../../config";
 import { getRoomNameByCalendarID } from "../../util/util";
 import { useRooms } from "../../context/RoomsContext";
-import ViewEventDetails from "../view/ViewEventDetails";
+import ViewEventDetails from "../events/ViewEventDetails";
 
 export default function Home() {
   const { rooms } = useRooms();
