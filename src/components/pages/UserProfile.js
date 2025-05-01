@@ -19,7 +19,7 @@ const UserProfile = () => {
             .then((res) => {
                 console.log("Successfully loaded User's Events")
                 setEvents(res.data); // Assuming you have a state variable for events
-                console.log(res.data);
+                console.log(res);
             })
             .catch((err) => {
                 console.error('Failed to load events', err);
@@ -151,37 +151,6 @@ const UserProfile = () => {
             <p>{user?.emails?.[0]?.value || "No email provided"}</p>
             <hr />
             <TabNavigation eventsData={DisplayEventsList} />
-
-
-
-
-            {/* <div>
-                <h5>My Reservations</h5>
-                <hr />
-                {events ? (
-                    <div className='user-events'>
-                        <ListGroup>
-                            {events['proposed']?.map(event => (
-                                (<ModifiedEvent
-                                    key={event.id}
-                                    event={event}
-                                    button={<Button color='danger' size='sm' onClick={(e) => handleAcceptChanges(e, event)}>Accept Changes</Button>}
-                                    badge={needsActionBadge}
-                                    pending={false}
-                                />)
-                            ))}
-                        </ListGroup>
-
-                        <DisplayEvents displayEvents={events['pending']} isPending={true} />
-
-                        <hr />
-
-                        <DisplayEvents displayEvents={events['approved']} isPending={false} />
-                    </div>
-                ) : (
-                    <p>No upcoming events found.</p>
-                )}
-            </div> */}
         </Container>
     );
 };
