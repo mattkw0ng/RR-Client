@@ -262,7 +262,7 @@ function RoomRes({ isAdmin = false }) {
               <h5 className="text-danger">Conflicts Found</h5>
               {conflicts.map((conflict, index) => (
                 <p key={index}>
-                  {`${getRoomNameByCalendarID(conflict.room)} is busy from: `}
+                  {`${rooms?.rooms[conflict.room].room_name} is busy from: `}
                   {conflict.times.map((timeRange) => (`${formatEventDates(timeRange.start, timeRange.end)}`)).join(', ')}
                 </p>
               ))}
@@ -421,7 +421,6 @@ function RoomRes({ isAdmin = false }) {
                           value={room}
                           checked={selectedRooms.includes(room)}
                           onChange={handleRoomChange}
-                          disabled={!availableRooms.includes(room)}
                         />
                         <label className="form-check-label" htmlFor={room}>
                           {room}{" "}
