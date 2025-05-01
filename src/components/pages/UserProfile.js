@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Container, ListGroup, Button, Badge, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 import { useAuth } from '../../context/AuthContext';
+import { useRooms } from '../../context/RoomsContext';
 
 import StandardEvent from '../events/StandardEvent';
 import EditEventForm from '../edit/EditEventForm';
@@ -12,6 +13,7 @@ import TabNavigation from '../events/TabNavigation';
 import ViewEventDetails from '../events/ViewEventDetails';
 
 const UserProfile = () => {
+    const { rooms } = useRooms();
     const { user, loading } = useAuth();
     const [events, setEvents] = useState();
 
