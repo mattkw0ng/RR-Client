@@ -2,8 +2,10 @@ import React from "react";
 import { Badge, ListGroupItem } from 'reactstrap';
 import RecurringEventList from "./RecurringEventList";
 import { getRoomNameByCalendarID, parseRRule, formatEventDates } from "../../util/util";
+import { useRooms } from "../../context/RoomsContext";
 
 const StandardEvent = ({ event, button, badge, pending=true }) => {
+  const { rooms } = useRooms();
 
   return (
     <ListGroupItem className="d-flex justify-content-between align-items-start">
@@ -24,8 +26,8 @@ const StandardEvent = ({ event, button, badge, pending=true }) => {
 
         <p>
           {/* Room */}
-          {pending ? event.extendedProperties?.private.rooms?.map((room) => getRoomNameByCalendarID(room.email)).join(', ') :
-            event.attendees.filter((attendee) => attendee.resource === true).map((room) => getRoomNameByCalendarID(room.email)).join(', ')
+          {pending ? event.extendedProperties?.private.rooms?.map((room) => getRoomNameByCalendarID(room.email, rooms)).join(', ') :
+            event.attendees.filter((attendee) => attendee.resource === true).map((room) => getRoomNameByCalendarID(room.email, rooms)).join(', ')
           }
           <br />
           {/* Description */}

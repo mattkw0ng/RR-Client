@@ -3,12 +3,13 @@ import axios from 'axios';
 import API_URL from "../../config";
 // import ConflictTimeline from "./ConflictTimeline";
 import { AVAILABLE_ROOMS, ROOMEVENTS } from "../../data/example";
-import { ROOMS } from "../../data/rooms";
+import { getRoomNameByCalendarID } from "../../util/util";
 import { formatDisplayTime } from "../../util/util";
 import RoomSelector from "./RoomSelector";
 import SideBySideEvents from "./SideBySideEvents";
 import RoomTimeline from "./RoomTimeline";
 import { Button, ModalBody, ModalFooter } from "reactstrap";
+import { useRooms } from "../../context/RoomsContext";
 
 
 /**
@@ -16,21 +17,13 @@ import { Button, ModalBody, ModalFooter } from "reactstrap";
  * @param {Object} pendingEvent the pending event that is in conflict with some other event 
  */
 const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges, toggle }) => {
+  const { rooms } = useRooms();
   const [roomEvents, setRoomEvents] = useState(ROOMEVENTS); //all other events taking place in room(s)
   const [availableRooms, setAvailableRooms] = useState(AVAILABLE_ROOMS);
 
   const [selectedRoom, setSelectedRoom] = useState("");
   const [timeHasBeenChanged, setTimeHasBeenChanged] = useState(false);
   const [pendingEventCopy, setpendingEventCopy] = useState(pendingEvent);
-
-  function getRoomNameByCalendarID(calendarID) {
-    for (const [roomName, roomData] of Object.entries(ROOMS)) {
-      if (roomData.calendarID === calendarID) {
-        return roomName;
-      }
-    }
-    return null; // Return null if no matching calendarID is found
-  }
 
   const fetchRoomEvents = async (id, time) => {
     try {
@@ -85,7 +78,7 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
 
           {/* Display Room name and Time + updated Room names and Times (if changed) */}
           <div>
-            <p><span className="text-danger">{getRoomNameByCalendarID(roomId)}</span> {selectedRoom ? <span className="text-primary"> &gt; {selectedRoom}</span> : null}</p>
+            <p><span className="text-danger">{getRoomNameByCalendarID(roomId, rooms)}</span> {selectedRoom ? <span className="text-primary"> &gt; {selectedRoom}</span> : null}</p>
             <p className="d-inline">{formatDisplayTime(pendingEvent.start.dateTime)} - {formatDisplayTime(pendingEvent.end.dateTime)}
               {timeHasBeenChanged ? <span> &gt; {pendingEventCopy}</span> : null}
             </p>

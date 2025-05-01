@@ -3,9 +3,10 @@ import { Badge, ListGroupItem } from 'reactstrap';
 import RecurringEventList from "./RecurringEventList";
 import { format, isSameDay, parseISO } from 'date-fns';
 import { getRoomNameByCalendarID, parseRRule } from "../../util/util";
+import { useRooms } from "../../context/RoomsContext";
 
 const ModifiedEvent = ({ event, button, badge}) => {
-
+  const { rooms } = useRooms();
   // Display Event Dates Neatly
   function formatEventDates(startDate, endDate) {
     const start = parseISO(startDate);
@@ -39,7 +40,7 @@ const ModifiedEvent = ({ event, button, badge}) => {
 
         <p>
           {/* Room */}
-          <p>{event.extendedProperties?.private.rooms?.map((room) => getRoomNameByCalendarID(room.email)).join(', ')}</p>
+          <p>{event.extendedProperties?.private.rooms?.map((room) => getRoomNameByCalendarID(room.email, rooms)).join(', ')}</p>
           <p className="text-secondary text-decoration-line-through fst-italic">{event.extendedProperties.private.originalRooms?.map((room) => getRoomNameByCalendarID(room.email)).join(', ')}</p>
           <br />
           {/* Description */}
