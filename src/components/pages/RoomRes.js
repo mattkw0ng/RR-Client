@@ -397,7 +397,6 @@ function RoomRes({ isAdmin = false }) {
                           value={room}
                           checked={selectedRooms.includes(room)}
                           onChange={handleRoomChange}
-                          disabled={!availableRooms.includes(room)}
                         />
                         <label className={`form-check-label`} htmlFor={room}>
                           {room}{" "}
