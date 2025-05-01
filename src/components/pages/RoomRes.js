@@ -267,7 +267,7 @@ function RoomRes({ isAdmin = false }) {
                 
                 return (
                   <p key={index}>
-                    {`${rooms?.rooms[conflict.room].room_name} is busy from: `}
+                    {`${roomName} is busy from: `}
                     {conflict.times.map((timeRange) => (`${formatEventDates(timeRange.start, timeRange.end)}`)).join(', ')}
                   </p>
                 )
