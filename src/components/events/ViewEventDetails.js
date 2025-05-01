@@ -4,14 +4,14 @@ import { getRoomNameByCalendarID } from "../../util/util";
 
 const ViewEventDetails = ({ event, rooms }) => {
   const {
-    summary,
     description,
-    location,
     start,
     end,
     extendedProperties,
     attendees,
   } = event;
+  
+  console.log("ViewEventDetails: ", event);
 
   const roomsList = attendees
     ?.filter((attendee) => attendee.resource)
@@ -20,20 +20,11 @@ const ViewEventDetails = ({ event, rooms }) => {
 
   return (
     <div className="view-event-details">
-      <h4>Event Details</h4>
       <Table bordered>
         <tbody>
           <tr>
-            <td><strong>Event Name</strong></td>
-            <td>{summary || "N/A"}</td>
-          </tr>
-          <tr>
             <td><strong>Description</strong></td>
             <td>{description || "N/A"}</td>
-          </tr>
-          <tr>
-            <td><strong>Location</strong></td>
-            <td>{location || "N/A"}</td>
           </tr>
           <tr>
             <td><strong>Start Time</strong></td>
