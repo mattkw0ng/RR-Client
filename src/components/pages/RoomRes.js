@@ -260,12 +260,18 @@ function RoomRes({ isAdmin = false }) {
           {conflicts.length > 0 ? (
             <>
               <h5 className="text-danger">Conflicts Found</h5>
-              {conflicts.map((conflict, index) => (
-                <p key={index}>
-                  {`${rooms?.rooms[conflict.room].room_name} is busy from: `}
-                  {conflict.times.map((timeRange) => (`${formatEventDates(timeRange.start, timeRange.end)}`)).join(', ')}
-                </p>
-              ))}
+              {conflicts.map((conflict, index) => {
+                const roomName = Object.keys(rooms?.rooms || {}).find(
+                  (key) => rooms.rooms[key].calendarID === conflict.room
+                );
+                
+                return (
+                  <p key={index}>
+                    {`${rooms?.rooms[conflict.room].room_name} is busy from: `}
+                    {conflict.times.map((timeRange) => (`${formatEventDates(timeRange.start, timeRange.end)}`)).join(', ')}
+                  </p>
+                )
+              })}
             </>
           ) : (
             <h5 className="text-primary">No Conflicts Found</h5>
