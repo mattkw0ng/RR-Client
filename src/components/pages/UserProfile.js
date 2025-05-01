@@ -9,6 +9,7 @@ import StandardEvent from '../events/StandardEvent';
 import EditEventForm from '../edit/EditEventForm';
 import ModifiedEvent from '../events/ModifiedEvent';
 import TabNavigation from '../events/TabNavigation';
+import ViewEventDetails from '../events/ViewEventDetails';
 
 const UserProfile = () => {
     const { user, loading } = useAuth();
@@ -41,6 +42,7 @@ const UserProfile = () => {
 
     const approvedBadge = <Badge pill className='ms-2' color={'primary'} style={{ fontSize: '0.6em' }}>approved</Badge>
     const pendingBadge = <Badge pill className='ms-2' color={'secondary'} style={{ fontSize: '0.6em' }} >pending</Badge>
+    const pastBadge = <Badge pill className='ms-2' color={'secondary'} style={{ fontSize: '0.6em' }} >view only</Badge>
     const needsActionBadge = <Badge pill className='ms-2' color={'danger'} style={{ fontSize: '0.6em' }} >needs action</Badge>
 
     const onSubmitFunction = (closeModal) => {
@@ -67,6 +69,24 @@ const UserProfile = () => {
                         <EditEventForm event={event} pending={pending} onSubmit={onSubmitFunction} setModal={setModal} />
                     </ModalBody>
 
+                </Modal>
+            </div>
+        );
+    }
+
+    const ViewerModal = ({ event }) => {
+        const [modal, setModal] = useState(false);
+        const toggle = () => setModal(!modal);
+        return (
+            <div>
+                <Button size='sm' color="secondary" onClick={toggle}>
+                    View
+                </Button>
+                <Modal isOpen={modal} toggle={toggle} size='xl'>
+                    <ModalHeader toggle={toggle}><span className='text-secondary'> {event.summary} </span></ModalHeader>
+                    <ModalBody className='px-3'>
+                        <ViewEventDetails event={event} rooms={rooms}/>
+                    </ModalBody>
                 </Modal>
             </div>
         );
@@ -101,7 +121,7 @@ const UserProfile = () => {
             });
     }
 
-    const DisplayEvents = ({ displayEvents, isPending }) => {
+    const DisplayEvents = ({ displayEvents, isPending, isPast=false, badge }) => {
         console.log("Rendering:", displayEvents);
         useEffect(() => {
             console.log("UseEffect Rendering:", displayEvents);
@@ -117,9 +137,10 @@ const UserProfile = () => {
                     <StandardEvent
                         key={event.id}
                         event={event}
-                        button={<div className='d-flex gap-2'><EditorModal event={event} pending={isPending} /> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
-                        badge={isPending ? pendingBadge : approvedBadge}
+                        button={isPast ? <ViewerModal event={event}/> :<div className='d-flex gap-2'><EditorModal event={event} pending={isPending} /> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
+                        badge={badge}
                         pending={isPending}
+                        past={isPast}
                     />
                 ))}
             </ListGroup>)
@@ -137,9 +158,9 @@ const UserProfile = () => {
                 />)
             ))}
         </ListGroup>),
-        'pending': (<DisplayEvents displayEvents={events['pending']} isPending={true} />),
-        'approved': (<DisplayEvents displayEvents={events['approved']} isPending={false} />),
-        'history': (<DisplayEvents displayEvents={events['history']} isPending={false} />),
+        'pending': (<DisplayEvents displayEvents={events['pending']} isPending={true} isPast={false} badge={pendingBadge}/>),
+        'approved': (<DisplayEvents displayEvents={events['approved']} isPending={false} isPast={false} badge={approvedBadge} />),
+        'history': (<DisplayEvents displayEvents={events['history']} isPending={false} isPast={true} badge={pastBadge} />),
     } : null;
 
     return (

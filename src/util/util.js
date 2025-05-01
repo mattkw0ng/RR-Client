@@ -1,4 +1,3 @@
-import ROOMS from "../data/rooms";
 import { format, isSameDay, parseISO } from 'date-fns';
 
 // Convert slider value (0–47) to time in "hh:mm AM/PM" format
@@ -52,10 +51,25 @@ export function formatEventDates(startDate, endDate) {
   return `${format(start, 'eee, MMM do h:mmaaa')} - ${format(end, 'eee, MMM do h:mmaaa')}`;
 }
 
-export function getRoomNameByCalendarID(calendarID) {
-  const entry = Object.entries(ROOMS).find(([roomName, roomData]) => roomData.calendarID === calendarID);
-  console.log(calendarID, entry);
-  return entry ? entry[0] : null; // Return the room name (key) or null if not found
+// export function getRoomNameByCalendarID(calendarID) {
+//   const entry = Object.entries(ROOMS).find(([roomName, roomData]) => roomData.calendarID === calendarID);
+//   console.log(calendarID, entry);
+//   return entry ? entry[0] : null; // Return the room name (key) or null if not found
+// }
+
+export function getRoomNameByCalendarID(calendarID, rooms) {
+
+  if (!rooms || !rooms.rooms) {
+    console.error("Rooms data is not available in context.");
+    return 'null';
+  }
+
+  const roomName = Object.keys(rooms?.rooms || {}).find(
+    (key) => rooms.rooms[key].calendarID === calendarID
+  );
+  console.log("getRoomNameByCalendarID: ", calendarID, roomName);
+
+  return roomName; // Return the room name (key) or null if not found
 }
 
 export function roundToNearestHalfHour(date = new Date()) {
