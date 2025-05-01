@@ -31,7 +31,7 @@ const Lightbox = ({ room, isOpen, onClose, selectedRooms, handleRoomToggle, room
         {/* Room Calendar Embed */}
         <div className="room-calendar">
           <iframe
-            src={`https://calendar.google.com/calendar/embed?src=${roomsList[room].calendarID}`}
+            src={`https://calendar.google.com/calendar/embed?src=${roomsList?.rooms[room].calendarID}`}
             style={{ width: '100%', height: '400px', border: 'none' }}
             title={`${ROOMS[room].name} Calendar`}
           ></iframe>

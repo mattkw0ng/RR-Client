@@ -83,7 +83,7 @@ function RoomSelection({ availableRooms, filteredRooms, selectedRooms, setSelect
         onClose={() => setLightboxOpen(false)}
         selectedRooms={selectedRooms}
         handleRoomToggle={handleRoomToggle}
-        roomsList={rooms.rooms}
+        roomsList={rooms}
       />
 
     </div>
