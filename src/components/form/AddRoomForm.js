@@ -163,6 +163,18 @@ export default function AddRoomForm() {
         <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
         <TextArea label={"Resources (comma separated)"} name={'resources'} help={'i.e. Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
         <BuildingSelector selectedBuilding={selectedBuilding} handleSetBuilding={handleSetBuilding} customBuilding={customBuilding} handleCustomBuildingChange={handleCustomBuildingChange} rooms={rooms}/>
+        <button type='submit' className='btn btn-primary'>Submit</button>
+        {errors.calendar_id && <div className="text-danger">{errors.calendar_id}</div>}
+        {errors.capacity && <div className="text-danger">{errors.capacity}</div>}
+        {errors.resources && <div className="text-danger">{errors.resources}</div>}
+        {errors.newBuilding && <div className="text-danger">{errors.newBuilding}</div>}
+        {Object.keys(errors).length === 0 && <div className="text-success">Form is valid!</div>}
+        {Object.keys(errors).length > 0 && <div className="text-danger">Please fix the errors above.</div>}
+        <div className='text-secondary text-italic mt-3'>
+          <p>Note: If you are adding a new building, please ensure it is not already in the list of buildings. If it is, select the existing building instead.</p>
+          <p>Also, please ensure that the calendarId is correct and that the room has been created in Google Calendar before submitting this form.</p>
+          <p>Thank you for your cooperation!</p>
+        </div>
       </form>
     </div>
   );
