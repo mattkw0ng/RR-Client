@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Collapse, Input, Label, FormGroup, Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'RoomRes.css';
 import DateTime from '../form/DateTime';
 import API_URL from '../../config';
 import { congregationOptions, roomListSimple } from '../../data/rooms';
@@ -404,7 +405,7 @@ function RoomRes({ isAdmin = false }) {
                           checked={selectedRooms.includes(room)}
                           onChange={handleRoomChange}
                         />
-                        <label className={`form-check-label`} htmlFor={room}>
+                        <label className={`form-check-label ${availableRooms.includes(room) && 'unavailable'}`} htmlFor={room}>
                           {room}{" "}
                           {availableRooms.includes(room) ? (
                             <small className='text-primary'>available</small>
@@ -428,19 +429,20 @@ function RoomRes({ isAdmin = false }) {
                           checked={selectedRooms.includes(room)}
                           onChange={handleRoomChange}
                         />
-                        <label className="form-check-label" htmlFor={room}>
+                        <label className={`form-check-label ${availableRooms.includes(room) && 'unavailable'}`} htmlFor={room}>
                           {room}{" "}
                           {availableRooms.includes(room) ? (
-                            ""
+                            <small className='text-primary'>available</small>
                           ) : (
-                            <small>unavailable</small>
+                            <small className='text-danger '>unavailable</small>
                           )}
                         </label>
                       </div>
                     ))}
                   </div>
                 </div>
-              )) : null}
+              )) :
+               null}
             </div>
             <button onClick={checkAvailability} className="btn btn-secondary">Check Availability</button>
           </div>
