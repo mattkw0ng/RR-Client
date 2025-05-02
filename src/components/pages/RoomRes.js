@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { Collapse, Input, Label, FormGroup, Button, Modal, ModalBody, ModalFooter, ModalHeader, Table } from 'reactstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'RoomRes.css';
+import './RoomRes.css';
 import DateTime from '../form/DateTime';
 import API_URL from '../../config';
 import { congregationOptions, roomListSimple } from '../../data/rooms';
