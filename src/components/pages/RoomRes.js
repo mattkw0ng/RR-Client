@@ -405,7 +405,7 @@ function RoomRes({ isAdmin = false }) {
                           checked={selectedRooms.includes(room)}
                           onChange={handleRoomChange}
                         />
-                        <label className={`form-check-label ${availableRooms.includes(room) && 'unavailable'}`} htmlFor={room}>
+                        <label className={`form-check-label ${!availableRooms.includes(room) && 'unavailable'}`} htmlFor={room}>
                           {room}{" "}
                           {availableRooms.includes(room) ? (
                             <small className='text-primary'>available</small>
@@ -429,7 +429,7 @@ function RoomRes({ isAdmin = false }) {
                           checked={selectedRooms.includes(room)}
                           onChange={handleRoomChange}
                         />
-                        <label className={`form-check-label ${availableRooms.includes(room) && 'unavailable'}`} htmlFor={room}>
+                        <label className={`form-check-label ${!availableRooms.includes(room) && 'unavailable'}`} htmlFor={room}>
                           {room}{" "}
                           {availableRooms.includes(room) ? (
                             <small className='text-primary'>available</small>
