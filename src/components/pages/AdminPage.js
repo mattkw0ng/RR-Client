@@ -64,6 +64,25 @@ const AdminPage = () => {
       });
   };
 
+  const handleRejectEvent = async (eventId) => {
+    console.log("Rejecting event:", eventId);
+    setLoading(true);
+  
+    try {
+      const response = await axios.delete(`${API_URL}/api/rejectEvent`, {
+        data: { eventId }, // Pass the eventId in the request body
+        withCredentials: true,
+      });
+      alert('Event rejected successfully:', response.data);
+      fetchPendingEvents(); // Refresh the list of pending events
+    } catch (error) {
+      console.error('Error rejecting event:', error.response ? error.response.data : error.message);
+      alert('Failed to reject event. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAcceptChanges = async (eventId) => {
     console.log("Accepting Changes", eventId);
     axios.post(API_URL + '/api/acceptProposedChanges', { eventId }, { withCredentials: true })
@@ -151,7 +170,7 @@ const AdminPage = () => {
 
     return (
       <div>
-        <Button color="danger" onClick={toggle}>
+        <Button color="danger" size='sm' onClick={toggle}>
           View Conflict
         </Button>
         <Modal isOpen={modal} toggle={toggle} size='xl'>
@@ -178,10 +197,13 @@ const AdminPage = () => {
         }
         <ListGroup>
           {/* Non-Conflicting Events Section */}
-
-          {pendingEvents.quickApprove.map(event => (
-            (<StandardEvent key={event.id} event={event} button={<Button onClick={() => handleApproveEvent(event.id)} size="sm">Approve</Button>} />)
-          ))}
+          {pendingEvents.quickApprove.map(event => {
+            const btns = <div className='d-flex justify-content-between'>
+              <Button onClick={() => handleApproveEvent(event.id)} size="sm">Approve</Button>
+              <Button onClick={() => handleRejectEvent(event.id)} size="sm">Reject</Button>
+            </div>
+            return (<StandardEvent key={event.id} event={event} button={btns} />)
+          })}
         </ListGroup>
       </div>
 
@@ -218,7 +240,7 @@ const AdminPage = () => {
                   event.conflicts.map((conflict) =>
                     <div id={conflict.roomId}>
                       <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
-                      {/* <p>Conflicts with: {event.conflicts[0].summary} | <span className='text-secondary text-italic'>{event.conflicts[0].id}</span></p> */}
+                      <Button color="secondary" size='sm' onClick={() => handleRejectEvent(event.id)}>  Reject</Button>
                       <ConflictModal approvedEvents={conflict} pendingEvent={event} roomId={conflict.roomId} />
                     </div>
                   )

@@ -139,11 +139,11 @@ export const congregationOptions = [
   "Children's Ministry",
   "English Ministry / Small Group",
   "Mandarin Ministry / Fellowship",
+  "New Spring",
+  "Nueva Vida",
   "Other",
   "Partnering Church",
-  "Worship Ministry - CS",
-  "Worship Ministry - ES",
-  "Worship Ministry - MS",
+  "Worship Ministry",
   "Young Adult Ministry",
   "Youth Ministry"
 ];
