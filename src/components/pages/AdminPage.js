@@ -67,7 +67,7 @@ const AdminPage = () => {
   const handleRejectEvent = async (eventId) => {
     console.log("Rejecting event:", eventId);
     setLoading(true);
-  
+
     try {
       const response = await axios.delete(`${API_URL}/api/rejectEvent`, {
         data: { eventId }, // Pass the eventId in the request body
@@ -175,7 +175,7 @@ const AdminPage = () => {
         </Button>
         <Modal isOpen={modal} toggle={toggle} size='xl'>
           <ModalHeader toggle={toggle}><span className='text-danger'> {pendingEvent.summary} </span></ModalHeader>
-          { pendingEvent.extendedProperties.private.conflictMessage ? <p id='conflictMessage' className='conflict-message'>{pendingEvent.extendedProperties.private.conflictMessage}</p> : null}
+          {pendingEvent.extendedProperties.private.conflictMessage ? <p id='conflictMessage' className='conflict-message'>{pendingEvent.extendedProperties.private.conflictMessage}</p> : null}
           {/* TimeLine */}
           {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
           <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId} handleSubmitChanges={handleSubmitChanges} toggle={toggle} />
@@ -240,8 +240,10 @@ const AdminPage = () => {
                   event.conflicts.map((conflict) =>
                     <div id={conflict.roomId}>
                       <p>{new Date(event.start.dateTime).toLocaleString()} - {new Date(event.end.dateTime).toLocaleString()} </p>
-                      <Button color="secondary" size='sm' onClick={() => handleRejectEvent(event.id)}>  Reject</Button>
-                      <ConflictModal approvedEvents={conflict} pendingEvent={event} roomId={conflict.roomId} />
+                      <div className='d-flex gap-2'>
+                        <Button color="secondary" size='sm' onClick={() => handleRejectEvent(event.id)}>  Reject</Button>
+                        <ConflictModal approvedEvents={conflict} pendingEvent={event} roomId={conflict.roomId} />
+                      </div>
                     </div>
                   )
 
