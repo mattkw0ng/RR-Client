@@ -8,7 +8,7 @@ import StandardEvent from '../events/StandardEvent';
 import ConflictEditor from '../edit/ConflictEditor';
 import ROOMS from '../../data/rooms';
 
-const AdminPage = () => {
+const AdminPage = ({fetchNumPendingEvents}) => {
   const [pendingEvents, setPendingEvents] = useState({ 'quickApprove': [], 'conflicts': [] });
   const [proposedChangesEvents, setProposedChangesEvents] = useState([]);
   const [isNotEmpty, setIsNotEmpty] = useState(false);
@@ -56,6 +56,7 @@ const AdminPage = () => {
       .then(response => {
         alert('Event approved successfully:', response.data);
         fetchPendingEvents();
+        fetchNumPendingEvents();
       })
       .catch(error => {
         console.error('Error approving event:', error.response ? error.response.data : error.message);

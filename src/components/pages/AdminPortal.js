@@ -55,7 +55,7 @@ const AdminPortal = () => {
         <Routes>
           <Route path="/" element={<Navigate replace to="/admin/home" />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/approvals" element={<AdminPage />} />
+          <Route path="/approvals" element={<AdminPage fetchNumPendingEvents={fetchNumPendingEvents} />} />
           <Route path="/reserve" element={<RoomRes isAdmin={true} />} />
           <Route path="/add-room" element={<AddRoomForm />} />
         </Routes>
