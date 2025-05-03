@@ -198,7 +198,7 @@ const AdminPage = () => {
         <ListGroup>
           {/* Non-Conflicting Events Section */}
           {pendingEvents.quickApprove.map(event => {
-            const btns = <div className='d-flex justify-content-between'>
+            const btns = <div className='d-flex gap-2'>
               <Button onClick={() => handleApproveEvent(event.id)} size="sm">Approve</Button>
               <Button onClick={() => handleRejectEvent(event.id)} size="sm">Reject</Button>
             </div>
