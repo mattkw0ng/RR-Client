@@ -119,6 +119,7 @@ export default function AddRoomForm() {
   // log errors on formData change
   useEffect(() => {
     console.log("Errors: ", errors);
+    console.log("Length", Object.keys(errors).length);
     console.log("FormData: ", formData);
   }, [errors, formData]);
 
