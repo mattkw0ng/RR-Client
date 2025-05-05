@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Container, ListGroup, ListGroupItem, Button, Badge, Modal, ModalHeader, } from 'reactstrap';
 import LoadingOverlay from '../lightbox/LoadingOverlay';
@@ -14,7 +14,8 @@ const AdminPage = ({fetchNumPendingEvents}) => {
   const [isNotEmpty, setIsNotEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const fetchPendingEvents = async () => {
+  // Wrap fetchPendingEvents in useCallback
+  const fetchPendingEvents = useCallback(async () => {
     try {
       const response = await axios.get(API_URL + '/api/pendingEventsWithConflicts', { withCredentials: true });
       console.log("PendingEvents()", response.data);
@@ -32,7 +33,7 @@ const AdminPage = ({fetchNumPendingEvents}) => {
     } catch (error) {
       console.error('Error fetching pending events:', error);
     }
-  };
+  }, [fetchNumPendingEvents]); // Add fetchNumPendingEvents as a dependency
 
   const fetchProposedChangesEvents = async () => {
     try {
