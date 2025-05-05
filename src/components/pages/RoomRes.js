@@ -332,9 +332,6 @@ function RoomRes({ isAdmin = false }) {
             </div>
               : null}
 
-            {/* Location */}
-            <TextInput label={"Location"} name={'location'} handleFormChange={handleFormChange} formData={formData} />
-
             {/* Description */}
             <TextArea label={"Description"} name={'description'} handleFormChange={handleFormChange} formData={formData} />
 
