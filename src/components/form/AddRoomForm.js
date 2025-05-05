@@ -7,11 +7,11 @@ import TextArea from './TextArea';
 import BuildingSelector from './BuildingSelector';
 
 export default function AddRoomForm() {
-  const { rooms} = useRooms();
+  const { rooms } = useRooms();
 
   const [selectedBuilding, setSelectedBuilding] = useState();
   const [customBuilding, setCustomBuilding] = useState('');
-  
+
 
   const [formData, setFormData] = useState({
     room_name: "",
@@ -116,6 +116,11 @@ export default function AddRoomForm() {
     setCustomBuilding(e.target.value);
   }
 
+  // log errors on formData change
+  useEffect(() => {
+    console.log("Errors: ", errors);
+  }, [errors]);
+
   return (
     <div className='containter'>
       <div className='my-4'>
@@ -127,7 +132,7 @@ export default function AddRoomForm() {
         <TextInput label={"CalendarId"} name={'calendar_id'} labelSmallText={'i.e. c_188bjq4ulhi5ohdmirsc68et3g0f8@resource.calendar.google.com'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
         <TextArea label={"Resources (comma separated)"} name={'resources'} help={'i.e. Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
-        <BuildingSelector selectedBuilding={selectedBuilding} handleSetBuilding={handleSetBuilding} customBuilding={customBuilding} handleCustomBuildingChange={handleCustomBuildingChange} rooms={rooms}/>
+        <BuildingSelector selectedBuilding={selectedBuilding} handleSetBuilding={handleSetBuilding} customBuilding={customBuilding} handleCustomBuildingChange={handleCustomBuildingChange} rooms={rooms} />
         <button type='submit' disabled={Object.keys(errors).length === 0} className='btn btn-primary mt-3'>Submit</button>
         {errors.calendar_id && <div className="text-danger">{errors.calendar_id}</div>}
         {errors.capacity && <div className="text-danger">{errors.capacity}</div>}
