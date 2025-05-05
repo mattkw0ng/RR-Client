@@ -124,7 +124,7 @@ export default function AddRoomForm() {
       </div>
       <form onSubmit={handleSubmit} className='p-3'>
         <TextInput label={"Room Name"} name={'room_name'} labelSmallText={'This will be the display name used everywhere else on this site'} handleFormChange={handleFormChange} formData={formData} />
-        <TextInput label={"CalendarId"} name={'calendar_id'} handleFormChange={handleFormChange} formData={formData} />
+        <TextInput label={"CalendarId"} name={'calendar_id'} labelSmallText={'i.e. c_188bjq4ulhi5ohdmirsc68et3g0f8@resource.calendar.google.com'} handleFormChange={handleFormChange} formData={formData} />
         <TextInput label={"Capacity"} name={'capacity'} handleFormChange={handleFormChange} formData={formData} type='number' />
         <TextArea label={"Resources (comma separated)"} name={'resources'} help={'i.e. Chairs, TV, Piano, A/V Sound System, Keyboard, Drums, Podium, Microphones'} handleFormChange={handleFormChange} formData={formData} />
         <BuildingSelector selectedBuilding={selectedBuilding} handleSetBuilding={handleSetBuilding} customBuilding={customBuilding} handleCustomBuildingChange={handleCustomBuildingChange} rooms={rooms}/>

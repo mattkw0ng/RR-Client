@@ -201,8 +201,8 @@ const AdminPage = ({fetchNumPendingEvents}) => {
           {/* Non-Conflicting Events Section */}
           {pendingEvents.quickApprove.map(event => {
             const btns = <div className='d-flex gap-2'>
-              <Button onClick={() => handleApproveEvent(event.id)} size="sm">Approve</Button>
-              <Button onClick={() => handleRejectEvent(event.id)} size="sm">Reject</Button>
+              <Button onClick={() => handleApproveEvent(event.id)} size="sm" color='primary'>Approve</Button>
+              <Button onClick={() => handleRejectEvent(event.id)} size="sm" color='danger'>Reject</Button>
             </div>
             return (<StandardEvent key={event.id} event={event} button={btns} />)
           })}
