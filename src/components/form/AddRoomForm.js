@@ -119,7 +119,8 @@ export default function AddRoomForm() {
   // log errors on formData change
   useEffect(() => {
     console.log("Errors: ", errors);
-  }, [errors]);
+    console.log("FormData: ", formData);
+  }, [errors, formData]);
 
   return (
     <div className='containter'>
