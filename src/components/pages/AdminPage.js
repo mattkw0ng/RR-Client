@@ -47,7 +47,7 @@ const AdminPage = ({fetchNumPendingEvents}) => {
   useEffect(() => {
     fetchPendingEvents();
     fetchProposedChangesEvents();
-  }, []);
+  }, [fetchPendingEvents]);
 
   const handleApproveEvent = async (eventId) => {
     console.log("Approving", eventId);
