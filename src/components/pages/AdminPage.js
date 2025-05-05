@@ -28,6 +28,7 @@ const AdminPage = ({fetchNumPendingEvents}) => {
       }
       setPendingEvents(response.data);
       setIsNotEmpty(response.data.quickApprove.length !== 0 || response.data.conflicts.length !== 0);
+      fetchNumPendingEvents();
     } catch (error) {
       console.error('Error fetching pending events:', error);
     }
@@ -56,7 +57,6 @@ const AdminPage = ({fetchNumPendingEvents}) => {
       .then(response => {
         alert('Event approved successfully:', response.data);
         fetchPendingEvents();
-        fetchNumPendingEvents();
       })
       .catch(error => {
         console.error('Error approving event:', error.response ? error.response.data : error.message);
