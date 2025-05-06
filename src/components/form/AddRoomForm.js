@@ -5,14 +5,13 @@ import { useRooms } from '../../context/RoomsContext';
 import TextInput from './TextInput';
 import TextArea from './TextArea';
 import BuildingSelector from './BuildingSelector';
+import LoadingOverlay from '../lightbox/LoadingOverlay'; // Import the LoadingOverlay component
 
 export default function AddRoomForm() {
   const { rooms } = useRooms();
 
   const [selectedBuilding, setSelectedBuilding] = useState();
   const [customBuilding, setCustomBuilding] = useState('');
-
-
   const [formData, setFormData] = useState({
     room_name: "",
     calendar_id: "",
@@ -20,6 +19,7 @@ export default function AddRoomForm() {
     resources: "",
   });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false); // State to manage loading
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -27,30 +27,30 @@ export default function AddRoomForm() {
       ...prevData,
       [name]: value,
     }));
-  }
+  };
 
   const onSubmit = async (data) => {
-    console.log(errors);
-    console.log(data);
-    // Handle form submission logic here
-    await axios.post(API_URL + "/api/addRoom", data, { withCredentials: true })
-      .then((response) => {
-        console.log("Room added successfully:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error adding room:", error);
+    setLoading(true); // Show loading overlay
+    try {
+      const response = await axios.post(API_URL + "/api/addRoom", data, { withCredentials: true });
+      console.log("Room added successfully:", response.data);
+      alert("Room added successfully!"); // Alert the user on success
+    } catch (error) {
+      console.error("Error adding room:", error);
+      alert("Failed to add room. Please try again."); // Alert the user on failure
+    } finally {
+      setLoading(false); // Hide loading overlay
+      setSelectedBuilding('');
+      setCustomBuilding('');
+      setFormData({
+        room_name: "",
+        calendar_id: "",
+        capacity: "",
+        resources: "",
       });
-    setSelectedBuilding('');
-    setCustomBuilding('');
-    setFormData({
-      room_name: "",
-      calendar_id: "",
-      capacity: "",
-      resources: "",
-    });
-    setErrors({});
-    console.log("Form submitted successfully with data:", data);
-  }
+      setErrors({});
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -79,7 +79,7 @@ export default function AddRoomForm() {
 
     // Validate new building input if selected
     if (selectedBuilding === '') {
-      newErrors.newBuilding = "Please select a building"
+      newErrors.newBuilding = "Please select a building";
     }
     const finalBuilding = selectedBuilding !== 'Other' ? selectedBuilding : customBuilding;
 
@@ -103,21 +103,22 @@ export default function AddRoomForm() {
 
   useEffect(() => {
     console.log("Logging roomsGrouped:", rooms);
-  }, [rooms])
+  }, [rooms]);
 
   const handleSetBuilding = (e) => {
-    setSelectedBuilding(e.target.value)
+    setSelectedBuilding(e.target.value);
     if (e.target.value !== 'Other') {
-      setCustomBuilding('')
+      setCustomBuilding('');
     }
-  }
+  };
 
   const handleCustomBuildingChange = (e) => {
     setCustomBuilding(e.target.value);
-  }
+  };
 
   return (
     <div className='containter'>
+      <LoadingOverlay loading={loading} /> {/* Add LoadingOverlay */}
       <div className='my-4'>
         <h1 className="mb-0">Add Room Form</h1>
         <small className='text-italic'>** You must use Google to create the room first. Use the assigned calendarId to complete this form.</small>
