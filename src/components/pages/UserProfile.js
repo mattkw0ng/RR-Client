@@ -12,7 +12,6 @@ import ModifiedEvent from '../events/ModifiedEvent';
 import TabNavigation from '../events/TabNavigation';
 import ViewEventDetails from '../events/ViewEventDetails';
 import LoadingOverlay from '../lightbox/LoadingOverlay';
-import { set } from 'date-fns';
 
 const UserProfile = () => {
     const { rooms } = useRooms();
