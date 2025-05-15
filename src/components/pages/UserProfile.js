@@ -11,11 +11,14 @@ import EditEventForm from '../edit/EditEventForm';
 import ModifiedEvent from '../events/ModifiedEvent';
 import TabNavigation from '../events/TabNavigation';
 import ViewEventDetails from '../events/ViewEventDetails';
+import LoadingOverlay from '../lightbox/LoadingOverlay';
+import { set } from 'date-fns';
 
 const UserProfile = () => {
     const { rooms } = useRooms();
     const { user, loading } = useAuth();
     const [events, setEvents] = useState();
+    const [showLoading, setShowLoading] = useState(false);
 
     const getUserEvents = async () => {
         axios.get(API_URL + '/api/userEvents', { withCredentials: true })
@@ -99,6 +102,7 @@ const UserProfile = () => {
         const confirmation = window.confirm(`Cancel ${event.summary}?`);
         if (confirmation) {
             console.log("Deleting event");
+            setShowLoading(true);
             axios.delete(`${API_URL}/api/rejectEvent`, {
                 data: { eventId: event.id }, // Pass the eventId in the request body
                 withCredentials: true,
@@ -109,6 +113,7 @@ const UserProfile = () => {
                 console.error('Error Cancelling Event', error.response ? error.response.data : error.message);
             })
         }
+        setShowLoading(false);
     }
 
     const handleAcceptChanges = (e, event) => {
@@ -168,6 +173,7 @@ const UserProfile = () => {
 
     return (
         <Container className='my-4'>
+            <LoadingOverlay show={showLoading || loading} />
             <div className='d-flex justify-content-between'>
                 <h2 className='mb-0'>Welcome, {user.displayName}</h2>
                 <a href={API_URL + "/api/logout"} className='btn btn-sm'>Logout</a>
