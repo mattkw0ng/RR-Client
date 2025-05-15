@@ -87,7 +87,7 @@ const UserProfile = () => {
                 <Modal isOpen={modal} toggle={toggle} size='xl'>
                     <ModalHeader toggle={toggle}><span className='text-secondary'> {event.summary} </span></ModalHeader>
                     <ModalBody className='px-3'>
-                        <ViewEventDetails event={event} rooms={rooms}/>
+                        <ViewEventDetails event={event} rooms={rooms} />
                     </ModalBody>
                 </Modal>
             </div>
@@ -99,14 +99,15 @@ const UserProfile = () => {
         const confirmation = window.confirm(`Cancel ${event.summary}?`);
         if (confirmation) {
             console.log("Deleting event");
-            axios.delete(API_URL + '/api/rejectEvent', { eventId: event.id }, { withCredentials: true })
-                .then(response => {
-                    alert('Event Cancelled Successfully: ', response.data);
-                    getUserEvents();
-                })
-                .catch(error => {
-                    console.error('Error Cancelling Event', error.response ? error.response.data : error.message);
-                })
+            axios.delete(`${API_URL}/api/rejectEvent`, {
+                data: { eventId: event.id }, // Pass the eventId in the request body
+                withCredentials: true,
+            }).then(response => {
+                alert('Event Cancelled Successfully: ', response.data);
+                getUserEvents();
+            }).catch(error => {
+                console.error('Error Cancelling Event', error.response ? error.response.data : error.message);
+            })
         }
     }
 
@@ -123,7 +124,7 @@ const UserProfile = () => {
             });
     }
 
-    const DisplayEvents = ({ displayEvents, isPending, isPast=false, badge }) => {
+    const DisplayEvents = ({ displayEvents, isPending, isPast = false, badge }) => {
         console.log("Rendering:", displayEvents);
         useEffect(() => {
             console.log("UseEffect Rendering:", displayEvents);
@@ -139,7 +140,7 @@ const UserProfile = () => {
                     <StandardEvent
                         key={event.id}
                         event={event}
-                        button={isPast ? <ViewerModal event={event}/> :<div className='d-flex gap-2'><EditorModal event={event} pending={isPending} /> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
+                        button={isPast ? <ViewerModal event={event} /> : <div className='d-flex gap-2'><EditorModal event={event} pending={isPending} /> <Button color='danger' size='sm' onClick={(e) => handleCancelEvent(e, event)}>Cancel Event</Button></div>}
                         badge={badge}
                         pending={isPending}
                         past={isPast}
@@ -160,7 +161,7 @@ const UserProfile = () => {
                 />)
             ))}
         </ListGroup>),
-        'pending': (<DisplayEvents displayEvents={events['pending']} isPending={true} isPast={false} badge={pendingBadge}/>),
+        'pending': (<DisplayEvents displayEvents={events['pending']} isPending={true} isPast={false} badge={pendingBadge} />),
         'approved': (<DisplayEvents displayEvents={events['approved']} isPending={false} isPast={false} badge={approvedBadge} />),
         'history': (<DisplayEvents displayEvents={events['history']} isPending={false} isPast={true} badge={pastBadge} />),
     } : null;
