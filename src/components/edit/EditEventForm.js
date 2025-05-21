@@ -11,10 +11,15 @@ import API_URL from "../../config";
 import { useRooms } from "../../context/RoomsContext";
 
 const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
+
+  // Extract the original description using regex
+  const originalDescriptionMatch = event.description.match(/^(.*?)(?=\s*- Group Name:)/s);
+  const originalDescription = originalDescriptionMatch ? originalDescriptionMatch[1].trim() : event.description;
+
   const { rooms } = useRooms();
   const [formState, setFormState] = useState({
     summary: event.summary || "",
-    description: event.description || "",
+    description: originalDescription || "",
     location: event.location || "",
     startDateTime: event.start?.dateTime || "",
     endDateTime: event.end?.dateTime || "",
@@ -62,11 +67,19 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Reconstruct the full description with the extra details
+    const fullDescription = `${formState.description}
+      - Group Name: ${formState.groupName}
+      - Group Leader: ${formState.groupLeader}
+      - Congregation: ${formState.congregation}
+      - Number of People: ${formState.numPeople}`;
+
+
     // Construct the updated event object
     const updatedEvent = {
       ...event, // Keep existing event data
       summary: formState.summary,
-      description: formState.description,
+      description: fullDescription,
       location: formState.location,
       start: {
         dateTime: formState.startDateTime,
