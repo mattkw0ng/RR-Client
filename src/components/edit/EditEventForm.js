@@ -2,21 +2,18 @@ import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { congregationOptions } from "../../data/rooms";
 import axios from "axios";
-import ROOMS from "../../data/rooms";
 
 import SelectInput from "../form/SelectInput";
 import RoomSelector from "./RoomSelector";
 import { getRoomNameByCalendarID } from "../../util/util";
 import API_URL from "../../config";
-import { useRooms } from "../../context/RoomsContext";
 
-const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
+const EditEventForm = ({ event, onSubmit, pending, setModal, rooms }) => {
 
   // Extract the original description using regex
   const originalDescriptionMatch = event.description.match(/^(.*?)(?=\s*- Group Name:)/s);
   const originalDescription = originalDescriptionMatch ? originalDescriptionMatch[1].trim() : event.description;
 
-  const { rooms } = useRooms();
   const [formState, setFormState] = useState({
     summary: event.summary || "",
     description: originalDescription || "",
@@ -30,9 +27,12 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
     congregation: event.extendedProperties?.private?.congregation || "",
   });
 
-  const [selectedRooms, setSelectedRooms] = useState(pending ? event.extendedProperties.private.rooms.map((e) => getRoomNameByCalendarID(e.email, rooms)) : event.attendees.filter((e) => e.resource).map((e) => getRoomNameByCalendarID(e.email)));
+  const [selectedRooms, setSelectedRooms] = useState(pending ? event.extendedProperties.private.rooms.map((e) => getRoomNameByCalendarID(e.email, rooms)) : event.attendees.filter((e) => e.resource).map((e) => getRoomNameByCalendarID(e.email, rooms)));
 
   const hasRoomsChanged = (original, updated) => {
+    console.log("Chekcing if rooms have changed");
+    console.log("Original rooms:", original);
+    console.log("Updated rooms:", updated);
     const originalRooms = new Set(
       original
     );
@@ -101,7 +101,7 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
 
     let timeOrRoomChanged = false;
     const roomListAsAttendees = selectedRooms.map((roomName) => ({
-      email: ROOMS[roomName]?.calendarID || "",
+      email: rooms.rooms[roomName]?.calendarID || "",
       resource: true,
     }));
 
@@ -113,12 +113,12 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
       // Determine if the time or room list has been changed
       timeOrRoomChanged = event.start?.dateTime !== formState.startDateTime ||
         event.end?.dateTime !== formState.endDateTime ||
-        hasRoomsChanged(event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || [], selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
+        hasRoomsChanged(event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || [], selectedRooms.map((roomName) => rooms.rooms[roomName].calendarID || ""));
 
       if (timeOrRoomChanged) {
         console.log("Time or room has been changed");
         console.log("Original rooms:", event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email));
-        console.log("Updated rooms:", selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
+        console.log("Updated rooms:", selectedRooms.map((roomName) => rooms.rooms[roomName]?.calendarID || ""));
         console.log("Original start time:", event.start?.dateTime);
         console.log("Updated start time:", formState.startDateTime);
         console.log("Original end time:", event.end?.dateTime);
