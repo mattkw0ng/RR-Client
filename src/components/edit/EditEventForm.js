@@ -7,6 +7,7 @@ import SelectInput from "../form/SelectInput";
 import RoomSelector from "./RoomSelector";
 import { getRoomNameByCalendarID } from "../../util/util";
 import API_URL from "../../config";
+import { useRooms } from "../../context/RoomsContext";
 
 const EditEventForm = ({ event, onSubmit, pending, setModal, rooms }) => {
 
@@ -14,6 +15,7 @@ const EditEventForm = ({ event, onSubmit, pending, setModal, rooms }) => {
   const originalDescriptionMatch = event.description.match(/^(.*?)(?=\s*- Group Name:)/s);
   const originalDescription = originalDescriptionMatch ? originalDescriptionMatch[1].trim() : event.description;
 
+  const { rooms } = useRooms();
   const [formState, setFormState] = useState({
     summary: event.summary || "",
     description: originalDescription || "",
