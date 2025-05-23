@@ -70,7 +70,7 @@ const UserProfile = () => {
                     <ModalHeader toggle={toggle}><span className='text-secondary'> {event.summary} </span></ModalHeader>
                     <ModalBody className='px-3'>
 
-                        <EditEventForm event={event} pending={pending} onSubmit={onSubmitFunction} setModal={setModal} />
+                        <EditEventForm event={event} pending={pending} onSubmit={onSubmitFunction} setModal={setModal}/>
                     </ModalBody>
 
                 </Modal>

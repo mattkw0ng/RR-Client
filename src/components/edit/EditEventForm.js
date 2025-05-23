@@ -9,7 +9,7 @@ import { getRoomNameByCalendarID } from "../../util/util";
 import API_URL from "../../config";
 import { useRooms } from "../../context/RoomsContext";
 
-const EditEventForm = ({ event, onSubmit, pending, setModal, rooms }) => {
+const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
 
   // Extract the original description using regex
   const originalDescriptionMatch = event.description.match(/^(.*?)(?=\s*- Group Name:)/s);
