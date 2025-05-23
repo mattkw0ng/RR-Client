@@ -116,11 +116,23 @@ const EditEventForm = ({ event, onSubmit, pending, setModal }) => {
         hasRoomsChanged(event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email) || [], selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
 
       if (timeOrRoomChanged) {
+        console.log("Time or room has been changed");
+        console.log("Original rooms:", event.attendees?.filter((attendee) => attendee.resource).map((r) => r.email));
+        console.log("Updated rooms:", selectedRooms.map((roomName) => ROOMS[roomName]?.calendarID || ""));
+        console.log("Original start time:", event.start?.dateTime);
+        console.log("Updated start time:", formState.startDateTime);
+        console.log("Original end time:", event.end?.dateTime);
+        console.log("Updated end time:", formState.endDateTime);
         // If the event was approved and the rooms/time have been modified, save the attendee information but move the rooms to extendedProperties.rooms (like a normal pending event)
         updatedEvent.attendees = (event.attendees || []).filter((attendee) => attendee.resource !== true) // Keep non-resource attendees
         updatedEvent.extendedProperties.private.rooms = JSON.stringify(roomListAsAttendees); // Mirrors a typical pending event by storing room information under extendedProperies
         console.log("updated event's attendees", updatedEvent.attendees);
         console.log("updated event's extended properties", updatedEvent.extendedProperties);
+        // Prompt exit
+        const confirmation = window.confirm("This event will have to undergo another round of approval for the change in time or room(s) -- Would you like to continue?");
+        if (!confirmation) {
+          return; // Exit if the user cancels
+        }
       } else {
         // Else if only non-room/date/time information was changed, attendees should stay the same
         updatedEvent.attendees = event.attendees

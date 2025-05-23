@@ -177,7 +177,7 @@ const AdminPage = ({fetchNumPendingEvents}) => {
         </Button>
         <Modal isOpen={modal} toggle={toggle} size='xl'>
           <ModalHeader toggle={toggle}><span className='text-danger'> {pendingEvent.summary} </span></ModalHeader>
-          {pendingEvent.extendedProperties.private.conflictMessage ? <p id='conflictMessage' className='conflict-message'>{pendingEvent.extendedProperties.private.conflictMessage}</p> : null}
+          {pendingEvent.extendedProperties.private.conflictMessage ? <p id='conflictMessage' className='conflict-message p-3 mb-0'>Note: {pendingEvent.extendedProperties.private.conflictMessage}</p> : null}
           {/* TimeLine */}
           {/* <StackedTimelineDraggable timeRanges={myTimeRanges} eventNames={[approvedEvents[0].summary, event.summary]} /> */}
           <ConflictEditor pendingEvent={pendingEvent} conflictId={pendingEvent.id} roomId={roomId} handleSubmitChanges={handleSubmitChanges} toggle={toggle} />
@@ -190,10 +190,10 @@ const AdminPage = ({fetchNumPendingEvents}) => {
     <Container className='my-4'>
       <LoadingOverlay loading={loading} />
       {isNotEmpty || proposedChangesEvents.length !== 0 ? null : <p>No incoming reservation requests found.</p>}
-      <div>
+      <div className='mb-4'>
         {
           pendingEvents.quickApprove.length > 0 &&
-          <div className='d-flex justify-content-between'>
+          <div className='d-flex justify-content-between mb-2'>
             <h4 className='d-inline'>Quick Approve Events</h4> <Button size='sm' color='primary' outline className='d-inline' onClick={() => quickApproveAll()}>Approve All</Button>
           </div>
         }
