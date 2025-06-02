@@ -6,13 +6,17 @@ import API_URL from '../../config';
 
 import StandardEvent from '../events/StandardEvent';
 import ConflictEditor from '../edit/ConflictEditor';
+import ApprovalMessageModal from '../lightbox/ApprovalMessageModal';
 import ROOMS from '../../data/rooms';
 
-const AdminPage = ({fetchNumPendingEvents}) => {
+const AdminPage = ({ fetchNumPendingEvents }) => {
   const [pendingEvents, setPendingEvents] = useState({ 'quickApprove': [], 'conflicts': [] });
   const [proposedChangesEvents, setProposedChangesEvents] = useState([]);
   const [isNotEmpty, setIsNotEmpty] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [selectedEventId, setSelectedEventId] = useState(null);
 
   // Wrap fetchPendingEvents in useCallback
   const fetchPendingEvents = useCallback(async () => {
@@ -55,6 +59,22 @@ const AdminPage = ({fetchNumPendingEvents}) => {
     setLoading(true);
 
     axios.post(API_URL + '/api/approveEvent', { eventId }, { withCredentials: true })
+      .then(response => {
+        alert('Event approved successfully:', response.data);
+        fetchPendingEvents();
+      })
+      .catch(error => {
+        console.error('Error approving event:', error.response ? error.response.data : error.message);
+      }).finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleApproveEventWithMessage = async (eventId, message) => {
+    console.log("Approving", eventId);
+    setLoading(true);
+
+    axios.post(API_URL + '/api/approveEvent', { eventId, message }, { withCredentials: true })
       .then(response => {
         alert('Event approved successfully:', response.data);
         fetchPendingEvents();
@@ -164,6 +184,11 @@ const AdminPage = ({fetchNumPendingEvents}) => {
     )
   }
 
+  const toggleMessageModal = (eventId) => {
+    setSelectedEventId(eventId);
+    setMessageModalOpen(!messageModalOpen);
+  }
+
   const ConflictModal = ({ approvedEvents, pendingEvent, roomId }) => {
     const [modal, setModal] = useState(false);
     console.log(approvedEvents);
@@ -186,9 +211,19 @@ const AdminPage = ({fetchNumPendingEvents}) => {
     );
   }
 
+
   return (
     <Container className='my-4'>
       <LoadingOverlay loading={loading} />
+      <ApprovalMessageModal
+        isOpen={messageModalOpen}
+        toggle={() => setMessageModalOpen(!messageModalOpen)}
+        message={message}
+        setMessage={setMessage}
+        onSubmit={handleApproveEventWithMessage}
+        eventId={selectedEventId}
+      />
+
       {isNotEmpty || proposedChangesEvents.length !== 0 ? null : <p>No incoming reservation requests found.</p>}
       <div className='mb-4'>
         {
@@ -203,6 +238,9 @@ const AdminPage = ({fetchNumPendingEvents}) => {
             const btns = <div className='d-flex gap-2'>
               <Button onClick={() => handleApproveEvent(event.id)} size="sm" color='primary'>Approve</Button>
               <Button onClick={() => handleRejectEvent(event.id)} size="sm" color='danger'>Reject</Button>
+              <Button size="sm" color="info" onClick={() => { toggleMessageModal(event.id) }}>
+                <i className="fas fa-comment-alt"></i> Approve with Message
+              </Button>
             </div>
             return (<StandardEvent key={event.id} event={event} button={btns} />)
           })}
