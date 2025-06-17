@@ -235,12 +235,18 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
         <ListGroup>
           {/* Non-Conflicting Events Section */}
           {pendingEvents.quickApprove.map(event => {
-            const btns = <div className='d-flex gap-2'>
-              <Button onClick={() => handleApproveEvent(event.id)} size="sm" color='primary'>Approve <i class="bi bi-check2"></i></Button>
-              <Button onClick={() => handleRejectEvent(event.id)} size="sm" color='danger'>Reject <i class="bi bi-x"></i></Button>
-              <Button size="sm" color="info" onClick={() => { toggleMessageModal(event.id) }}>
-                <i class="bi bi-envelope-check"></i> Approve with Message
-              </Button>
+            const btns = <div className='d-flex justify-content-between align-items-center'>
+              <div className='d-flex gap-2'>
+                <Button onClick={() => handleApproveEvent(event.id)} size="sm" color='primary'>Approve <i class="bi bi-check2"></i></Button>
+                <Button size="sm" color="info" onClick={() => { toggleMessageModal(event.id) }}>
+                  <i class="bi bi-envelope-check"></i> Approve with Message
+                </Button>
+
+
+              </div>
+              <div className='ms-auto'>
+                <Button onClick={() => handleRejectEvent(event.id)} size="sm" color='danger'>Reject <i class="bi bi-x"></i></Button>
+              </div>
             </div>
             return (<StandardEvent key={event.id} event={event} button={btns} />)
           })}
