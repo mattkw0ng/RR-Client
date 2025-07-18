@@ -14,7 +14,7 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
   const [pendingEvents, setPendingEvents] = useState({ 'quickApprove': [], 'conflicts': [] });
   const [proposedChangesEvents, setProposedChangesEvents] = useState([]);
   const [isNotEmpty, setIsNotEmpty] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [selectedEventId, setSelectedEventId] = useState(null);
@@ -35,6 +35,7 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
       setPendingEvents(response.data);
       setIsNotEmpty(response.data.quickApprove.length !== 0 || response.data.conflicts.length !== 0);
       fetchNumPendingEvents();
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching pending events:', error);
     }
