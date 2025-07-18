@@ -102,7 +102,7 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
     }
 
     setRRULE(rrule);
-  }, [frequency, interval, daysOfWeek, endAfterOccurrences, endDate, setRRULE, bySetPos]);
+  }, [frequency, interval, daysOfWeek, endAfterOccurrences, endDate, setRRULE, bySetPos, startDateTime]);
 
   return (
     <div className="container my-4 bg-light p-3 rounded">
