@@ -1,10 +1,8 @@
 import React, { useState, useEffect, Fragment } from "react";
 import axios from 'axios';
 import API_URL from "../../config";
-// import ConflictTimeline from "./ConflictTimeline";
-import { AVAILABLE_ROOMS, ROOMEVENTS } from "../../data/example";
 import { getRoomNameByCalendarID } from "../../util/util";
-import { formatDisplayTime } from "../../util/util";
+import { formatEventDates } from "../../util/util";
 import RoomSelector from "./RoomSelector";
 import SideBySideEvents from "./SideBySideEvents";
 import RoomTimeline from "./RoomTimeline";
@@ -18,8 +16,8 @@ import { useRooms } from "../../context/RoomsContext";
  */
 const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges, toggle }) => {
   const { rooms } = useRooms();
-  const [roomEvents, setRoomEvents] = useState(ROOMEVENTS); //all other events taking place in room(s)
-  const [availableRooms, setAvailableRooms] = useState(AVAILABLE_ROOMS);
+  const [roomEvents, setRoomEvents] = useState([[], []]); //all other events taking place in room(s)
+  const [availableRooms, setAvailableRooms] = useState([]);
 
   const [selectedRoom, setSelectedRoom] = useState("");
   const [timeHasBeenChanged, setTimeHasBeenChanged] = useState(false);
@@ -37,6 +35,7 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
       setRoomEvents(response.data)
     } catch (error) {
       console.error("Error fetching RoomEvents: ", error);
+      setRoomEvents([[], []]); // Reset to empty arrays on error
     }
   }
 
@@ -66,8 +65,11 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
       <ModalBody className='px-3'>
         <div>
           <div className="d-flex gap-2">
-            <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} />
-            {selectedRoom ?
+            {roomEvents.length > 0 && roomEvents[0].length > 0 ? //Conditionally render the side-by-side events viewer if there are room events
+              <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} />
+              : <p className="text-muted">Loading room events...</p>
+            }
+            {selectedRoom && availableRooms.length > 0 ?
               // If a room has been selected, display it in a new side-by-side viewer & add the pending event to the list of pending events attatched to new room
               <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[pendingEventCopy, ...availableRooms[selectedRoom].pendingEvents]} conflictId={conflictId} />
               : null
@@ -79,7 +81,7 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
           {/* Display Room name and Time + updated Room names and Times (if changed) */}
           <div>
             <p><span className="text-danger">{getRoomNameByCalendarID(roomId, rooms)}</span> {selectedRoom ? <span className="text-primary"> &gt; {selectedRoom}</span> : null}</p>
-            <p className="d-inline">{formatDisplayTime(pendingEvent.start.dateTime)} - {formatDisplayTime(pendingEvent.end.dateTime)}
+            <p className="d-inline">{formatEventDates(pendingEvent.start.dateTime, pendingEvent.end.dateTime)}
               {timeHasBeenChanged ? <span> &gt; {pendingEventCopy}</span> : null}
             </p>
           </div>

@@ -92,7 +92,15 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
       const untilDate = new Date(endDate);
       untilDate.setUTCHours(23, 59, 59, 999)
       rrule += `;UNTIL=${untilDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
+    } else {
+      // If no end date or occurrence count is provided, limit to 6 months from the start date
+      const startDate = new Date(startDateTime);
+      const sixMonthsLater = new Date(startDate);
+      sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+      sixMonthsLater.setUTCHours(23, 59, 59, 999);
+      rrule += `;UNTIL=${sixMonthsLater.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
     }
+
     setRRULE(rrule);
   }, [frequency, interval, daysOfWeek, endAfterOccurrences, endDate, setRRULE, bySetPos]);
 
@@ -209,6 +217,8 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
               className="form-control"
               value={endDate}
               onChange={handleEndDateChange}
+              min={new Date().toISOString().split('T')[0]} // Today's date
+              max={new Date(new Date().setMonth(new Date().getMonth() + 6)).toISOString().split('T')[0]} // 6 months from now
             />
           </div>
         </div>

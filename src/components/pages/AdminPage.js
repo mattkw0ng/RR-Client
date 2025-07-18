@@ -3,13 +3,14 @@ import axios from 'axios';
 import { Container, ListGroup, ListGroupItem, Button, Badge, Modal, ModalHeader, } from 'reactstrap';
 import LoadingOverlay from '../lightbox/LoadingOverlay';
 import API_URL from '../../config';
+import { useRooms } from '../../context/RoomsContext';
 
 import StandardEvent from '../events/StandardEvent';
 import ConflictEditor from '../edit/ConflictEditor';
 import ApprovalMessageModal from '../lightbox/ApprovalMessageModal';
-import ROOMS from '../../data/rooms';
 
 const AdminPage = ({ fetchNumPendingEvents }) => {
+  const [rooms] = useRooms(); // Get rooms from context
   const [pendingEvents, setPendingEvents] = useState({ 'quickApprove': [], 'conflicts': [] });
   const [proposedChangesEvents, setProposedChangesEvents] = useState([]);
   const [isNotEmpty, setIsNotEmpty] = useState(false);
@@ -119,6 +120,14 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
 
   const handleSubmitChanges = async (originalRoomId, selectedRoom, editedEvent, originalEvent) => {
     console.log("Submitting Changes", originalRoomId, editedEvent, selectedRoom);
+
+    // Ensure rooms is loaded before accessing its data
+    if (!rooms || !rooms.rooms) {
+      console.error("Rooms data is not yet loaded.");
+      alert("Rooms data is not available. Please try again in a few seconds.");
+      return;
+    }
+
     if (selectedRoom !== "") {
       // if the room has been changed, delete the original room id and put new one
       const peopleAttendees = editedEvent.attendees.filter((attendee) => attendee.resource !== true);
@@ -130,7 +139,7 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
         rooms: JSON.stringify([
           ...swapRooms,
           {
-            "email": ROOMS[selectedRoom].calendarID,
+            "email": rooms.rooms[selectedRoom].calendarID,
             "resource": true
           }
         ]),
