@@ -10,7 +10,7 @@ import ConflictEditor from '../edit/ConflictEditor';
 import ApprovalMessageModal from '../lightbox/ApprovalMessageModal';
 
 const AdminPage = ({ fetchNumPendingEvents }) => {
-  const [rooms] = useRooms(); // Get rooms from context
+  const { rooms } = useRooms(); // Get rooms from context
   const [pendingEvents, setPendingEvents] = useState({ 'quickApprove': [], 'conflicts': [] });
   const [proposedChangesEvents, setProposedChangesEvents] = useState([]);
   const [isNotEmpty, setIsNotEmpty] = useState(false);
