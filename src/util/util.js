@@ -43,12 +43,12 @@ export function formatEventDates(startDate, endDate) {
   const end = parseISO(endDate);
 
   // Format for single time range if both dates are on the same day
-  if (isSameDay(start, end)) {
-    return `${format(start, 'eee, MMM do h:mmaaa')}-${format(end, 'h:mmaaa')}`;
+    if (isSameDay(start, end)) {
+      return `${format(start, 'MMM d, yyyy')} <span style="font-size:smaller;">${format(start, 'h:mmaaa')}-${format(end, 'h:mmaaa')}</span>`;
   }
 
   // Format separately if the dates are on different days
-  return `${format(start, 'eee, MMM do h:mmaaa')} - ${format(end, 'eee, MMM do h:mmaaa')}`;
+    return `${format(start, 'MMM d, yyyy')} <span style="font-size:smaller;">${format(start, 'h:mmaaa')}</span> - ${format(end, 'MMM d, yyyy')} <span style="font-size:smaller;">${format(end, 'h:mmaaa')}</span>`;
 }
 
 // export function getRoomNameByCalendarID(calendarID) {

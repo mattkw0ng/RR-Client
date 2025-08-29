@@ -10,6 +10,7 @@ import './AdminPortal.css';
 import StandardEvent from '../events/StandardEvent';
 import ConflictEditor from '../edit/ConflictEditor';
 import ApprovalMessageModal from '../lightbox/ApprovalMessageModal';
+import RecurringEventList from '../events/RecurringEventList';
 
 const AdminPage = ({ fetchNumPendingEvents }) => {
   const { rooms } = useRooms(); // Get rooms from context
@@ -197,25 +198,6 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
       .catch(error => {
         console.error('Error approving event:', error.response ? error.response.data : error.message);
       });
-  }
-
-  const RecurringEventList = ({ list }) => {
-    return (
-      <div>
-        {list.map(instance => (
-          <span key={instance.id}>
-            {new Date(instance.start.dateTime).toLocaleString()} - {new Date(instance.end.dateTime).toLocaleString()}
-            {instance.conflicts.length === 0 ?
-              null :
-              <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
-                Conflict
-              </Badge>
-            }
-            <br />
-          </span>
-        ))}
-      </div>
-    )
   }
 
   const toggleMessageModal = (eventId) => {
