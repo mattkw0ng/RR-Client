@@ -51,9 +51,16 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
       console.log("fetchAvailableRooms()", response);
       setAvailableRooms(response.data);
     } catch (error) {
-      console.error("Error fetching RoomEvents: ", error);
+      console.error("Error fetching AvailableRoomEvents: ", error);
     }
   }
+
+  useEffect(() => {
+    if(rooms && rooms.rooms) {
+      // If rooms are available, set the initial selected room to the one in the pending event
+      setAvailableRooms(rooms.rooms); // Reset available rooms when pending event changes
+    }
+  }, [rooms]);
 
   useEffect(() => {
     fetchRoomEvents(roomId, pendingEvent.start.dateTime);

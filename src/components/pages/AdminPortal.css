@@ -48,7 +48,8 @@ body {
 }
 
 .sidebar .nav-item.active {
-  background-color: #652B2B; /* Bootstrap primary color */
+  background-color: #652B2B;
+  /* Bootstrap primary color */
   color: white !important;
   border-radius: 5px;
 }
@@ -57,10 +58,20 @@ body {
   color: white !important;
 }
 
-.sidebar .nav-item:hover{
+.sidebar .nav-item:hover {
   background-color: #e9ecef;
 }
 
 .sidebar .nav-item.active:hover {
   background-color: #652B2B;
+}
+
+.event-link {
+  color: #6c757d;
+  cursor: pointer;
+}
+
+.event-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

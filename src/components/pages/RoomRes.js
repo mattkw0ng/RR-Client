@@ -227,7 +227,7 @@ function RoomRes({ isAdmin = false }) {
           <Table>
             <tbody>
               <tr>
-                <td>Event Name:</td>
+                <td>Group Name:</td>
                 <td>{formData.eventName}</td>
               </tr>
               <tr>
@@ -304,7 +304,7 @@ function RoomRes({ isAdmin = false }) {
           {/* Main Form Elements (Left Column) */}
           <div className='col-md-6'>
             {/* Summary */}
-            <TextInput label={"Event Name"} name={'eventName'} handleFormChange={handleFormChange} formData={formData} />
+            <TextInput label={"Group Name"} name={'eventName'} handleFormChange={handleFormChange} formData={formData} />
 
             <div className='d-flex justify-content-between'>
               {/* Congregation */}
@@ -315,7 +315,7 @@ function RoomRes({ isAdmin = false }) {
             </div>
 
             {/* Group Name */}
-            <TextInput label={"Group Name"} name={'groupName'} handleFormChange={handleFormChange} formData={formData} />
+            <TextInput label={"Event Type"} name={'groupName'} handleFormChange={handleFormChange} formData={formData} />
 
 
             {isAdmin ? <div className="mb-3">

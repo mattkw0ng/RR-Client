@@ -3,8 +3,9 @@ import { Badge, ListGroupItem } from 'reactstrap';
 import RecurringEventList from "./RecurringEventList";
 import { getRoomNameByCalendarID, parseRRule, formatEventDates } from "../../util/util";
 import { useRooms } from "../../context/RoomsContext";
+import '../pages/AdminPortal.css';
 
-const StandardEvent = ({ event, button, badge, pending=true }) => {
+const StandardEvent = ({ event, button, badge, pending = true }) => {
   const { rooms } = useRooms();
 
   return (
@@ -12,7 +13,16 @@ const StandardEvent = ({ event, button, badge, pending=true }) => {
       <div>
         {/* Title & ID & Badges */}
         <h5 className="mb-1">
-          {event.summary} | <small className='text-italic text-secondary event-id'>{event.id}</small>
+          {event.summary} |
+          <a
+            href={event.htmlLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-italic text-secondary event-link event-id"
+            style={{ textDecoration: 'none' }}
+          >
+            <small>{event.extendedProperties?.private.groupName} {event.id}</small>
+          </a>
           {badge}
           {/* Recurring Badge */}
           {event.recurrence || event.recurringEventId ? (

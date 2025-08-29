@@ -4,10 +4,13 @@ import { Container, ListGroup, ListGroupItem, Button, Badge, Modal, ModalHeader,
 import LoadingOverlay from '../lightbox/LoadingOverlay';
 import API_URL from '../../config';
 import { useRooms } from '../../context/RoomsContext';
+// load css from AdminPortal.css
+import './AdminPortal.css';
 
 import StandardEvent from '../events/StandardEvent';
 import ConflictEditor from '../edit/ConflictEditor';
 import ApprovalMessageModal from '../lightbox/ApprovalMessageModal';
+import { set } from 'date-fns';
 
 const AdminPage = ({ fetchNumPendingEvents }) => {
   const { rooms } = useRooms(); // Get rooms from context
@@ -16,6 +19,7 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
   const [isNotEmpty, setIsNotEmpty] = useState(false);
   const [loading, setLoading] = useState(true);
   const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [modalSubmitHandler, setModalSubmitHandler] = useState(() => () => { });
   const [message, setMessage] = useState('');
   const [selectedEventId, setSelectedEventId] = useState(null);
 
@@ -88,6 +92,22 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
       });
   };
 
+  const handlePartiallyApproveEvent = async (eventId, message) => {
+    console.log("Partially Approving", eventId);
+    setLoading(true);
+
+    axios.post(API_URL + '/api/partiallyApproveRecurringEvent', { eventId, message }, { withCredentials: true })
+      .then(response => {
+        alert('Event partially approved successfully:', response.data);
+        fetchPendingEvents();
+      })
+      .catch(error => {
+        console.error('Error partially approving event:', error.response ? error.response.data : error.message);
+      }).finally(() => {
+        setLoading(false);
+      });
+  };
+
   const handleRejectEvent = async (eventId) => {
     console.log("Rejecting event:", eventId);
     setLoading(true);
@@ -109,6 +129,9 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
 
   const handleAcceptChanges = async (eventId) => {
     console.log("Accepting Changes", eventId);
+    setLoading(true);
+
+    // Call the API to accept proposed changes
     axios.post(API_URL + '/api/acceptProposedChanges', { eventId }, { withCredentials: true })
       .then(response => {
         alert('Event accepted successfully:', response.data);
@@ -116,6 +139,8 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
       })
       .catch(error => {
         console.error('Error accepting changes:', error.response ? error.response.data : error.message);
+      }).finally(() => {
+        setLoading(false);
       });
   };
 
@@ -230,7 +255,7 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
         toggle={() => setMessageModalOpen(!messageModalOpen)}
         message={message}
         setMessage={setMessage}
-        onSubmit={handleApproveEventWithMessage}
+        onSubmit={modalSubmitHandler}
         eventId={selectedEventId}
       />
 
@@ -248,7 +273,10 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
             const btns = <div className='d-flex justify-content-between align-items-center'>
               <div className='d-flex gap-2'>
                 <Button onClick={() => handleApproveEvent(event.id)} size="sm" color='primary'>Approve <i class="bi bi-check2"></i></Button>
-                <Button size="sm" color="info" onClick={() => { toggleMessageModal(event.id) }}>
+                <Button size="sm" color="info" onClick={() => { 
+                  setModalSubmitHandler(() => handleApproveEventWithMessage);
+                  toggleMessageModal(event.id); 
+                }}>
                   <i class="bi bi-envelope-check"></i> Approve with Message
                 </Button>
 
@@ -263,6 +291,7 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
         </ListGroup>
       </div>
 
+      {/* ============= Conflict Events ============= */}
       <div>
         {pendingEvents.conflicts.length > 0 && <h4>Conflicts</h4>}
         <ListGroup>
@@ -272,8 +301,16 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
               <div>
                 {/* Title */}
                 <h4 className="mb-1 text-danger">
-                  {event.summary} | <small className='text-italic text-secondary'>{event.id}</small>
-
+                  {event.summary} |
+                  <a
+                    href={event.htmlLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-italic text-secondary event-link event-id"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <small>{event.extendedProperties?.private.groupName} {event.id}</small>
+                  </a>
                   <Badge bg="info" pill className="ms-2" color='danger' style={{ fontSize: '0.6em' }}>
                     Conflict
                   </Badge>
@@ -291,7 +328,18 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
                 </p>
 
                 {event.recurrence ?
-                  <RecurringEventList list={event.instances} />
+                  <div>
+                    <RecurringEventList list={event.instances} />
+                    <div className='d-flex gap-2'>
+                      <Button color="secondary" size='sm' onClick={() => handleRejectEvent(event.id)}>  Reject</Button>
+                      <Button size="sm" color="info" onClick={() => { 
+                        setModalSubmitHandler(() => handlePartiallyApproveEvent);
+                        toggleMessageModal(event.id); 
+                      }}>
+                        <i class="bi bi-envelope-check"></i> {"Partially Approve (with Message)"}
+                      </Button>
+                    </div>
+                  </div>
                   :
                   event.conflicts.map((conflict) =>
                     <div id={conflict.roomId}>

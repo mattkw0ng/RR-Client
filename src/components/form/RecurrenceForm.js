@@ -193,6 +193,7 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
       <div className="form-group mb-3">
         <p>When will the event end?</p>
         <div className="d-flex justify-content-start">
+          {/*}
           <div>
             <label>Stop after</label>
             <div className="input-group">
@@ -209,6 +210,8 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
           </div>
 
           <h5 className="text-center my-4 mx-5">or</h5>
+
+          */}
 
           <div>
             <label>Stop on</label>
