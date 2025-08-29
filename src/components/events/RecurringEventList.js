@@ -6,7 +6,7 @@ import "../pages/AdminPortal.css";
 const RecurringEventList = ({ list }) => {
 
   return (
-    <div>
+    <div className="recurring-event-list">
       {list.map(instance => {
         const hasNoConflicts = instance.conflicts.length === 0;
         return (
