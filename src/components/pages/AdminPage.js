@@ -10,7 +10,6 @@ import './AdminPortal.css';
 import StandardEvent from '../events/StandardEvent';
 import ConflictEditor from '../edit/ConflictEditor';
 import ApprovalMessageModal from '../lightbox/ApprovalMessageModal';
-import { set } from 'date-fns';
 
 const AdminPage = ({ fetchNumPendingEvents }) => {
   const { rooms } = useRooms(); // Get rooms from context

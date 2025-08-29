@@ -27,10 +27,10 @@ function RecurrenceForm({ rRule, setRRULE, startDateTime, endDateTime }) {
       prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
     );
   };
-  const handleEndAfterOccurrencesChange = (e) => {
-    setEndAfterOccurrences(e.target.value);
-    setEndDate('');
-  };
+  // const handleEndAfterOccurrencesChange = (e) => {
+  //   setEndAfterOccurrences(e.target.value);
+  //   setEndDate('');
+  // };
   const handleEndDateChange = (e) => {
     setEndDate(e.target.value);
     setEndAfterOccurrences(null);
