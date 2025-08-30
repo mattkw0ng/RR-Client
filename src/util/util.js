@@ -46,7 +46,7 @@ export function formatEventDates(startDate, endDate) {
   if (isSameDay(start, end)) {
       return (
         <span className="event-date-formatted">
-          {format(start, 'MM/dd/yyyy')} <small>{`${format(start, 'h:mmaaa')}-${format(end, 'h:mmaaa')}`}</small>
+          {format(start, 'MM/dd/yyyy')} <small className='text-secondary'>{`${format(start, 'h:mmaaa')}-${format(end, 'h:mmaaa')}`}</small>
         </span>
       );
   }
@@ -54,7 +54,7 @@ export function formatEventDates(startDate, endDate) {
   // Format separately if the dates are on different days
     return (
       <span className="event-date-formatted">
-        {format(start, 'MM/dd/yyyy')} <small>{format(start, 'h:mmaaa')}</small> - {format(end, 'MM/dd/yyyy')} <small>{format(end, 'h:mmaaa')}</small>
+        {format(start, 'MM/dd/yyyy')} <small className='text-secondary'>{format(start, 'h:mmaaa')}</small> - {format(end, 'MM/dd/yyyy')} <small>{format(end, 'h:mmaaa')}</small>
       </span>
     );
 }

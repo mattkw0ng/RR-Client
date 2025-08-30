@@ -19,7 +19,7 @@ const RecurringEventList = ({ list }) => {
               className={`text-italic text-${hasNoConflicts ? 'secondary' : 'danger'} event-link event-id`}
               style={{ textDecoration: 'none' }}
             >
-              <small>{instance.id}</small>
+              <small>&nbsp;{instance.id}</small>
             </a>
             {hasNoConflicts
               ? null
