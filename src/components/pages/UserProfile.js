@@ -99,6 +99,7 @@ const UserProfile = () => {
     const handleCancelEvent = (e, event) => {
         e.preventDefault();
         const confirmation = window.confirm(`Cancel ${event.summary}?`);
+        console.log("Cancelling Event", event);
         if (confirmation) {
             console.log("Deleting event");
             setShowLoading(true);
