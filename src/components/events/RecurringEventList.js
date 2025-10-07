@@ -8,7 +8,8 @@ const RecurringEventList = ({ list }) => {
   return (
     <div className="recurring-event-list">
       {list.map(instance => {
-        const hasNoConflicts = instance.conflicts.length === 0;
+        console.log("Rendering instance: ", instance);
+        const hasNoConflicts = instance.conflicts?.length === 0;
         return (
           <span key={instance.id} className={hasNoConflicts ? "" : "text-danger"}>
             {formatEventDates(instance.start.dateTime, instance.end.dateTime)} |
