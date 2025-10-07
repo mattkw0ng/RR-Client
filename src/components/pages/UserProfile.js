@@ -104,7 +104,10 @@ const UserProfile = () => {
             console.log("Deleting event");
             setShowLoading(true);
             axios.delete(`${API_URL}/api/rejectEvent`, {
-                data: { eventId: event.id }, // Pass the eventId in the request body
+                data: { 
+                    eventId: event.id, 
+                    calendarId: event.organizer.email
+                }, // Pass the eventId in the request body
                 withCredentials: true,
             }).then(response => {
                 alert('Event Cancelled Successfully: ', response.data);
