@@ -9,7 +9,7 @@ const RecurringEventList = ({ list }) => {
     <div className="recurring-event-list">
       {list.map(instance => {
         console.log("Rendering instance: ", instance);
-        const hasNoConflicts = instance.conflicts?.length === 0;
+        const hasNoConflicts = !('conflicts' in instance) || !Array.isArray(instance.conflicts) || instance.conflicts.length === 0;
         return (
           <span key={instance.id} className={hasNoConflicts ? "" : "text-danger"}>
             {formatEventDates(instance.start.dateTime, instance.end.dateTime)} |
