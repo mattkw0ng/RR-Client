@@ -48,7 +48,7 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
           excludeRooms: event.conflicts.map((room) => (room.roomId)),
         }
       })
-      console.log("fetchAvailableRooms()", response);
+      console.log("fetchAvailableRooms()", response.data);
       setAvailableRooms(response.data);
     } catch (error) {
       console.error("Error fetching AvailableRoomEvents: ", error);
@@ -73,12 +73,12 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
         <div>
           <div className="d-flex gap-2">
             {roomEvents.length > 0 && roomEvents[0].length > 0 ? //Conditionally render the side-by-side events viewer if there are room events
-              <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} />
+              <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} roomName={getRoomNameByCalendarID(roomId, rooms)}/>
               : <p className="text-muted">Loading room events...</p>
             }
             {selectedRoom && availableRooms.length > 0 ?
               // If a room has been selected, display it in a new side-by-side viewer & add the pending event to the list of pending events attatched to new room
-              <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[pendingEventCopy, ...availableRooms[selectedRoom].pendingEvents]} conflictId={conflictId} />
+              <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[pendingEventCopy, ...availableRooms[selectedRoom].pendingEvents]} conflictId={conflictId} roomName={selectedRoom}/>
               : null
             }
           </div>

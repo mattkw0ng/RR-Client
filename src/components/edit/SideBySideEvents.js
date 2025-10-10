@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./SideBySideEvents.css";
 import { areTimeRangesOverlapping } from "../../util/util";
 
-const SideBySideEvents = ({ approvedEvents, pendingEvents, conflictId }) => {
+const SideBySideEvents = ({ approvedEvents, pendingEvents, conflictId, roomName }) => {
   const timeRangeStart = 6; // Start time for the timeline (6:00 AM)
   const timeRangeEnd = 23; // End time for the timeline (10:00 PM)
   const totalHours = timeRangeEnd - timeRangeStart;
@@ -82,6 +82,7 @@ const SideBySideEvents = ({ approvedEvents, pendingEvents, conflictId }) => {
         <h5>Pending Events</h5>
         <EventColumn eventStatus={"pending"} events={pendingEvents} />
       </div>
+      <small className="text-muted font-italic">{roomName}</small>
     </div>
   );
 };
