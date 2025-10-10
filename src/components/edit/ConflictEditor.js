@@ -67,6 +67,12 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
     fetchAvailableRooms(pendingEvent);
   }, [pendingEvent, roomId])
 
+  useEffect(() => {
+    if (selectedRoom) {
+      console.log(selectedRoom, availableRooms[selectedRoom]);
+    }
+  }, [selectedRoom])
+
   return (
     <Fragment>
       <ModalBody className='px-3'>
@@ -76,7 +82,7 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
               <SideBySideEvents approvedEvents={roomEvents[0]} pendingEvents={[pendingEventCopy, ...roomEvents[1].filter((e) => e.id !== conflictId)]} conflictId={conflictId} roomName={getRoomNameByCalendarID(roomId, rooms)}/>
               : <p className="text-muted">Loading room events...</p>
             }
-            {selectedRoom && availableRooms.length > 0 ?
+            {selectedRoom && availableRooms[selectedRoom] ?
               // If a room has been selected, display it in a new side-by-side viewer & add the pending event to the list of pending events attatched to new room
               <SideBySideEvents approvedEvents={availableRooms[selectedRoom].approvedEvents} pendingEvents={[pendingEventCopy, ...availableRooms[selectedRoom].pendingEvents]} conflictId={conflictId} roomName={selectedRoom}/>
               : null
