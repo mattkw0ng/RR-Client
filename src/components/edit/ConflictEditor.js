@@ -71,7 +71,7 @@ const ConflictEditor = ({ pendingEvent, conflictId, roomId, handleSubmitChanges,
     if (selectedRoom) {
       console.log(selectedRoom, availableRooms[selectedRoom]);
     }
-  }, [selectedRoom])
+  }, [selectedRoom, availableRooms])
 
   return (
     <Fragment>
