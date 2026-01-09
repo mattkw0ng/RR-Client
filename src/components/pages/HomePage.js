@@ -32,13 +32,19 @@ export default function HomePage() {
         </div>
         {'For "SJCAC approved" events only (at San Jose and Willow Glen campuses).'}
         <br />
-        SJCAC Church Administration reserves the right to approve or deny requests for room reservations.
+        Room requests are for "SJCAC approved" events only (at East and West campuses) and are mostly first come, first served with exceptions for church-wide ministries.
         <br />
-        All reservation requests must be submitted at least one week prior to the event date.
+        All reservation requests must be submitted at least one week prior to the event date to allow time for processing approvals and conflicts.
         <br />
-        Please Include setup / clean up time in your request. Room bookings may be back to back.
+        Room/Campus access:  Be sure to arrange with a keyholder to unlock/lock doors for your meeting. (keyholders: Ministry leaders, Worship Leaders, some Ministry assistants, office staff) If West campus key is needed, key access via lockbox can be requested.
         <br />
-        For questions, contact rooms@sjcac.org
+        Include setup / clean up time in your request as some room bookings may be scheduled back to back. If your group's meeting runs past your meeting end time, the next group may enter and give a reminder that they have the following reservation and are waiting to begin.
+        <br />
+        Cancel any change of plans as soon as possible to make the room(s) available to other groups.
+        <br />
+        Recurring reservations are limited to a 6 month window.
+        <br />
+        For questions, email rooms@sjcac.org
       </div>
     </div>
   )
