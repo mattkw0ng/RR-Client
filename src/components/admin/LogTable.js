@@ -67,7 +67,7 @@ export default function AdminActivityLog() {
                   }}
                 >
                   <td>{log.id}</td>
-                  <td>{new Date(log.created_at).toLocaleString()}</td>
+                  <td>{new Date(log.timestamp).toLocaleString()}</td>
                   <td>
                     <strong>{log.user_name}</strong>
                     <br />
