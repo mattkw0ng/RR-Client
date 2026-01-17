@@ -9,7 +9,7 @@ export default function AdminActivityLog() {
 
   useEffect(() => {
 
-    axios.get(API_URL + 'api/admin/activity-logs')
+    axios.get(API_URL + '/api/admin/activity-logs')
       .then(response => {
         setLogs(response.data);
         setLoading(false);
