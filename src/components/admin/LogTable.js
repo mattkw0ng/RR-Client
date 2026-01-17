@@ -106,7 +106,7 @@ export default function AdminActivityLog() {
                           overflow: "auto"
                         }}
                       >
-                        {typeof parsedDetails === "string"
+                        {typeof parsedDetails === "object" && parsedDetails !== null
                           ? <LogDetailsViewer details={parsedDetails} />
                           : JSON.stringify(parsedDetails, null, 2)}
                       </pre>
