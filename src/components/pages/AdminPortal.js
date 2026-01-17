@@ -8,6 +8,7 @@ import { Badge } from "reactstrap";
 import RoomRes from "./RoomRes";
 import "./AdminPortal.css";
 import AddRoomForm from "../form/AddRoomForm";
+import LogTable from "../admin/LogTable";
 
 const AdminPortal = () => {
   const location = useLocation(); // Get current route
@@ -58,6 +59,7 @@ const AdminPortal = () => {
           <Route path="/approvals" element={<AdminPage fetchNumPendingEvents={fetchNumPendingEvents} />} />
           <Route path="/reserve" element={<RoomRes isAdmin={true} />} />
           <Route path="/add-room" element={<AddRoomForm />} />
+          <Route path="/activity-log" element={<LogTable />} />
         </Routes>
       </div>
     </div>
