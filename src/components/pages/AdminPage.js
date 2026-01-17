@@ -114,7 +114,10 @@ const AdminPage = ({ fetchNumPendingEvents }) => {
 
     try {
       const response = await axios.delete(`${API_URL}/api/rejectEvent`, {
-        data: { eventId }, // Pass the eventId in the request body
+        data: { 
+          eventId , 
+          calendarId : 'pending'
+        }, // Pass the eventId in the request body
         withCredentials: true,
       });
       alert('Event rejected successfully:', response.data);
