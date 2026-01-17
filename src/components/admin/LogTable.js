@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import API_URL from "../../config";
+import LogDetailsViewer from "./LogDetailsViewer";
 
 export default function AdminActivityLog() {
   const [logs, setLogs] = useState([]);
@@ -106,7 +107,7 @@ export default function AdminActivityLog() {
                         }}
                       >
                         {typeof parsedDetails === "string"
-                          ? parsedDetails
+                          ? <LogDetailsViewer details={parsedDetails} />
                           : JSON.stringify(parsedDetails, null, 2)}
                       </pre>
                     </td>
