@@ -21,7 +21,7 @@ function RoomSearch() {
   const navigate = useNavigate();
   const { user, loading } = useAuth()
   const { rooms } = useRooms();
-
+  
   const [roomName, setRoomName] = useState("");   // Search Query
   const [verifiedAvailability, setVerifiedAvailability] = useState(false)
   const [selectedRooms, setSelectedRooms] = useState([]);
@@ -42,7 +42,7 @@ function RoomSearch() {
       setAvailableRooms(rooms.roomListSimple);
       setFilteredRooms(rooms.roomListSimple);
     }
-  }, [rooms])
+  },[rooms])
 
   // Handle Redirecting to next stem (Room Reservation Form Page)
   const handleProceedToReservation = () => {
@@ -55,8 +55,8 @@ function RoomSearch() {
       endDateTime
     };
     const preLoadRooms = selectedRooms
-    console.log("Moving to RoomReservation", selectedRooms, preLoadData)
-    navigate("/room-reservation-form", { state: { preLoadRooms, preLoadData } });
+    console.log("Moving to RoomReservation",selectedRooms,preLoadData)
+    navigate("/room-reservation-form", { state: { preLoadRooms, preLoadData  } });
   };
 
   const availableCapacities = [325, 150, 15, 30, 20, 40, 25];
@@ -100,17 +100,15 @@ function RoomSearch() {
   }, [timeRange, setStartTime, setEndTime]);
 
   const convertToDateTimeUTC = (date, time) => {
-    // date: "2026-04-05", time: "12:30"
-    const dateTimeString = `${date}T${time}:00`; // Use 'T' separator for ISO standard
-    console.log(dateTimeString)
+    const dateTimeString = `${date} ${time}`;
 
+    // Parse the local date and time first
     const localDateTime = new Date(dateTimeString);
 
     if (isNaN(localDateTime)) {
       throw new Error('Invalid Date or Time format');
     }
 
-    // .toISOString() returns "2026-04-05T19:30:00.000Z"
     return localDateTime.toISOString();
   };
 
@@ -147,7 +145,7 @@ function RoomSearch() {
   return (
     <Fragment>
       {/* Filters */}
-      <div className="d-flex">
+      <div className="d-flex"> 
         <div className="form-filter-container d-flex bg-light shadow">
           <form onSubmit={handleSubmit} id="form-filter" className="px-5 py-3">
             {/* Room Name Search */}
@@ -164,7 +162,7 @@ function RoomSearch() {
             </div>
             {/* TimeRangeSlider */}
             <label className="form-label">Select Time Range</label>
-            <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange} />
+            <TimeRangeSlider timeRange={timeRange} handleSliderChange={handleSliderChange}/>
             <hr />
 
             {/* Room Capacity Selection */}
@@ -209,9 +207,9 @@ function RoomSearch() {
             </button>
           </form>
         </div>
-
+      
         <div className="room-card-container w-100">
-          <RoomSelection availableRooms={availableRooms} filteredRooms={filteredRooms} selectedRooms={selectedRooms} setSelectedRooms={setSelectedRooms} handleCheckout={handleProceedToReservation} verified={verifiedAvailability} />
+          <RoomSelection availableRooms={availableRooms} filteredRooms={filteredRooms} selectedRooms={selectedRooms} setSelectedRooms={setSelectedRooms} handleCheckout={handleProceedToReservation} verified={verifiedAvailability}/>
         </div>
       </div>
 
