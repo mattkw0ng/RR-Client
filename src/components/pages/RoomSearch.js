@@ -102,6 +102,7 @@ function RoomSearch() {
   const convertToDateTimeUTC = (date, time) => {
     // date: "2026-04-05", time: "12:30"
     const dateTimeString = `${date}T${time}:00`; // Use 'T' separator for ISO standard
+    console.log(dateTimeString)
 
     const localDateTime = new Date(dateTimeString);
 

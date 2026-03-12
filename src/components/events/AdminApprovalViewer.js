@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { Button, ModalBody, ModalFooter, FormGroup, Label, Input } from "reactstrap";
 import { getRoomNameByCalendarID, formatEventDates } from "../../util/util";
-import SideBySideEvents from "./SideBySideEvents";
+import SideBySideEvents from "../edit/SideBySideEvents";
 import { useRooms } from "../../context/RoomsContext";
 
 /**
