@@ -1,16 +1,19 @@
-import React from "react";
-import { Badge, ListGroupItem } from 'reactstrap';
+import React, { useState } from "react";
+import { Badge, ListGroupItem, Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import RecurringEventList from "./RecurringEventList";
 import { getRoomNameByCalendarID, parseRRule, formatEventDates } from "../../util/util";
 import { useRooms } from "../../context/RoomsContext";
+import ViewEventDetails from "./ViewEventDetails";
 import '../pages/AdminPortal.css';
 
 const StandardEvent = ({ event, button, badge, pending = true }) => {
   const { rooms } = useRooms();
+  const [viewModal, setViewModal] = useState(false);
+  const toggleViewModal = () => setViewModal(!viewModal);
 
   return (
     <ListGroupItem className="d-flex justify-content-between align-items-start">
-      <div>
+      <div style={{ flex: 1 }}>
         {/* Title & ID & Badges */}
         <h5 className="mb-1">
           {event.summary} |
@@ -30,8 +33,6 @@ const StandardEvent = ({ event, button, badge, pending = true }) => {
               Recurring
             </Badge>
           ) : null}
-
-
         </h5>
 
         <p>
@@ -55,6 +56,17 @@ const StandardEvent = ({ event, button, badge, pending = true }) => {
 
         {button}
       </div>
+      {/* View Button */}
+      <div className="ms-2">
+        <Button size="sm" color="secondary" onClick={toggleViewModal}>View</Button>
+      </div>
+      {/* View Modal */}
+      <Modal isOpen={viewModal} toggle={toggleViewModal} size="xl">
+        <ModalHeader toggle={toggleViewModal}><span className='text-secondary'> {event.summary} </span></ModalHeader>
+        <ModalBody className='px-3'>
+          <ViewEventDetails event={event} rooms={rooms} />
+        </ModalBody>
+      </Modal>
     </ListGroupItem>
   )
 }
