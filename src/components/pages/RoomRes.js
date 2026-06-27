@@ -205,7 +205,7 @@ function RoomRes({ isAdmin = false }) {
       const end = endDateTime.toISOString();
 
       const response = await axios.get(`${API_URL}/api/checkConflicts?startDateTime=${start}&endDateTime=${end}&recurrence=${rRule}&roomList=${JSON.stringify(selectedRooms.map((room_name) => rooms?.rooms[room_name].calendarID))}`, { withCredentials: true });
-      console.log(`checking for conflicts: ${response.data}`);
+      console.log(`checking for conflicts: ${JSON.stringify(response.data, null, 2)}`);
       setConflicts(response.data || []);
     } catch (error) {
       console.error("Error checking conflicts", error);
